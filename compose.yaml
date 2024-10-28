@@ -1,0 +1,8 @@
+services:
+  ollama:
+    image: ollama/ollama:latest  # Replace with your Ollama Docker image name
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - /Users/tanish/Downloads/CODE/capstone/MetaNaviT/LLMS:/root/.ollama
