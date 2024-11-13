@@ -2,7 +2,22 @@
 - **docker-compose.yml**: Defines the services needed for the project.
 - **metanavit_db.sql**: Dump file used to initialize PostgreSQL database.
 - **LLMS Folder**: Contains Models for the Ollama service.
-  
+    
+# Start software with docker compose (run container):
+
+```bash
+docker-compose up -d
+```
+- this will set up PostgresSQL database (metanavit_db).
+- Set up the Ollama service to pull/run different models.
+
+# Connecting to Database:
+
+```bash
+docker exec -it metanavit_db psql -U postgres -d metanavit
+```
+- this will allow you to connect to the db to see data or make changes.
+
 **dataProcessing.py:**
 - takes in user path to set a root directory to scan everything recursively inside it and stores it in the database for embedding.
 - Collects metadata for each file, file name, type, size, last modifed date, and path, and stores in the **file_contents** table of database.
@@ -26,24 +41,7 @@ python3 data_processing.py
 - Run embedding.py:
 ```bash
 python embedding.py
-```  
-
-
-
-# Start software with docker compose (run container):
-
-```bash
-docker-compose up -d
 ```
-- this will set up PostgresSQL database (metanavit_db).
-- Set up the Ollama service to pull/run different models.
-
-# Connecting to Database:
-
-```bash
-docker exec -it metanavit_db psql -U postgres -d metanavit
-```
-- this will allow you to connect to the db to see data or make changes.
 
 ## Setting up Docker:
 
