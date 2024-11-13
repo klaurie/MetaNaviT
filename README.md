@@ -3,18 +3,18 @@
 - **metanavit_db.sql**: Dump file used to initialize PostgreSQL database.
 - **LLMS Folder**: Contains Models for the Ollama service.
   
-# dataProcessing.py:
+**dataProcessing.py:**
 - takes in user path to set a root directory to scan everything recursively inside it and stores it in the database for embedding.
 - Collects metadata for each file, file name, type, size, last modifed date, and path, and stores in the **file_contents** table of database.
 - Creates references to each file in the **embeddings** table.
   
-# embedding.py: 
+**embedding.py:**
 - this converts file content into embeddings using Ollama model **mxbai-embed-large** and stores it as a vector back in the database for the embedding's table.
 - Queries the **embeddings** table to find records where the embedding field is **NULL**.
 - script formats the metadata into texts, sends it to ollama's embedding API, and stores the genereated embedding vector back in the embeddings table.
 - **Install dependencies**:
 
-# Run Script:
+**Run Script:**
 - First download these packages:
 ```bash
 pip install psycopg2 requests
