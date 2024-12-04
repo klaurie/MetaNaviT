@@ -29,7 +29,7 @@ class MetadataProcessor:
             return ""
 
     async def process_file(self, file_path: str) -> Dict[str, Any]:
-        """Process a single file and extract its metadata"""
+        """Process a single file and extract its relationships"""
         try:
             # Read file content
             content = await self._read_file_content(file_path)
@@ -39,18 +39,12 @@ class MetadataProcessor:
             # Extract relationships using the RelationshipExtractor
             relationships = await self.relationship_extractor.extract_relationships(text=content)
 
-            # Create metadata object
-            metadata = {
-                "resource_id": os.path.basename(file_path),
-                "relationships": relationships,
-                "key_concepts": [],
-                "summary": ""
-            }
-
             return {
                 "file_name": os.path.basename(file_path),
-                "relationships": metadata,
-                "content_preview": content[:100] if content else ""
+                "relationships": {
+                    "resource_id": os.path.basename(file_path),
+                    "relationships": relationships
+                }
             }
 
         except Exception as e:
@@ -59,15 +53,12 @@ class MetadataProcessor:
                 "file_name": os.path.basename(file_path),
                 "relationships": {
                     "resource_id": os.path.basename(file_path),
-                    "relationships": [],
-                    "key_concepts": [],
-                    "summary": ""
-                },
-                "content_preview": ""
+                    "relationships": []
+                }
             }
 
     async def process_directory(self, directory_path: str) -> List[Dict[str, Any]]:
-        """Process all files in a directory"""
+        """Process all files in a directory for relationship extraction"""
         results = []
         try:
             for root, _, files in os.walk(directory_path):

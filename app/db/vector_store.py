@@ -389,56 +389,31 @@ class PGVectorStore:
             logger.error(f"Error retrieving query history: {e}")
             raise
 
-    async def add_vector(
-        self,
-        document_id: str,
-        embedding: List[float],
-        metadata: Dict[str, Any],
-        snippet: str
-    ) -> None:
-        """Add a vector to the database"""
-        if not self.pool:
-            await self.initialize()
-            
+    async def add_vector(self, embedding: List[float], metadata: Dict[str, Any], snippet: str) -> str:
+        """Add a vector to the store"""
         try:
-            # Convert embedding to string format for PostgreSQL
+            if not self.pool:
+                await self.initialize()
+
+            # Convert embedding to PostgreSQL vector format
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
             
+            # Convert metadata to JSON string
+            metadata_json = json.dumps(metadata)
+
             async with self.pool.acquire() as conn:
-                # First ensure the table exists
-                create_table = """
-                CREATE TABLE IF NOT EXISTS vector_store (
-                    id UUID PRIMARY KEY,
-                    metadata JSONB,
-                    snippet TEXT,
-                    embedding vector(768)
-                );
-                """
-                await conn.execute(create_table)
-                
-                # Insert the vector
-                query = """
-                INSERT INTO vector_store (id, metadata, snippet, embedding)
-                VALUES ($1, $2, $3, $4::vector)
-                ON CONFLICT (id) DO UPDATE
-                SET 
-                    metadata = EXCLUDED.metadata,
-                    snippet = EXCLUDED.snippet,
-                    embedding = EXCLUDED.embedding
-                """
-                
-                await conn.execute(
-                    query,
-                    document_id,
-                    json.dumps(metadata),
-                    snippet,
-                    embedding_str
+                # Insert the vector and return the generated ID
+                doc_id = await conn.fetchval(
+                    """
+                    INSERT INTO vector_store (embedding, metadata, snippet)
+                    VALUES ($1::vector, $2::jsonb, $3)
+                    RETURNING id::text
+                    """,
+                    embedding_str, metadata_json, snippet
                 )
-                
-                logger.info(f"Added vector with ID: {document_id}")
-                
+                return doc_id
         except Exception as e:
-            logger.error(f"Error adding vector: {e}")
+            logger.error(f"Error adding vector to store: {e}")
             raise
 
     async def init_table(self):

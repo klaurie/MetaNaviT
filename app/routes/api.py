@@ -33,11 +33,18 @@ import fnmatch
 from typing import Optional, Dict, Any
 from fastapi import HTTPException
 from uuid import UUID
-from llama_index.core import SimpleDirectoryReader
+from llama_index.core import SimpleDirectoryReader, Document
 from app.utils.relationship_extractor import RelationshipExtractor
+from pydantic import BaseModel
+from datetime import datetime
+from llama_index.core.node_parser import SentenceSplitter
+from llama_index.core.schema import TextNode
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+
+class DirectoryInput(BaseModel):
+    directory: str
 
 # Helper function to get pg_storage from app state
 async def get_pg_storage(request: Request):
@@ -365,15 +372,12 @@ def calculate_relevance(query: str, response: str) -> float:
         return 0.0
 
 @router.post("/upload/batch")
-async def upload_directory(
-    request: DirectoryInput,
-    pg_storage = Depends(get_pg_storage)
-):
-    """Process all files in a directory and add them to the vector store"""
+async def upload_batch(request: DirectoryInput, pg_storage=Depends(get_pg_storage)):
+    """Process and store documents from a directory"""
     try:
         directory_path = os.path.abspath(request.directory)
         logger.info(f"Processing directory: {directory_path}")
-        
+
         # Check if directory exists
         if not os.path.exists(directory_path):
             raise HTTPException(
@@ -388,104 +392,230 @@ async def upload_directory(
                 detail=f"Directory is empty: {directory_path}"
             )
 
-        # Initialize metadata processor with the initialized pg_storage
-        metadata_processor = MetadataProcessor(pg_storage)
+        # Track processed files to prevent duplicates
+        processed_paths = set()
         
-        # Store relationship results for debugging
-        relationship_results = []
-        failed_extractions = []
-        processed_files = set()  # Initialize the set here
-        
+        # Initialize document reader with recursive exploration
         try:
-            # Use the metadata processor to handle the directory
             reader = SimpleDirectoryReader(
                 input_dir=directory_path,
                 recursive=True,
-                filename_as_id=True,
-                required_exts=[".pdf", ".txt", ".doc", ".docx", ".ppt", ".pptx"]
+                exclude_hidden=True,
+                required_exts=[".txt", ".pdf", ".doc", ".docx"],
+                num_files_limit=None
             )
+            documents = reader.load_data()
             
-            # Process each document
-            for docs in reader.iter_data():
-                for doc in docs:
-                    try:
-                        file_name = doc.metadata.get('file_name', 'unknown')
-                        logger.info(f"Processing document: {file_name}")
-                        
-                        # Only process unique files
-                        if file_name not in processed_files:
-                            processed_files.add(file_name)
-                            
-                            # Process relationships using the complete document content
-                            relationships = await metadata_processor.relationship_extractor.extract_relationships(
-                                text=doc.text
-                            )
-                            
-                            relationship_results.append({
-                                "file_name": file_name,
-                                "relationships": relationships,
-                                "content_preview": doc.text[:100]
-                            })
-                            
-                            # Store the document chunks with embeddings
-                            chunk_id = str(uuid4())
-                            embedding = await get_ollama_embedding(doc.text)
-                            
-                            # Create metadata with relationships
-                            metadata = {
-                                "file_name": file_name,
-                                "relationships": relationships,
-                                "key_concepts": [],
-                                "summary": "",
-                                **doc.metadata
-                            }
-                            
-                            await pg_storage.add_vector(
-                                document_id=chunk_id,
-                                embedding=embedding,
-                                metadata=metadata,
-                                snippet=doc.text[:300]
-                            )
-                            
-                    except Exception as e:
-                        logger.error(f"Error processing document {file_name}: {str(e)}")
-                        failed_extractions.append({
-                            "file_name": file_name,
-                            "error": str(e),
-                            "content_preview": doc.text[:100] if hasattr(doc, 'text') else None
-                        })
+            # Filter out duplicate documents
+            unique_documents = []
+            for doc in documents:
+                file_path = doc.metadata.get("file_path", "")
+                abs_path = os.path.abspath(file_path)
+                if abs_path not in processed_paths:
+                    processed_paths.add(abs_path)
+                    unique_documents.append(doc)
             
-            # Get the processed files information
-            metadata_list = metadata_processor.extract_metadata(directory_path)
-            processed_files_list = [m["file_name"] for m in metadata_list]
-            
-            return {
-                "message": f"Directory {request.directory} processed",
-                "processed_files": list(processed_files),  # Convert set to list
-                "total_files": len(processed_files),
-                "successful": len(processed_files) - len(failed_extractions),
-                "failed": len(failed_extractions),
-                "debug_info": {
-                    "relationship_results": relationship_results,
-                    "failed_extractions": failed_extractions
-                }
-            }
+            logger.info(f"Found {len(unique_documents)} unique files: {[doc.metadata.get('file_path', '') for doc in unique_documents]}")
+            documents = unique_documents
             
         except Exception as e:
-            logger.error(f"Error in metadata processor: {e}")
+            logger.error(f"Error loading documents: {str(e)}")
             raise HTTPException(
-                status_code=500, 
-                detail={
-                    "error": str(e),
-                    "relationship_results": relationship_results,
-                    "failed_extractions": failed_extractions
-                }
+                status_code=500,
+                detail=f"Error loading documents: {str(e)}"
+            )
+
+        if not documents:
+            raise HTTPException(
+                status_code=400,
+                detail="No documents found in directory"
             )
             
+        logger.info(f"Processing {len(documents)} documents")
+
+        successful = 0
+        failed = 0
+        file_details = []
+
+        # Initialize text splitter once
+        splitter = TextSplitter(
+            chunk_size=1000,  # Increased chunk size
+            chunk_overlap=100,  # Increased overlap for better context
+        )
+
+        for doc in documents:
+            try:
+                # Validate document has content
+                if not isinstance(doc.text, str) or not doc.text.strip():
+                    logger.warning(f"Empty document found: {doc.metadata.get('file_path', 'unknown')}")
+                    continue
+
+                file_path = doc.metadata.get("file_path", "")
+                if not file_path or not os.path.exists(file_path):
+                    logger.warning(f"Invalid file path: {file_path}")
+                    continue
+
+                abs_path = os.path.abspath(file_path)
+                file_stat = os.stat(file_path)
+                
+                # Get file metadata
+                file_info = {
+                    "directory": os.path.dirname(abs_path),
+                    "file_name": os.path.basename(file_path),
+                    "content_type": doc.metadata.get("content_type", "text/plain"),
+                    "content_size": file_stat.st_size,
+                    "last_modified": datetime.fromtimestamp(file_stat.st_mtime).isoformat(),
+                    "chunks": []
+                }
+
+                try:
+                    # Split text into chunks with better handling of PDFs
+                    text = doc.text.replace('\x00', '')  # Remove null bytes
+                    text = ' '.join(text.split())  # Normalize whitespace
+                    
+                    # Split into initial chunks
+                    chunks = splitter.split_text(text)
+                    
+                    # Additional cleanup and filtering of chunks
+                    valid_chunks = []
+                    for chunk in chunks:
+                        chunk = chunk.strip()
+                        # Only keep chunks that are meaningful (not too short and contain actual content)
+                        if chunk and len(chunk) >= 50 and not chunk.isspace():
+                            valid_chunks.append(chunk)
+                    
+                    logger.info(f"Split document {file_path} into {len(valid_chunks)} chunks")
+                    chunks = valid_chunks
+                    
+                except Exception as e:
+                    logger.error(f"Error splitting document {file_path}: {str(e)}")
+                    continue
+                
+                # Validate chunks
+                valid_chunks = [c for c in chunks if c and c.strip()]
+                if not valid_chunks:
+                    logger.warning(f"No valid chunks found in document: {file_path}")
+                    continue
+                
+                logger.info(f"Processing {len(valid_chunks)} valid chunks for {file_path}")
+                chunk_errors = 0
+                
+                # Process each chunk
+                for i, chunk in enumerate(valid_chunks):
+                    try:
+                        # Get embedding
+                        embedding = await get_ollama_embedding(chunk)
+                        if embedding is None or (isinstance(embedding, np.ndarray) and embedding.size == 0):
+                            logger.warning(f"Failed to get embedding for chunk {i} in {file_path}")
+                            chunk_errors += 1
+                            continue
+
+                        if isinstance(embedding, np.ndarray):
+                            embedding = embedding.tolist()
+
+                        # Calculate token size (approximate)
+                        token_size = len(chunk.split())
+
+                        # Store chunk info
+                        chunk_info = {
+                            "chunk_index": i,
+                            "token_size": token_size,
+                            "text_preview": chunk[:100] + "..." if len(chunk) > 100 else chunk
+                        }
+                        file_info["chunks"].append(chunk_info)
+
+                        # Store in database with metadata
+                        doc_id = await pg_storage.add_vector(
+                            embedding=embedding,
+                            metadata={
+                                "file_name": os.path.basename(file_path),
+                                "directory": os.path.dirname(abs_path),
+                                "content_type": doc.metadata.get("content_type", "text/plain"),
+                                "content_size": file_stat.st_size,
+                                "last_modified": datetime.fromtimestamp(file_stat.st_mtime).isoformat(),
+                                "chunk_index": i,
+                                "token_size": token_size,
+                                "total_chunks": len(valid_chunks)
+                            },
+                            snippet=chunk
+                        )
+                    except Exception as chunk_error:
+                        logger.error(f"Error processing chunk {i} in {file_path}: {str(chunk_error)}")
+                        chunk_errors += 1
+                        continue
+
+                if file_info["chunks"]:
+                    logger.info(f"Successfully processed {len(file_info['chunks'])} chunks for {file_path} with {chunk_errors} errors")
+                    file_details.append(file_info)
+                    successful += 1
+                else:
+                    logger.error(f"Failed to process any chunks for {file_path}")
+                    failed += 1
+                
+            except Exception as e:
+                logger.error(f"Error processing document: {str(e)}")
+                failed += 1
+
+        if not file_details:
+            raise HTTPException(
+                status_code=400,
+                detail="No files were successfully processed"
+            )
+
+        return {
+            "message": f"Directory {directory_path} processed",
+            "summary": {
+                "total_files": len(documents),
+                "successful": successful,
+                "failed": failed,
+                "total_directories": len(set(info["directory"] for info in file_details))
+            },
+            "processed_files": file_details
+        }
+
     except HTTPException as he:
         raise he
     except Exception as e:
-        logger.error(f"Error processing directory: {e}")
+        logger.error(f"Error in batch upload: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+@router.post("/upload/batch_extract")
+async def batch_extract_relationships(request: DirectoryInput, pg_storage=Depends(get_pg_storage)):
+    """Extract relationships from previously processed documents"""
+    try:
+        directory_path = os.path.abspath(request.directory)
+        logger.info(f"Extracting relationships from directory: {directory_path}")
+
+        # Check if directory exists
+        if not os.path.exists(directory_path):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Directory not found: {directory_path}"
+            )
+
+        # Initialize metadata processor
+        metadata_processor = MetadataProcessor(pg_storage=pg_storage)
+        
+        # Process relationships
+        relationship_results = await metadata_processor.process_directory(directory_path)
+        
+        # Track failed extractions
+        failed_extractions = []
+        for result in relationship_results:
+            if not result.get("relationships", {}).get("relationships"):
+                failed_extractions.append(result.get("file_name"))
+
+        return {
+            "message": f"Directory {directory_path} processed",
+            "debug_info": {
+                "relationship_results": relationship_results,
+                "failed_extractions": failed_extractions
+            }
+        }
+
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"Error in batch relationship extraction: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/debug/chunks")
@@ -698,3 +828,4 @@ async def extract_relationships(content: Dict[str, str]):
     except Exception as e:
         logger.error(f"Relationship extraction failed: {e}")
         return {"relationships": []}
+
