@@ -72,7 +72,7 @@ class PGVectorStore:
             logger.error(f"Error adding chunk to vector store: {e}")
             raise
 
-    async def get_similar_chunks(
+    async def similar_chunks(
         self, 
         embedding: List[float], 
         limit: int = 5,
@@ -91,12 +91,22 @@ class PGVectorStore:
             FROM vector_store
             WHERE metadata->>'file_name' IS NOT NULL
             """
+            
+            # Handle file pattern matching
             if file_pattern:
-                pattern = f'%{file_pattern}%' if not file_pattern.startswith('%') else file_pattern
-                files_query += f" AND metadata->>'file_name' LIKE '{pattern}'"
+                # Convert glob pattern to SQL LIKE pattern
+                sql_pattern = file_pattern.replace('*', '%')
+                if not sql_pattern.startswith('%'):
+                    sql_pattern = '%' + sql_pattern
+                if not sql_pattern.endswith('%'):
+                    sql_pattern = sql_pattern + '%'
+                files_query += " AND metadata->>'file_name' LIKE $1"
+                params = [sql_pattern]
+            else:
+                params = []
             
             async with self.pool.acquire() as conn:
-                matching_files = await conn.fetch(files_query)
+                matching_files = await conn.fetch(files_query, *params)
                 logger.info(f"Found matching files: {[r['filename'] for r in matching_files]}")
                 
                 processed_results = []
@@ -108,22 +118,25 @@ class PGVectorStore:
                     # Query for this specific file
                     file_query = """
                     WITH RankedChunks AS (
-                        SELECT DISTINCT ON (snippet)
+                        SELECT 
                             id,
                             metadata,
                             snippet,
-                            embedding <-> $1::vector as similarity
+                            embedding <-> $1::vector as distance
                         FROM vector_store
                         WHERE metadata->>'file_name' = $2
-                        ORDER BY snippet, (embedding <-> $1::vector)
                     )
-                    SELECT *
+                    SELECT 
+                        id,
+                        metadata,
+                        snippet,
+                        distance as similarity
                     FROM RankedChunks
-                    ORDER BY similarity ASC
+                    ORDER BY distance ASC
                     LIMIT $3;
                     """
                     
-                    # Get top 3 chunks from this file
+                    # Get top chunks from this file
                     file_results = await conn.fetch(file_query, embedding_str, file_name, 3)
                     logger.info(f"Found {len(file_results)} chunks from {file_name}")
                     
@@ -159,7 +172,7 @@ class PGVectorStore:
         file_name: str,
         limit: int = 5
     ) -> List[Dict[str, Any]]:
-        """Get similar chunks for a specific file with distinct snippets"""
+        """Get similar chunks for a specific file with optimized search"""
         if not self.pool:
             await self.initialize()
             
@@ -167,32 +180,74 @@ class PGVectorStore:
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
             
             async with self.pool.acquire() as conn:
+                # Fixed query to handle similarity calculation correctly
                 query = """
                 WITH RankedChunks AS (
-                    SELECT DISTINCT ON (snippet)
+                    SELECT 
                         id,
                         metadata,
                         snippet,
-                        embedding <-> $1::vector as similarity
+                        embedding <-> $1::vector as distance,
+                        length(snippet) as snippet_length
                     FROM vector_store
                     WHERE metadata->>'file_name' = $2
-                    ORDER BY snippet, similarity ASC
+                ),
+                FilteredChunks AS (
+                    SELECT 
+                        id,
+                        metadata,
+                        snippet,
+                        distance,
+                        snippet_length,
+                        ROW_NUMBER() OVER (
+                            PARTITION BY (snippet_length / 500)
+                            ORDER BY distance ASC
+                        ) as chunk_rank
+                    FROM RankedChunks
+                    WHERE distance < 0.8
+                    AND snippet_length BETWEEN 100 AND 2000
                 )
-                SELECT * FROM RankedChunks
-                ORDER BY similarity ASC
-                LIMIT $3
+                SELECT 
+                    id,
+                    metadata,
+                    snippet,
+                    distance as similarity
+                FROM FilteredChunks
+                WHERE chunk_rank = 1
+                ORDER BY distance ASC
+                LIMIT $3;
                 """
                 
                 results = await conn.fetch(query, embedding_str, file_name, limit)
-                return [
-                    {
-                        "id": str(row['id']),
-                        "metadata": row['metadata'] if isinstance(row['metadata'], dict) else json.loads(row['metadata']),
-                        "snippet": row['snippet'],
-                        "similarity": float(row['similarity'])
-                    }
-                    for row in results
-                ]
+                
+                # Process results with additional filtering
+                processed_results = []
+                seen_content = set()
+                
+                for row in results:
+                    try:
+                        # Clean snippet
+                        snippet = row['snippet'].strip()
+                        snippet_hash = hash(snippet[:100])  # Use start of snippet as signature
+                        
+                        if snippet_hash not in seen_content:
+                            seen_content.add(snippet_hash)
+                            metadata = row['metadata'] if isinstance(row['metadata'], dict) else json.loads(row['metadata'])
+                            
+                            processed_results.append({
+                                "id": str(row['id']),
+                                "metadata": metadata,
+                                "snippet": snippet,
+                                "similarity": float(row['similarity'])
+                            })
+                            
+                    except Exception as e:
+                        logger.error(f"Error processing row: {e}")
+                        continue
+                
+                logger.info(f"Found {len(processed_results)} relevant chunks from {file_name}")
+                return processed_results[:limit]  # Ensure we don't exceed limit
+                
         except Exception as e:
             logger.error(f"Error getting similar chunks for file: {e}")
             raise
@@ -530,6 +585,107 @@ class PGVectorStore:
                 return [dict(r) for r in results]
         except Exception as e:
             logger.error(f"Error getting related documents: {e}")
+            raise
+
+    async def get_similar_chunks(self, embedding: List[float], file_pattern: Optional[str] = None, limit: int = 5) -> List[Dict[str, Any]]:
+        """Get chunks similar to the query embedding, optionally filtered by file pattern"""
+        try:
+            if not self.pool:
+                await self.initialize()
+            
+            async with self.pool.acquire() as conn:
+                # Convert numpy array to list then to string format for PostgreSQL
+                if hasattr(embedding, 'tolist'):
+                    embedding = embedding.tolist()
+                embedding_str = f"[{','.join(str(x) for x in embedding)}]"
+                
+                # Base query with cosine similarity
+                base_query = """
+                    SELECT 
+                        metadata->>'file_name' as file_name,
+                        metadata->>'start_line' as start_line,
+                        metadata->>'end_line' as end_line,
+                        snippet,
+                        1 - (embedding <=> $1::vector) as similarity
+                    FROM vector_store
+                    WHERE 1 - (embedding <=> $1::vector) > 0.2
+                """
+                
+                params = [embedding_str]
+                
+                # Add file pattern filter if provided
+                if file_pattern:
+                    # First, check if any files match the pattern
+                    check_query = """
+                    SELECT DISTINCT metadata->>'file_name' as filename
+                    FROM vector_store
+                    WHERE metadata->>'file_name' IS NOT NULL
+                    """
+                    files = await conn.fetch(check_query)
+                    logger.info(f"Available files in database: {[f['filename'] for f in files]}")
+                    
+                    # Handle wildcards and PDF patterns
+                    if '*' in file_pattern:
+                        # Convert glob pattern to SQL LIKE pattern
+                        sql_pattern = file_pattern.replace('*', '%')
+                        if not sql_pattern.startswith('%'):
+                            sql_pattern = '%' + sql_pattern
+                        if not sql_pattern.endswith('%'):
+                            sql_pattern = sql_pattern + '%'
+                        base_query += " AND LOWER(metadata->>'file_name') LIKE LOWER($2)"
+                        params.append(sql_pattern)
+                        logger.info(f"Using wildcard pattern: {sql_pattern}")
+                    elif file_pattern.lower() == '.pdf':
+                        # Special handling for PDF extension
+                        base_query += " AND LOWER(metadata->>'file_name') LIKE '%.pdf'"
+                        logger.info("Using PDF extension pattern")
+                    else:
+                        # For exact matches
+                        base_query += " AND LOWER(metadata->>'file_name') = LOWER($2)"
+                        params.append(file_pattern)
+                        logger.info(f"Using exact pattern: {file_pattern}")
+                
+                # Add ordering and limit
+                base_query += """
+                    ORDER BY similarity DESC
+                    LIMIT ${}
+                """.format(len(params) + 1)
+                params.append(limit)
+                
+                # Log the query and parameters for debugging
+                logger.info(f"Executing query: {base_query}")
+                logger.info(f"With parameters: {params}")
+                
+                # Execute query
+                rows = await conn.fetch(base_query, *params)
+                
+                # Log the results
+                logger.info(f"Found {len(rows)} matching chunks")
+                if len(rows) == 0:
+                    # Additional debug query to check file names
+                    debug_query = """
+                    SELECT DISTINCT metadata->>'file_name' as filename
+                    FROM vector_store
+                    WHERE metadata->>'file_name' IS NOT NULL
+                    """
+                    debug_files = await conn.fetch(debug_query)
+                    logger.info(f"Available files in database: {[f['filename'] for f in debug_files]}")
+                
+                # Format results
+                results = []
+                for row in rows:
+                    results.append({
+                        'file_name': row['file_name'],
+                        'start_line': row['start_line'],
+                        'end_line': row['end_line'],
+                        'snippet': row['snippet'],
+                        'similarity': float(row['similarity'])
+                    })
+                
+                return results
+                
+        except Exception as e:
+            logger.error(f"Error getting similar chunks: {str(e)}")
             raise
 
 # Create a single instance with explicit postgres credentials

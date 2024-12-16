@@ -26,7 +26,7 @@ services:
               count: 1
               capabilities: [gpu]
         limits:
-          memory: 7G
+          memory: 8G
     ports:
       - "11434:11434"
     volumes:
@@ -35,10 +35,27 @@ services:
     command: serve
     environment:
       - OLLAMA_HOST=0.0.0.0
-      - OLLAMA_GPU_LAYERS=24
+      - OLLAMA_GPU_LAYERS=33
       - OLLAMA_MODELS=/root/.ollama/models
       - CUDA_VISIBLE_DEVICES=0
       - OLLAMA_KEEP_LOADED=true
+      - OLLAMA_MODEL_LOAD_TIMEOUT=120
+      - OLLAMA_RUNNER_COUNT=1
+      - OLLAMA_RUNNER_TIMEOUT=90
+      - OLLAMA_RUNNER_MEMORY_LIMIT=7G
+      - CUDA_MEMORY_POOL=true
+      - CUDA_MEMORY_POOL_SIZE=6G
+      - OLLAMA_PRELOAD=llama2
+      - OLLAMA_RUNNER_PREWARM=true
+      - OLLAMA_RUNNER_RECYCLE=false
+      - OLLAMA_RUNNER_GC_INTERVAL=0
+      - OLLAMA_RUNNER_PREWARM_CONCURRENCY=1
+      - OLLAMA_RUNNER_PREWARM_LOAD=true
+      - OLLAMA_RUNNER_PREWARM_TIMEOUT=300
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    restart: unless-stopped
     networks:
       - app-network
 

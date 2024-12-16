@@ -1,14 +1,17 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Request, Depends
-from typing import Dict, Any, Optional, List
+from fastapi import APIRouter, HTTPException, UploadFile, File, Request, Depends, BackgroundTasks, Path, Body
+from typing import Dict, Any, Optional, List, Union
 from uuid import uuid4
 import os
 import logging
 import json
+import gc
 from app.utils.helpers import (
     get_ollama_embedding,
     extract_relationships_from_text,
     get_client,
-    retry_async
+    retry_async,
+    get_ollama_response,
+    get_ollama_client
 )
 from app.models.api_models import (
     DirectoryInput,
@@ -39,12 +42,51 @@ from pydantic import BaseModel
 from datetime import datetime
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.schema import TextNode
+from app.utils.embeddings import NomicEmbeddings, SDPMChunker
+from app.config import UPLOAD_DIR, OLLAMA_HOST
+from app.utils.helpers import get_files_recursive
+from pathlib import Path as PathLib
+from llama_index.core.readers import SimpleDirectoryReader
+from llama_index.core.node_parser import SentenceSplitter
+from llama_index.readers.file.docs import PDFReader
+import fitz  # PyMuPDF
+from sklearn.cluster import KMeans
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+import io
+import base64
+from functools import lru_cache
+import asyncio
+from asyncio import TimeoutError
+from typing import AsyncGenerator
+import httpx
+
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
 class DirectoryInput(BaseModel):
     directory: str
+
+# Constants for optimization
+MAX_CONCURRENT_REQUESTS = 1  # Sequential processing
+CHUNK_LIMIT = 2  # Reduced chunk limit
+SNIPPET_LENGTH = 500  # Optimized snippet length
+FILE_QUERY_LIMIT = 1  # Process one file at a time
+MAX_TOKENS = 256  # Reduced token limit
+TEMPERATURE = 0.7
+OLLAMA_TIMEOUT = 60  # Reduced timeout
+BATCH_TIMEOUT = 120  # Reduced batch timeout
+MODEL_LOAD_WAIT = 5  # Reduced model load wait
+VRAM_CLEANUP_DELAY = 2  # Reduced cleanup delay
+
+# CUDA environment variables
+os.environ["GGML_CUDA_NO_PINNED"] = "1"  # Disable pinned memory
+os.environ["GGML_CUDA_FORCE_CUBLAS"] = "1"  # Force cuBLAS
+os.environ["GGML_CUDA_FORCE_FLAT"] = "1"  # Force flat memory
+
+# Semaphore for concurrent processing
+ollama_semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUESTS)
 
 # Helper function to get pg_storage from app state
 async def get_pg_storage(request: Request):
@@ -168,86 +210,270 @@ async def similarity_search(query_data: SimilarityQuery):
         logger.error(f"Similarity search failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.post("/ollama/reasoning")
-async def get_reasoning(query: ReasoningQuery) -> Dict[str, Any]:
+@lru_cache(maxsize=100)
+async def get_cached_embedding(text: str) -> List[float]:
+    """Cache embeddings to avoid redundant calls"""
+    embedding = await get_ollama_embedding(text)
+    return embedding.tolist() if isinstance(embedding, np.ndarray) else embedding
+
+async def create_ollama_response(query: str, context: str) -> str:
+    """Create a new response coroutine for each request"""
     try:
-        # Get embedding for the query
+        # Get client for this request
+        client = await get_ollama_client()
+        
+        # Create request with minimal parameters and longer timeout
+        response = await client.post(
+            f"{OLLAMA_HOST}/api/generate",
+            json={
+                "model": "llama2",
+                "prompt": f"Context:\n{context}\n\nQuestion: {query}",
+                "temperature": 0.7,
+                "num_predict": 256,
+                "stop": ["</response>", "\n\n"],
+                "context_window": 1024
+            },
+            timeout=httpx.Timeout(60.0)  # Increased timeout
+        )
+        response.raise_for_status()
+        
+        result = response.json().get("response", "")
+        if not result:
+            raise ValueError("Empty response from Ollama")
+            
+        return result
+        
+    except (httpx.ReadTimeout, httpx.ConnectTimeout):
+        logger.error("Ollama request timed out")
+        raise HTTPException(status_code=504, detail="Request timed out")
+    except Exception as e:
+        logger.error(f"Error in create_ollama_response: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+async def summarize_chunk(chunk: str) -> str:
+    """Summarize a chunk of text while preserving key information"""
+    try:
+        # Truncate chunk if too long before summarization
+        if len(chunk) > 1000:
+            chunk = chunk[:1000]
+            
+        async with ollama_semaphore:
+            client = await get_ollama_client()
+            response = await client.post(
+                f"{OLLAMA_HOST}/api/generate",
+                json={
+                    "model": "llama2",
+                    "prompt": f"Summarize this text in 1-2 short sentences, keeping only the most important information:\n\n{chunk}",
+                    "temperature": 0.3,
+                    "num_predict": 100,  # Very short summary
+                    "stop": ["\n", "</response>"],
+                },
+                timeout=httpx.Timeout(10.0)  # Very short timeout for summaries
+            )
+            summary = response.json().get("response", "").strip()
+            await client.aclose()
+            return summary if summary else chunk[:150]  # Even shorter fallback
+    except:
+        return chunk[:150]  # Short fallback on error
+
+async def process_file(
+    file_name: str,
+    embedding: List[float],
+    conn,
+    query: str
+) -> Dict[str, Any]:
+    """Process a single file with optimized context building"""
+    try:
+        # Get chunks for this specific file with reduced limit
+        similar_chunks = await pg_storage.get_similar_chunks_for_file(
+            embedding=embedding,
+            file_name=file_name,
+            limit=1  # Only get the single most relevant chunk
+        )
+        
+        if not similar_chunks:
+            return {
+                "file_name": file_name,
+                "status": "no_relevant_content"
+            }
+        
+        # Build context with single summarized chunk
+        chunk = similar_chunks[0]
+        summarized_snippet = await summarize_chunk(chunk['snippet'].strip())
+        
+        # Create minimal context
+        context = f"From {file_name}:\n{summarized_snippet}"
+        
+        try:
+            async with ollama_semaphore:
+                response = await create_ollama_response(query=query, context=context)
+                
+                if not response:
+                    return {
+                        "file_name": file_name,
+                        "status": "error",
+                        "error": "Empty response from Ollama"
+                    }
+                
+                return {
+                    "file_name": file_name,
+                    "reasoning": response,
+                    "context_used": [chunk],
+                    "status": "success"
+                }
+        except Exception as e:
+            logger.error(f"Error processing file {file_name}: {str(e)}")
+            return {
+                "file_name": file_name,
+                "status": "error",
+                "error": str(e)
+            }
+    except Exception as e:
+        logger.error(f"Error getting similar chunks: {str(e)}")
+        return {
+            "file_name": file_name,
+            "status": "error",
+            "error": str(e)
+        }
+
+@router.post("/ollama/reasoning")
+async def get_reasoning(
+    query: ReasoningQuery,
+    pg_storage=Depends(get_pg_storage)
+) -> Dict[str, Any]:
+    """Get reasoning based on document context"""
+    try:
+        # Get embedding with caching
         embedding = await get_ollama_embedding(query.query)
-        if isinstance(embedding, np.ndarray):
-            embedding = embedding.tolist()
         
         if query.analysis_type == AnalysisType.INDIVIDUAL:
-            # Process each file individually
-            results = []
-            async with pg_storage.pool.acquire() as conn:
-                # Get distinct file names from metadata
-                files_query = """
-                SELECT DISTINCT metadata->>'file_name' as file_name
-                FROM vector_store
-                WHERE metadata->>'file_name' IS NOT NULL
-                """
-                if query.file_pattern:
-                    files_query += f" AND metadata->>'file_name' LIKE '{query.file_pattern}'"
-                
-                files = await conn.fetch(files_query)
-                
-                for file_row in files:
-                    file_name = file_row['file_name']
-                    # Get chunks for this specific file
-                    similar_chunks = await pg_storage.get_similar_chunks_for_file(
-                        embedding=embedding,
-                        file_name=file_name,
-                        limit=6
-                    )
-                    
-                    if similar_chunks:
-                        context = f"\nDocument Excerpts from {file_name}:\n"
-                        for chunk in similar_chunks:
-                            context += f"\n{chunk['snippet']}\n"
+            try:
+                async def process_batch():
+                    async with pg_storage.pool.acquire() as conn:
+                        # Construct file pattern for SQL
+                        if query.file_pattern:
+                            # Convert glob pattern to SQL LIKE pattern
+                            sql_pattern = query.file_pattern.replace('*', '%')
+                            if not sql_pattern.startswith('%'):
+                                sql_pattern = '%' + sql_pattern
+                            if not sql_pattern.endswith('%'):
+                                sql_pattern = sql_pattern + '%'
+                            files_query = """
+                            SELECT DISTINCT metadata->>'file_name' as file_name
+                            FROM vector_store
+                            WHERE metadata->>'file_name' LIKE $1
+                            """
+                            params = [sql_pattern]
+                        else:
+                            files_query = """
+                            SELECT DISTINCT metadata->>'file_name' as file_name
+                            FROM vector_store
+                            WHERE metadata->>'file_name' IS NOT NULL
+                            """
+                            params = []
+                            
+                        files = await conn.fetch(files_query, *params)
                         
-                        reasoning = await get_ollama_response(query.query, context)
+                        if not files:
+                            return {
+                                "analysis_type": "individual",
+                                "query": query.query,
+                                "results": [],
+                                "message": "No matching files found"
+                            }
                         
-                        results.append({
-                            "file_name": file_name,
-                            "reasoning": reasoning,
-                            "context_used": similar_chunks
-                        })
-            
-            return {
-                "analysis_type": "individual",
-                "query": query.query,
-                "results": results
-            }
-            
-        else:
-            # Aggregate analysis
-            similar_chunks = await pg_storage.get_similar_chunks(
-                embedding=embedding,
-                limit=6,
-                file_pattern=query.file_pattern
-            )
-            
-            if not similar_chunks:
+                        results = []
+                        for file_row in files:
+                            result = await process_file(
+                                file_row['file_name'],
+                                embedding,
+                                conn,
+                                query.query
+                            )
+                            results.append(result)
+                            await asyncio.sleep(VRAM_CLEANUP_DELAY)
+                        
+                        successful_results = [
+                            r for r in results
+                            if r.get("status") == "success"
+                        ]
+                        
+                        return {
+                            "analysis_type": "individual",
+                            "query": query.query,
+                            "results": results,
+                            "total_files_processed": len(files),
+                            "successful_analyses": len(successful_results)
+                        }
+                
+                return await asyncio.wait_for(process_batch(), timeout=BATCH_TIMEOUT)
+                
+            except asyncio.TimeoutError:
                 raise HTTPException(
-                    status_code=404,
-                    detail="No relevant content found in the database"
+                    status_code=504,
+                    detail="Batch processing timed out"
                 )
-            
-            context = "\nDocument Excerpts:\n"
-            for chunk in similar_chunks:
-                metadata = chunk.get('metadata', {})
-                doc_name = metadata.get('file_name', 'Unknown Document')
-                context += f"\nFrom {doc_name}:\n{chunk['snippet']}\n"
-            
-            reasoning = await get_ollama_response(query.query, context)
-            
-            return {
-                "analysis_type": "aggregate",
-                "reasoning_result": reasoning,
-                "context_used": similar_chunks,
-                "query": query.query
-            }
-            
+                
+        else:  # Aggregate analysis
+            try:
+                # Get chunks with optimized limits
+                similar_chunks = await pg_storage.get_similar_chunks(
+                    embedding=embedding,
+                    limit=CHUNK_LIMIT,
+                    file_pattern=query.file_pattern
+                )
+                
+                if not similar_chunks:
+                    return {
+                        "analysis_type": "aggregate",
+                        "query": query.query,
+                        "message": "No relevant content found"
+                    }
+                
+                # Build context efficiently
+                context_parts = []
+                for chunk in similar_chunks:
+                    file_name = chunk.get('metadata', {}).get('file_name', 'Unknown')
+                    snippet = chunk['snippet']
+                    if len(snippet) > SNIPPET_LENGTH:
+                        words = snippet.split()
+                        truncated_words = words[:SNIPPET_LENGTH//10]
+                        snippet = ' '.join(truncated_words) + "..."
+                    context_parts.append(f"\nFrom {file_name}:\n{snippet}")
+                
+                context = "\nDocument Excerpts:\n" + "\n".join(context_parts)
+                
+                try:
+                    # Create new response coroutine for this request
+                    response = await create_ollama_response(query=query.query, context=context)
+                    
+                    if not response:
+                        raise HTTPException(
+                            status_code=500,
+                            detail="Empty response from Ollama"
+                        )
+                    
+                    return {
+                        "analysis_type": "aggregate",
+                        "reasoning_result": response,
+                        "context_used": similar_chunks,
+                        "query": query.query,
+                        "status": "success"
+                    }
+                        
+                except Exception as e:
+                    logger.error(f"Error in aggregate analysis: {str(e)}")
+                    raise HTTPException(
+                        status_code=500,
+                        detail=str(e)
+                    )
+                
+            except asyncio.TimeoutError:
+                raise HTTPException(
+                    status_code=504,
+                    detail="Ollama request timed out"
+                )
+                
     except Exception as e:
         logger.error(f"Ollama reasoning failed: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -274,7 +500,7 @@ async def retrieve_and_generate(query_data: RAGQuery):
         
         # Generate response using retrieved context
         context = "\n\n".join([doc["snippet"] for doc in relevant_docs])
-        response = await get_ollama_response(query_data.query, context)
+        response = await create_ollama_response(query_data.query, context)
         
         # Store query history
         query_id = str(uuid4())
@@ -515,7 +741,7 @@ async def upload_batch(request: DirectoryInput, pg_storage=Depends(get_pg_storag
 
                         # Calculate token size (approximate)
                         token_size = len(chunk.split())
-
+                        logger.info(f"Token size for chunk {i} in {file_path}: {token_size}")
                         # Store chunk info
                         chunk_info = {
                             "chunk_index": i,
@@ -731,25 +957,74 @@ async def check_chunks_distribution():
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/rag/history")
-async def get_history(query_id: Optional[str] = None):
+async def get_history(
+    query_id: Optional[str] = None,
+    pg_storage=Depends(get_pg_storage)
+):
     """Get RAG query history"""
     try:
-        history = await pg_storage.get_query_history(query_id)
-        return {
-            "history": history
-        }
+        async with pg_storage.pool.acquire() as conn:
+            if query_id:
+                query = """
+                SELECT id, query, response, context, created_at
+                FROM query_history
+                WHERE id = $1
+                """
+                result = await conn.fetch(query, query_id)
+            else:
+                query = """
+                SELECT id, query, response, context, created_at
+                FROM query_history
+                ORDER BY created_at DESC
+                LIMIT 10
+                """
+                result = await conn.fetch(query)
+            
+            history = []
+            for row in result:
+                history.append({
+                    "id": str(row['id']),
+                    "query": row['query'],
+                    "response": row['response'],
+                    "context": row['context'],
+                    "timestamp": row['created_at'].isoformat()
+                })
+            
+            return {"history": history}
+            
     except Exception as e:
         logger.error(f"Error retrieving history: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/rag/history/{query_id}")
-async def get_specific_history(query_id: str):
+async def get_specific_history(
+    query_id: str,
+    pg_storage=Depends(get_pg_storage)
+):
     """Get specific RAG query history by ID"""
     try:
-        history = await pg_storage.get_query_history(query_id)
-        if not history:
-            raise HTTPException(status_code=404, detail=f"Query history not found for ID: {query_id}")
-        return history[0]  # Return the specific query history
+        async with pg_storage.pool.acquire() as conn:
+            query = """
+            SELECT id, query, response, context, created_at
+            FROM query_history
+            WHERE id = $1
+            """
+            result = await conn.fetchrow(query, query_id)
+            
+            if not result:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"Query history not found for ID: {query_id}"
+                )
+            
+            return {
+                "id": str(result['id']),
+                "query": result['query'],
+                "response": result['response'],
+                "context": result['context'],
+                "timestamp": result['created_at'].isoformat()
+            }
+            
     except Exception as e:
         logger.error(f"Error retrieving history for {query_id}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -828,4 +1103,621 @@ async def extract_relationships(content: Dict[str, str]):
     except Exception as e:
         logger.error(f"Relationship extraction failed: {e}")
         return {"relationships": []}
+
+@router.post("/upload_batch")
+async def upload_batch(
+    request: DirectoryInput,
+    pg_storage=Depends(get_pg_storage)
+):
+    """Process and store documents from a directory with semantic chunking."""
+    try:
+        directory_path = os.path.abspath(request.directory)
+        logger.info(f"Processing directory: {directory_path}")
+
+        # Check if directory exists
+        if not os.path.exists(directory_path):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Directory not found: {directory_path}"
+            )
+            
+        # Check if directory is empty
+        if not any(os.scandir(directory_path)):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Directory is empty: {directory_path}"
+            )
+            
+        # Check if it's a file or directory
+        is_file = os.path.isfile(directory_path)
+        if is_file:
+            files = [directory_path]
+        else:
+            files = get_files_recursive(directory_path)
+            
+        unique_files = list(set(files))
+        logger.info(f"Found {len(unique_files)} unique files in {directory_path}: {unique_files}")
+        logger.info(f"Processing {len(unique_files)} documents")
+
+        # Initialize embeddings and chunkers
+        embeddings = NomicEmbeddings()
+        semantic_chunker = SDPMChunker(
+            embeddings=embeddings,
+            similarity_threshold=0.5,
+            max_chunk_size=1000,
+            min_chunk_size=100,
+            skip_window=2
+        )
+        
+        # Initial sentence splitter for PDF preprocessing
+        sentence_splitter = SentenceSplitter(
+            chunk_size=1000,
+            chunk_overlap=200,
+            paragraph_separator="\n\n",
+            secondary_chunking_regex="[^,.;]+[,.;]",
+        )
+
+        results = []
+        
+        for file_path in unique_files:
+            try:
+                file_info = {
+                    "directory": os.path.dirname(file_path),
+                    "file_name": os.path.basename(file_path),
+                    "content_type": "application/pdf" if file_path.lower().endswith('.pdf') else "text/plain",
+                    "content_size": os.path.getsize(file_path),
+                    "last_modified": datetime.fromtimestamp(os.path.getmtime(file_path)).isoformat(),
+                    "chunks": []
+                }
+
+                # Process based on file type
+                if file_path.lower().endswith('.pdf'):
+                    # Use PyMuPDF for better PDF extraction
+                    doc = fitz.open(file_path)
+                    text = ""
+                    for page in doc:
+                        text += page.get_text()
+                    doc.close()
+                else:
+                    # For non-PDF files, use regular file reading
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        text = f.read()
+
+                # Clean the text
+                text = text.replace('\x00', '')
+                text = ' '.join(text.split())  # Normalize whitespace
+
+                # First pass: Split into initial chunks using sentence splitter
+                initial_chunks = sentence_splitter.split_text(text)
+                
+                # Second pass: Apply semantic chunking
+                semantic_chunks = []
+                for chunk in initial_chunks:
+                    if not chunk.strip():
+                        continue
+                    # Process chunk with semantic chunker
+                    chunk_result = await semantic_chunker.chunk_text(chunk)
+                    semantic_chunks.extend(chunk_result)
+                
+                # Process final chunks
+                for i, chunk in enumerate(semantic_chunks):
+                    try:
+                        # Store in vector database
+                        doc_id = await pg_storage.add_vector(
+                            embedding=chunk.embedding.tolist(),
+                            metadata={
+                                "directory": file_info["directory"],
+                                "file_name": file_info["file_name"],
+                                "chunk_index": i,
+                                "content_type": file_info["content_type"]
+                            },
+                            snippet=chunk.text
+                        )
+                        
+                        # Add chunk info to results
+                        chunk_info = {
+                            "chunk_index": i,
+                            "token_size": chunk.token_count,
+                            "text_preview": chunk.text[:200] + "..." if len(chunk.text) > 200 else chunk.text
+                        }
+                        
+                        # Add similarity with next chunk if available
+                        if i < len(semantic_chunks) - 1:
+                            similarity = semantic_chunker._cosine_similarity(
+                                chunk.embedding,
+                                semantic_chunks[i + 1].embedding
+                            )
+                            chunk_info["similarity_with_next"] = float(similarity)
+                        
+                        file_info["chunks"].append(chunk_info)
+                    except Exception as chunk_error:
+                        logger.error(f"Error processing chunk {i} from {file_path}: {str(chunk_error)}")
+                        continue
+                
+                logger.info(f"Successfully processed {len(file_info['chunks'])} semantic chunks from {file_path}")
+                results.append(file_info)
+                
+            except Exception as e:
+                logger.error(f"Error processing document {file_path}: {str(e)}")
+                results.append({
+                    "file_path": file_path,
+                    "error": str(e)
+                })
+                continue
+
+        return {
+            "message": "Batch upload completed",
+            "path": directory_path,
+            "type": "file" if is_file else "directory",
+            "total_files": len(unique_files),
+            "results": results
+        }
+        
+    except Exception as e:
+        logger.error(f"Error in batch upload: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/test_embeddings")
+async def test_embeddings(
+    texts: Union[str, List[str]] = Body(..., 
+        examples={
+            "single": "This is a test text",
+            "multiple": [
+                "First text to embed",
+                "Second text with different content",
+                "Third text about another topic"
+            ]
+        }
+    )
+):
+    """Test endpoint to generate and analyze embeddings for given texts"""
+    try:
+        # Initialize embeddings
+        embeddings = NomicEmbeddings()
+        
+        # Convert single text to list
+        if isinstance(texts, str):
+            texts = [texts]
+            
+        # Process texts
+        results = []
+        embeddings_list = []
+        
+        # Generate embeddings
+        chunk_embeddings = await embeddings.embed_batch(texts)
+        
+        # Analyze each text and its embedding
+        for i, (text, embedding) in enumerate(zip(texts, chunk_embeddings)):
+            embeddings_list.append(embedding)
+            
+            result = {
+                "text_id": i + 1,
+                "text": text[:200] + "..." if len(text) > 200 else text,
+                "embedding_shape": list(embedding.shape),
+                "embedding_stats": {
+                    "mean": float(np.mean(embedding)),
+                    "std": float(np.std(embedding)),
+                    "min": float(np.min(embedding)),
+                    "max": float(np.max(embedding))
+                }
+            }  # Close the result dictionary
+            
+            # Calculate similarities with other texts
+            if i > 0:
+                similarities = []
+                for j, prev_embedding in enumerate(embeddings_list[:-1]):
+                    similarity = float(np.dot(embedding, prev_embedding) / 
+                                    (np.linalg.norm(embedding) * np.linalg.norm(prev_embedding)))
+                    similarities.append({
+                        "with_text": j + 1,
+                        "similarity": similarity
+                    })
+                result["similarities"] = similarities
+            
+            results.append(result)
+        
+        return {
+            "total_texts": len(texts),
+            "results": results
+        }
+        
+    except Exception as e:
+        logger.error(f"Error in test_embeddings: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+def save_plot_to_file(plot_data: str, filename: str) -> str:
+    """Save a base64 encoded plot to a file"""
+    try:
+        plot_dir = os.path.join(UPLOAD_DIR, "plots")
+        os.makedirs(plot_dir, exist_ok=True)
+        
+        plot_path = os.path.join(plot_dir, filename)
+        with open(plot_path, "wb") as f:
+            f.write(base64.b64decode(plot_data))
+        return plot_path
+    except Exception as e:
+        logger.error(f"Error saving plot: {e}")
+        raise
+
+@router.post("/compare")
+async def compare_content(
+    source1: str = Body(..., description="Path to first source relative to UPLOAD_DIR"),
+    source2: str = Body(..., description="Path to second source relative to UPLOAD_DIR")
+):
+    """Compare similarities between any combination of files and directories"""
+    try:
+        # Ensure database pool is initialized
+        if not pg_storage.pool:
+            await pg_storage.initialize()
+            
+        async def get_chunks_for_source(path: str):
+            """Get chunks for a file or directory"""
+            # Clean up path
+            path = path.strip('/')
+            if path.startswith('uploaded_files/'):
+                path = path[len('uploaded_files/'):]
+            
+            # Construct the full directory path as stored in metadata
+            db_dir = f"/app/app/uploaded_files"
+            if '/' in path:
+                db_dir = f"{db_dir}/{os.path.dirname(path)}"
+            
+            # Get filename if it's a file
+            filename = os.path.basename(path) if '.' in path else None
+            
+            logger.info(f"Searching for chunks with directory: {db_dir}, filename: {filename}")
+
+            # Query database for chunks
+            async with pg_storage.pool.acquire() as conn:
+                if filename:  # If it's a file
+                    query = """
+                    SELECT id, metadata::text, snippet, embedding
+                    FROM vector_store
+                    WHERE metadata->>'directory' = $1
+                    AND metadata->>'file_name' = $2
+                    """
+                    chunks = await conn.fetch(query, db_dir, filename)
+                else:  # If it's a directory
+                    query = """
+                    SELECT id, metadata::text, snippet, embedding
+                    FROM vector_store
+                    WHERE metadata->>'directory' LIKE $1 || '%'
+                    """
+                    chunks = await conn.fetch(query, db_dir)
+                
+                # Parse metadata JSON strings
+                processed_chunks = []
+                for chunk in chunks:
+                    try:
+                        metadata = json.loads(chunk['metadata']) if isinstance(chunk['metadata'], str) else chunk['metadata']
+                        processed_chunks.append({
+                            'id': chunk['id'],
+                            'metadata': metadata,
+                            'snippet': chunk['snippet'],
+                            'embedding': chunk['embedding']
+                        })
+                    except Exception as e:
+                        logger.error(f"Error processing chunk metadata: {e}")
+                        continue
+                
+                logger.info(f"Found {len(processed_chunks)} chunks for path: {path}")
+                return processed_chunks, filename is None
+
+        # Get chunks for both sources
+        chunks1, is_dir1 = await get_chunks_for_source(source1)
+        chunks2, is_dir2 = await get_chunks_for_source(source2)
+
+        if not chunks1 or not chunks2:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No chunks found for one or both sources. Source1: {len(chunks1)} chunks, Source2: {len(chunks2)} chunks"
+            )
+
+        # Create similarity matrix
+        matrix_size1 = len(chunks1)
+        matrix_size2 = len(chunks2)
+        similarity_matrix = np.zeros((matrix_size1, matrix_size2))
+        
+        # Calculate full similarity matrix using database vector operations
+        async with pg_storage.pool.acquire() as conn:
+            for i, chunk1 in enumerate(chunks1):
+                query = """
+                SELECT 
+                    c1.embedding <-> c2.embedding as similarity
+                FROM vector_store c2
+                CROSS JOIN (SELECT $1::vector as embedding) c1
+                WHERE c2.id = ANY($2)
+                ORDER BY c2.id
+                """
+                chunk2_ids = [str(c['id']) for c in chunks2]
+                similarities = await conn.fetch(query, chunk1['embedding'], chunk2_ids)
+                
+                for j, sim in enumerate(similarities):
+                    similarity_matrix[i][j] = float(sim['similarity'])
+
+        # Find similar chunks (similarity < 0.5)
+        similar_chunks = []
+        for i in range(matrix_size1):
+            for j in range(matrix_size2):
+                similarity = similarity_matrix[i][j]
+                if similarity < 0.5:  # Lower score means more similar for distance metric
+                    chunk1 = chunks1[i]
+                    chunk2 = chunks2[j]
+                    similarity_info = {
+                        "source1": source1,
+                        "source2": source2,
+                        "chunk1_text": chunk1['snippet'][:200] + "..." if len(chunk1['snippet']) > 200 else chunk1['snippet'],
+                        "chunk2_text": chunk2['snippet'][:200] + "..." if len(chunk2['snippet']) > 200 else chunk2['snippet'],
+                        "similarity": round(float(similarity), 3),
+                        "file1": chunk1['metadata'].get('file_name', ''),
+                        "file2": chunk2['metadata'].get('file_name', '')
+                    }
+                    similar_chunks.append(similarity_info)
+
+        # Sort by similarity
+        similar_chunks.sort(key=lambda x: x["similarity"])
+
+        # Create source labels for matrix
+        source1_labels = [
+            f"{c['metadata'].get('file_name', '')}:{i+1}" 
+            for i, c in enumerate(chunks1)
+        ]
+        source2_labels = [
+            f"{c['metadata'].get('file_name', '')}:{i+1}" 
+            for i, c in enumerate(chunks2)
+        ]
+
+        # Calculate statistics
+        stats = {
+            "source1_type": "directory" if is_dir1 else "file",
+            "source2_type": "directory" if is_dir2 else "file",
+            "total_chunks_1": matrix_size1,
+            "total_chunks_2": matrix_size2,
+            "similar_chunk_pairs": len(similar_chunks),
+            "avg_similarity": round(float(np.mean(similarity_matrix)), 3),
+            "max_similarity": round(float(np.min(similarity_matrix)), 3),  # Min distance = max similarity
+            "min_similarity": round(float(np.max(similarity_matrix)), 3)   # Max distance = min similarity
+        }
+
+        # Add clustering analysis
+        # Combine all embeddings for clustering
+        all_embeddings = []
+        all_metadata = []
+        for chunk in chunks1:
+            # Parse embedding if it's a string
+            if isinstance(chunk['embedding'], str):
+                # Remove brackets and split by comma
+                embedding_str = chunk['embedding'].strip('[]')
+                embedding_values = [float(x.strip()) for x in embedding_str.split(',')]
+                embedding = np.array(embedding_values)
+            else:
+                embedding = np.array(chunk['embedding'])
+            all_embeddings.append(embedding)
+            all_metadata.append({
+                'source': 'source1',
+                'file': chunk['metadata'].get('file_name', ''),
+                'snippet': chunk['snippet'][:100]
+            })
+        for chunk in chunks2:
+            # Parse embedding if it's a string
+            if isinstance(chunk['embedding'], str):
+                # Remove brackets and split by comma
+                embedding_str = chunk['embedding'].strip('[]')
+                embedding_values = [float(x.strip()) for x in embedding_str.split(',')]
+                embedding = np.array(embedding_values)
+            else:
+                embedding = np.array(chunk['embedding'])
+            all_embeddings.append(embedding)
+            all_metadata.append({
+                'source': 'source2',
+                'file': chunk['metadata'].get('file_name', ''),
+                'snippet': chunk['snippet'][:100]
+            })
+
+        # Convert embeddings to numpy array
+        embeddings_array = np.array(all_embeddings)
+
+        # Perform k-means clustering
+        n_clusters = min(10, len(all_embeddings))
+        kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+        cluster_labels = kmeans.fit_predict(embeddings_array)
+
+        # Find closest vectors to centroids
+        closest_to_centroids = []
+        for i in range(n_clusters):
+            # Get distances to centroid for all points in cluster
+            cluster_mask = cluster_labels == i
+            cluster_points = embeddings_array[cluster_mask]
+            if len(cluster_points) == 0:
+                continue
+                
+            # Calculate distances to centroid
+            centroid = kmeans.cluster_centers_[i]
+            distances = np.linalg.norm(cluster_points - centroid, axis=1)
+            
+            # Get index of closest point
+            closest_idx = np.argmin(distances)
+            # Map back to original index
+            original_idx = np.where(cluster_mask)[0][closest_idx]
+            
+            closest_to_centroids.append({
+                'cluster_id': i,
+                'distance_to_centroid': float(distances[closest_idx]),
+                'metadata': all_metadata[original_idx],
+                'full_text': chunks1[original_idx]['snippet'] if original_idx < len(chunks1) 
+                            else chunks2[original_idx - len(chunks1)]['snippet']
+            })
+            
+        # Sort by cluster ID
+        closest_to_centroids.sort(key=lambda x: x['cluster_id'])
+
+        # Perform t-SNE dimensionality reduction
+        tsne = TSNE(n_components=2, random_state=42)
+        embeddings_2d = tsne.fit_transform(embeddings_array)
+
+        # Create visualization
+        plt.figure(figsize=(10, 8))
+        scatter = plt.scatter(embeddings_2d[:, 0], embeddings_2d[:, 1], 
+                            c=cluster_labels, cmap='tab10',
+                            alpha=0.6)
+        plt.title('Data Clustering')
+        
+        # Add legend
+        legend1 = plt.legend(*scatter.legend_elements(),
+                           title="Clusters")
+        plt.gca().add_artist(legend1)
+
+        # Save plot to bytes
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png', bbox_inches='tight')
+        plt.close()
+        buf.seek(0)
+        plot_data = base64.b64encode(buf.getvalue()).decode('utf-8')
+
+        # Calculate cluster information
+        cluster_info = []
+        for i in range(n_clusters):
+            cluster_mask = cluster_labels == i
+            cluster_info.append({
+                'cluster_id': i,
+                'size': int(np.sum(cluster_mask)),
+                'source1_docs': sum(1 for j, mask in enumerate(cluster_mask) 
+                                  if mask and all_metadata[j]['source'] == 'source1'),
+                'source2_docs': sum(1 for j, mask in enumerate(cluster_mask) 
+                                  if mask and all_metadata[j]['source'] == 'source2'),
+                'sample_docs': [
+                    {
+                        'source': all_metadata[j]['source'],
+                        'file': all_metadata[j]['file'],
+                        'snippet': all_metadata[j]['snippet']
+                    }
+                    for j in np.where(cluster_mask)[0][:3]  # Get up to 3 samples per cluster
+                ]
+            })
+
+        # Save plot to file
+        plot_filename = f"cluster_plot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+        plot_path = save_plot_to_file(plot_data, plot_filename)
+        logger.info(f"Plot saved to: {plot_path}")
+
+        # Combine all results
+        return {
+            "source1": source1,
+            "source2": source2,
+            "source1_type": "directory" if is_dir1 else "file",
+            "source2_type": "directory" if is_dir2 else "file",
+            "statistics": stats,
+            "similarity_matrix": {
+                "data": similarity_matrix.tolist(),
+                "source1_labels": source1_labels,
+                "source2_labels": source2_labels
+            },
+            "similar_chunks": similar_chunks,
+            "clustering_analysis": {
+                "n_clusters": n_clusters,
+                "plot": plot_data,
+                "plot_path": plot_path,
+                "clusters": cluster_info,
+                "closest_to_centroids": closest_to_centroids
+            }
+        }
+
+    except Exception as e:
+        logger.error(f"Error comparing content: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/debug/reasoning")
+async def debug_reasoning(
+    query: str = Body(...),
+    file_pattern: str = Body(...),
+    chunk_limit: int = Body(1),
+    chunk_size: int = Body(1000),
+    context_window: int = Body(1024),
+    num_predict: int = Body(256),
+    timeout: float = Body(180.0)  # Increased default timeout
+):
+    """Debug endpoint for testing different chunk and model configurations"""
+    try:
+        # Get embeddings for query using embed_batch instead of embed_query
+        embeddings = NomicEmbeddings()
+        query_embeddings = await embeddings.embed_batch([query])
+        query_embedding = query_embeddings[0]
+        
+        # Process file pattern
+        if file_pattern.endswith('.pdf'):
+            logger.info("Using PDF extension pattern")
+            results = await pg_storage.get_similar_chunks(
+                embedding=query_embedding,
+                file_pattern=file_pattern,
+                limit=chunk_limit
+            )
+        else:
+            logger.info("Using general file pattern")
+            results = await pg_storage.get_similar_chunks(
+                embedding=query_embedding,
+                file_pattern=file_pattern,
+                limit=chunk_limit
+            )
+            
+        if not results:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No matching chunks found for pattern: {file_pattern}"
+            )
+            
+        # Build debug context with specified chunk size
+        context_parts = []
+        for i, chunk in enumerate(results, 1):
+            snippet = chunk['snippet'].strip()
+            if len(snippet) > chunk_size:
+                snippet = snippet[:chunk_size]
+                
+            context_parts.append(
+                f"\nChunk {i} from {chunk['file_name']} (similarity: {chunk['similarity']:.3f}):\n{snippet}"
+            )
+            
+        context = "Here are the relevant chunks:\n" + "\n".join(context_parts)
+        
+        # Use improved response generation
+        try:
+            result = await create_ollama_response(query=query, context=context)
+                
+            return {
+                "query": query,
+                "config": {
+                    "chunk_limit": chunk_limit,
+                    "chunk_size": chunk_size,
+                    "context_window": context_window,
+                    "num_predict": num_predict,
+                    "timeout": timeout
+                },
+                "chunks_used": len(results),
+                "total_context_length": len(context),
+                "response": result,
+                "chunks": [
+                    {
+                        "file_name": chunk["file_name"],
+                        "similarity": chunk["similarity"],
+                        "snippet": chunk["snippet"][:100] + "..." if len(chunk["snippet"]) > 100 else chunk["snippet"]
+                    }
+                    for chunk in results
+                ]
+            }
+            
+        except Exception as e:
+            logger.error(f"Response generation failed: {str(e)}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"Response generation failed: {str(e)}"
+            )
+            
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        logger.error(f"Error in debug reasoning: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        # Ensure cleanup
+        gc.collect()
+        await asyncio.sleep(1)
 

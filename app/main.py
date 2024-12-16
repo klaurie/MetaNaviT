@@ -5,6 +5,8 @@ import logging
 from app.routes.api import router
 from app.db.vector_store import PGVectorStore
 from app.config import DATABASE_URL, OLLAMA_HOST
+from httpx import AsyncClient
+from app.utils.helpers import cleanup_clients, get_ollama_client
 
 logger = logging.getLogger(__name__)
 
@@ -31,25 +33,23 @@ async def startup_event():
         app.state.pg_storage = pg_storage
         logger.info("PGVectorStore stored in app state")
 
-        # Check if models are available
+        # Check model availability using shared client
         logger.info("Checking model availability...")
-        from app.utils.helpers import get_client
-        client = await get_client()
+        client = await get_ollama_client()
         response = await client.get(f"{OLLAMA_HOST}/api/tags")
         models = response.json().get("models", [])
+        model_names = [m.get("name") for m in models]
         
-        required_models = ["llama2:7b-chat", "nomic-embed-text"]
-        for model in required_models:
-            if not any(m.get("name") == model for m in models):
-                logger.info(f"Pulling model {model}...")
-                await client.post(
-                    f"{OLLAMA_HOST}/api/pull",
-                    json={"name": model},
-                    timeout=600.0
-                )
-                logger.info(f"Model {model} pulled successfully")
+        # Pull nomic-embed-text for embeddings if needed
+        if "nomic-embed-text" in model_names:
+            logger.info("Model nomic-embed-text is already available")
+        else:
+            logger.info("Pulling model nomic-embed-text...")
+            response = await client.post(f"{OLLAMA_HOST}/api/pull", json={"name": "nomic-embed-text"})
+            if response.status_code == 200:
+                logger.info("Model nomic-embed-text pulled successfully")
             else:
-                logger.info(f"Model {model} is already available")
+                logger.error(f"Failed to pull model: {response.text}")
         
     except Exception as e:
         logger.error(f"Startup error: {str(e)}")
@@ -59,11 +59,18 @@ async def startup_event():
 async def shutdown_event():
     """Cleanup connections on shutdown"""
     try:
-        if hasattr(app.state, 'pg_storage'):
-            await app.state.pg_storage.close()
-            logger.info("Database connection closed")
+        # Close database pool
+        if hasattr(app.state, "pg_storage") and app.state.pg_storage.pool:
+            await app.state.pg_storage.pool.close()
+            logger.info("Database pool closed")
+            
+        # Cleanup HTTP clients
+        await cleanup_clients()
+        logger.info("HTTP clients cleaned up")
+        
     except Exception as e:
-        logger.error(f"Shutdown error: {e}")
+        logger.error(f"Shutdown error: {str(e)}")
+        raise
 
-# Include routers
+# Include API routes
 app.include_router(router)
