@@ -4,3 +4,6 @@ models/*
 LLM/*
 LLM/models/blobs/*
 LLM/models/models/blobs/sha256-819c2adf5ce6df2b6bd2ae4ca90d2a69f060afeb438d0c171db57daa02e39c3d
+docker-compose
+ggml-model-f16.gguf
+resource_tree_generator/
