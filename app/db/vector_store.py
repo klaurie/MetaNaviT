@@ -1,9 +1,11 @@
 import logging
 import asyncpg
 import asyncio
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 import json
 from datetime import datetime
+import numpy as np
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -11,6 +13,7 @@ class PGVectorStore:
     def __init__(self, database_url: str):
         self.database_url = database_url
         self.pool = None
+        self.logger = logging.getLogger(__name__)
         logger.info(f"Initializing PGVectorStore with URL: {database_url}")
 
     async def initialize(self):
@@ -167,89 +170,71 @@ class PGVectorStore:
             raise
 
     async def get_similar_chunks_for_file(
-        self, 
-        embedding: List[float], 
+        self,
+        embedding: Union[List[float], np.ndarray],
         file_name: str,
         limit: int = 5
     ) -> List[Dict[str, Any]]:
-        """Get similar chunks for a specific file with optimized search"""
-        if not self.pool:
-            await self.initialize()
-            
+        """Get similar chunks for a specific file"""
         try:
+            if not self.pool:
+                await self.initialize()
+            
+            # Convert numpy array to list if needed
+            if isinstance(embedding, np.ndarray):
+                embedding = embedding.tolist()
+            
+            # Convert to PostgreSQL vector format
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
             
             async with self.pool.acquire() as conn:
-                # Fixed query to handle similarity calculation correctly
-                query = """
-                WITH RankedChunks AS (
+                self.logger.debug(f"Searching for chunks in file: {file_name}")
+                
+                file_check = await conn.fetch(
+                    """
+                    SELECT COUNT(*) 
+                    FROM vector_store 
+                    WHERE metadata->>'file_name' = $1
+                    """,
+                    file_name
+                )
+                
+                if file_check[0]['count'] == 0:
+                    self.logger.warning(f"No chunks found for file: {file_name}")
+                    return []
+
+                # Simplified query to get top similar chunks
+                chunks = await conn.fetch(
+                    """
                     SELECT 
                         id,
                         metadata,
                         snippet,
-                        embedding <-> $1::vector as distance,
-                        length(snippet) as snippet_length
+                        1 - (embedding <=> $1::vector) as similarity
                     FROM vector_store
                     WHERE metadata->>'file_name' = $2
-                ),
-                FilteredChunks AS (
-                    SELECT 
-                        id,
-                        metadata,
-                        snippet,
-                        distance,
-                        snippet_length,
-                        ROW_NUMBER() OVER (
-                            PARTITION BY (snippet_length / 500)
-                            ORDER BY distance ASC
-                        ) as chunk_rank
-                    FROM RankedChunks
-                    WHERE distance < 0.8
-                    AND snippet_length BETWEEN 100 AND 2000
+                    ORDER BY similarity DESC
+                    LIMIT $3
+                    """,
+                    embedding_str,      # $1
+                    file_name,         # $2
+                    limit             # $3
                 )
-                SELECT 
-                    id,
-                    metadata,
-                    snippet,
-                    distance as similarity
-                FROM FilteredChunks
-                WHERE chunk_rank = 1
-                ORDER BY distance ASC
-                LIMIT $3;
-                """
                 
-                results = await conn.fetch(query, embedding_str, file_name, limit)
+                self.logger.info(f"Found {len(chunks)} chunks for file {file_name}")
                 
-                # Process results with additional filtering
-                processed_results = []
-                seen_content = set()
-                
-                for row in results:
-                    try:
-                        # Clean snippet
-                        snippet = row['snippet'].strip()
-                        snippet_hash = hash(snippet[:100])  # Use start of snippet as signature
-                        
-                        if snippet_hash not in seen_content:
-                            seen_content.add(snippet_hash)
-                            metadata = row['metadata'] if isinstance(row['metadata'], dict) else json.loads(row['metadata'])
-                            
-                            processed_results.append({
-                                "id": str(row['id']),
-                                "metadata": metadata,
-                                "snippet": snippet,
-                                "similarity": float(row['similarity'])
-                            })
-                            
-                    except Exception as e:
-                        logger.error(f"Error processing row: {e}")
-                        continue
-                
-                logger.info(f"Found {len(processed_results)} relevant chunks from {file_name}")
-                return processed_results[:limit]  # Ensure we don't exceed limit
+                return [
+                    {
+                        'id': str(chunk['id']),
+                        'metadata': chunk['metadata'],
+                        'snippet': chunk['snippet'],
+                        'similarity': float(chunk['similarity'])
+                    }
+                    for chunk in chunks
+                ]
                 
         except Exception as e:
-            logger.error(f"Error getting similar chunks for file: {e}")
+            self.logger.error(f"Error getting similar chunks for file {file_name}: {str(e)}")
             raise
 
     async def get_similar_chunks_for_directory(
@@ -688,5 +673,13 @@ class PGVectorStore:
             logger.error(f"Error getting similar chunks: {str(e)}")
             raise
 
-# Create a single instance with explicit postgres credentials
+# First create the global instance
 pg_storage = PGVectorStore(database_url="postgresql://postgres:postgres@db:5432/postgres")
+
+# Then define the function that uses it
+async def get_pg_storage():
+    """Get the PGVectorStore instance and ensure it's initialized"""
+    global pg_storage  # Add this line to explicitly use the global variable
+    if pg_storage.pool is None:
+        await pg_storage.initialize()
+    return pg_storage

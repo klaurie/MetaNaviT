@@ -7,11 +7,15 @@ from app.db.vector_store import PGVectorStore
 from app.config import DATABASE_URL, OLLAMA_HOST
 from httpx import AsyncClient
 from app.utils.helpers import cleanup_clients, get_ollama_client
+from app.routes import api, debug  # Import debug router
 
 logger = logging.getLogger(__name__)
 
-# Create FastAPI app
 app = FastAPI()
+
+# Include both routers
+app.include_router(api.router)
+app.include_router(debug.router)  # Add this line
 
 # Initialize the vector store with correct credentials
 pg_storage = PGVectorStore(database_url=DATABASE_URL)
