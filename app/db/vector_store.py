@@ -10,14 +10,39 @@ import logging
 logger = logging.getLogger(__name__)
 
 class PGVectorStore:
+    """
+    A class for storing and querying vectors in a PostgreSQL database.
+
+    This class provides methods for adding vectors to the database,
+    performing similarity searches, and storing query history.
+
+    Attributes:
+        database_url (str): The URL of the PostgreSQL database.
+        pool (asyncpg.Pool): The connection pool to the database.
+        logger (logging.Logger): The logger for this class.
+    """
+
     def __init__(self, database_url: str):
+        """
+            Initialize the PGVectorStore with the given database URL
+
+            Args:
+                database_url (str): The URL of the PostgreSQL database.
+                    example: postgresql://postgres:postgres@db:5432/postgres        
+        """
         self.database_url = database_url
         self.pool = None
         self.logger = logging.getLogger(__name__)
         logger.info(f"Initializing PGVectorStore with URL: {database_url}")
 
-    async def initialize(self):
-        """Initialize the connection pool"""
+    async def init_pool(self):
+        """
+            Initialize the connection pool. A pool is a collection of database connections that can be reused.
+            This helps to save time and resources when connecting to the database multiple times.
+
+            Raises:
+                Exception: If the connection pool cannot be created.
+        """
         if self.pool is not None:
             logger.warning("Pool already initialized")
             return
@@ -56,11 +81,19 @@ class PGVectorStore:
             raise
 
     async def add_chunk(self, snippet: str, embedding: List[float], metadata: Dict[str, Any]) -> None:
-        """Add a chunk to the vector store"""
+        """
+        Add a chunk to the vector store
+
+        Args:
+            snippet (str): The actual text/content of the chunk.
+            embedding (List[float]): The numerical representation of the snippet's semantic meaning.
+            metadata (Dict[str, Any]): Additional contextural information about the chunk. Helps with organization and filtering.
+        """
         try:
             async with self.pool.acquire() as conn:
                 # Convert embedding list to string
                 embedding_str = json.dumps(embedding)
+                
                 # Convert metadata to string if it's not already
                 metadata_str = json.dumps(metadata) if isinstance(metadata, dict) else metadata
                 
@@ -75,40 +108,57 @@ class PGVectorStore:
             logger.error(f"Error adding chunk to vector store: {e}")
             raise
 
-    async def similar_chunks(
-        self, 
-        embedding: List[float], 
-        limit: int = 5,
-        file_pattern: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
-        """Get similar chunks from the database with balanced representation from all matching files"""
+    async def similar_chunks(self, embedding: List[float], limit: int = 5, file_pattern: Optional[str] = None) -> List[Dict[str, Any]]:
+        """
+        Get similar chunks to an embedding from the database with balanced representation from all matching files
+
+        Args:
+            embedding (List[float]): The embedding to find similar chunks for.
+            limit (int): The maximum number of results to return.
+            file_pattern (Optional[str]): Specify a glob pattern to match file names.
+
+        Returns:
+            List[Dict[str, Any]]: A list of similar chunks.
+        """
         if not self.pool:
-            await self.initialize()
+            await self.init_pool()
             
         try:
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
             
-            # First, get the list of matching files
+            # SQL command elect all unique file names from the vector store
             files_query = """
             SELECT DISTINCT metadata->>'file_name' as filename
             FROM vector_store
             WHERE metadata->>'file_name' IS NOT NULL
             """
             
-            # Handle file pattern matching
+            # If a file pattern is provided, add a LIKE clause to the SQL command
             if file_pattern:
-                # Convert glob pattern to SQL LIKE pattern
+                # This converts a glob pattern to a SQL LIKE pattern
+
+                # Replace * with %
                 sql_pattern = file_pattern.replace('*', '%')
+
+                # If the pattern doesn't start with %, add it
                 if not sql_pattern.startswith('%'):
                     sql_pattern = '%' + sql_pattern
+
+                # If the pattern doesn't end with %, add it
                 if not sql_pattern.endswith('%'):
                     sql_pattern = sql_pattern + '%'
+
+                # Add the LIKE clause to the SQL command
                 files_query += " AND metadata->>'file_name' LIKE $1"
+
+                # Add the pattern to the parameters list
                 params = [sql_pattern]
             else:
+                # If no file pattern is provided, don't add a LIKE clause
                 params = []
             
             async with self.pool.acquire() as conn:
+                # Execute the SQL command - returns a list of asyncpg.Record objects of the matching files or all files if no pattern is provided
                 matching_files = await conn.fetch(files_query, *params)
                 logger.info(f"Found matching files: {[r['filename'] for r in matching_files]}")
                 
@@ -140,6 +190,7 @@ class PGVectorStore:
                     """
                     
                     # Get top chunks from this file
+                    # TODO: Make this dynamic rather than hardcoded to 3. Possibly add a limit/threshold parameter.
                     file_results = await conn.fetch(file_query, embedding_str, file_name, 3)
                     logger.info(f"Found {len(file_results)} chunks from {file_name}")
                     
@@ -169,16 +220,21 @@ class PGVectorStore:
             logger.error(f"Error getting similar chunks: {e}")
             raise
 
-    async def get_similar_chunks_for_file(
-        self,
-        embedding: Union[List[float], np.ndarray],
-        file_name: str,
-        limit: int = 5
-    ) -> List[Dict[str, Any]]:
-        """Get similar chunks for a specific file"""
+    async def get_similar_chunks_for_file(self, embedding: Union[List[float], np.ndarray],file_name: str, limit: int = 5) -> List[Dict[str, Any]]:
+        """
+        Get similar chunks to an embedding from a specific file
+
+        Args:
+            embedding (Union[List[float], np.ndarray]): The embedding to find similar chunks for.
+            file_name (str): The name of the file to search in.
+            limit (int): The maximum number of results to return.
+
+        Returns:
+            List[Dict[str, Any]]: A list of similar chunks.
+        """
         try:
             if not self.pool:
-                await self.initialize()
+                await self.init_pool()
             
             # Convert numpy array to list if needed
             if isinstance(embedding, np.ndarray):
@@ -237,16 +293,21 @@ class PGVectorStore:
             self.logger.error(f"Error getting similar chunks for file {file_name}: {str(e)}")
             raise
 
-    async def get_similar_chunks_for_directory(
-        self, 
-        embedding: List[float], 
-        directory_path: str,
-        file_pattern: str = "*",
-        limit: int = 5
-    ) -> List[Dict[str, Any]]:
-        """Get similar chunks from files in a directory"""
+    async def get_similar_chunks_for_directory(self, embedding: List[float], directory_path: str, file_pattern: str = "*", limit: int = 5) -> List[Dict[str, Any]]:
+        """
+        Get similar chunks from files in a directory
+
+        Args:
+            embedding (List[float]): The embedding to find similar chunks for.
+            directory_path (str): The path to the directory to search in.
+            file_pattern (str): A glob pattern to match file names.
+            limit (int): The maximum number of results to return.
+
+        Returns:
+            List[Dict[str, Any]]: A list of similar chunks.
+        """
         if not self.pool:
-            await self.initialize()
+            await self.init_pool()
             
         try:
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
@@ -287,7 +348,7 @@ class PGVectorStore:
     async def similarity_search(self, embedding: List[float], limit: int = 4) -> List[Dict[str, Any]]:
         """Perform similarity search using embeddings with distinct results"""
         if not self.pool:
-            await self.initialize()
+            await self.init_pool()
             
         try:
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
@@ -335,16 +396,18 @@ class PGVectorStore:
             logger.error(f"Error in similarity search: {e}")
             raise
     
-    async def store_query_history(
-        self,
-        query_id: str,
-        query: str,
-        response: str,
-        context: str
-    ) -> None:
-        """Store query history in the database"""
+    async def store_query_history(self, query_id: str, query: str, response: str, context: str) -> None:
+        """
+        Store query history in the database. This will beused for debugging and for the chat history.
+
+        Args:
+            query_id (str): The ID of the query.
+            query (str): The query string.
+            response (str): The response to the query.
+            context (str): The context of the query.
+        """
         if not self.pool:
-            await self.initialize()
+            await self.init_pool()
             
         try:
             async with self.pool.acquire() as conn:
@@ -380,9 +443,17 @@ class PGVectorStore:
             raise
 
     async def get_query_history(self, query_id: Optional[str] = None) -> List[Dict[str, Any]]:
-        """Retrieve query history from the database"""
+        """
+        Retrieve query history from the database
+
+        Args:
+            query_id (Optional[str]): The ID of the query to retrieve.
+
+        Returns:
+            List[Dict[str, Any]]: A list of query history.
+        """
         if not self.pool:
-            await self.initialize()
+            await self.init_pool()
             
         try:
             async with self.pool.acquire() as conn:
@@ -430,10 +501,20 @@ class PGVectorStore:
             raise
 
     async def add_vector(self, embedding: List[float], metadata: Dict[str, Any], snippet: str) -> str:
-        """Add a vector to the store"""
+        """
+        Add a vector to the store
+
+        Args:
+            embedding (List[float]): The embedding to add.
+            metadata (Dict[str, Any]): The metadata to add.
+            snippet (str): The snippet to add.
+
+        Returns:
+            str: The ID of the vector.
+        """
         try:
             if not self.pool:
-                await self.initialize()
+                await self.init_pool()
 
             # Convert embedding to PostgreSQL vector format
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
@@ -459,7 +540,7 @@ class PGVectorStore:
     async def init_table(self):
         """Initialize the database tables"""
         if not self.pool:
-            await self.initialize()
+            await self.init_pool()
             
         async with self.pool.acquire() as conn:
             # Enable required extensions
@@ -510,9 +591,24 @@ class PGVectorStore:
             """)
 
     async def store_relationships(self, relationships_data: Dict[str, Any]):
-        """Store document relationships"""
+        """
+        Store document relationships in the database. This is a simplistic representation of the relationships between documents
+        generated by the LLM. 
+        
+        Current Relationships:
+        - calls
+        - imports
+        - inherits
+        - uses
+        - references
+        - contains
+        - depends_on
+
+        Args:
+            relationships_data (Dict[str, Any]): The relationships to store.
+        """
         if not self.pool:
-            await self.initialize()
+            await self.init_pool()
             
         try:
             async with self.pool.acquire() as conn:
@@ -532,9 +628,18 @@ class PGVectorStore:
             raise
 
     async def get_related_documents(self, doc_id: str, max_depth: int = 2):
-        """Get related documents up to a certain depth"""
+        """
+        Get related documents up to a certain depth
+
+        Args:
+            doc_id (str): The ID of the document to get related documents for.
+            max_depth (int): The maximum depth of related documents to retrieve.
+
+        Returns:
+            List[Dict[str, Any]]: A list of related documents.
+        """
         if not self.pool:
-            await self.initialize()
+            await self.init_pool()
             
         try:
             async with self.pool.acquire() as conn:
@@ -573,10 +678,20 @@ class PGVectorStore:
             raise
 
     async def get_similar_chunks(self, embedding: List[float], file_pattern: Optional[str] = None, limit: int = 5) -> List[Dict[str, Any]]:
-        """Get chunks similar to the query embedding, optionally filtered by file pattern"""
+        """
+        Get chunks similar to the query embedding, optionally filtered by file pattern
+
+        Args:
+            embedding (List[float]): The embedding to find similar chunks for.
+            file_pattern (Optional[str]): A glob pattern to match file names.
+            limit (int): The maximum number of results to return.
+
+        Returns:
+            List[Dict[str, Any]]: A list of similar chunks.
+        """
         try:
             if not self.pool:
-                await self.initialize()
+                await self.init_pool()
             
             async with self.pool.acquire() as conn:
                 # Convert numpy array to list then to string format for PostgreSQL
@@ -681,5 +796,5 @@ async def get_pg_storage():
     """Get the PGVectorStore instance and ensure it's initialized"""
     global pg_storage  # Add this line to explicitly use the global variable
     if pg_storage.pool is None:
-        await pg_storage.initialize()
+        await pg_storage.init_pool()
     return pg_storage
