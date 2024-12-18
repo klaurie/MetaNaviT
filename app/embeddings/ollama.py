@@ -3,6 +3,7 @@ import numpy as np
 import logging
 import httpx
 from app.config import OLLAMA_HOST
+from typing import List
 
 logger = logging.getLogger("embeddings")
 logger.setLevel(logging.ERROR)  # Reduce logging noise
@@ -11,8 +12,10 @@ logger.setLevel(logging.ERROR)  # Reduce logging noise
 TIMEOUT = httpx.Timeout(
     connect=30.0,
     read=60.0,
-    write=30.0
+    write=30.0,
+    pool=10.0       # pool timeout
 )
+
 
 LIMITS = httpx.Limits(max_keepalive_connections=1, max_connections=2)
 

@@ -8,6 +8,7 @@ services:
     volumes:
       - ./app:/app/app
       - ./uploaded_files:/app/uploaded_files
+      - ./wait-for-postgres.sh:/app/wait-for-postgres.sh
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
       - OLLAMA_HOST=http://ollama:11434
@@ -45,7 +46,7 @@ services:
       - OLLAMA_RUNNER_MEMORY_LIMIT=7G
       - CUDA_MEMORY_POOL=true
       - CUDA_MEMORY_POOL_SIZE=6G
-      - OLLAMA_PRELOAD=llama2
+      - OLLAMA_PRELOAD=llama3.2:1b
       - OLLAMA_RUNNER_PREWARM=true
       - OLLAMA_RUNNER_RECYCLE=false
       - OLLAMA_RUNNER_GC_INTERVAL=0

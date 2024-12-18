@@ -23,6 +23,6 @@ CREATE TABLE IF NOT EXISTS query_history (
     query_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     query TEXT NOT NULL,
     response TEXT,
-    context TEXT,
+    context JSONB DEFAULT '{}'::jsonb,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

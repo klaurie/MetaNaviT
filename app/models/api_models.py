@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,field_validator
 from typing import Optional, Dict, Any, List
 from enum import Enum
 import json
-from pydantic import validator
+
 
 class AnalysisType(str, Enum):
     AGGREGATE = "aggregate"
@@ -21,13 +21,11 @@ class VectorInsert(BaseModel):
     document_chunk: str
     metadata: str
 
-    @validator('metadata')
+    @field_validator('metadata')
     def validate_metadata(cls, v):
-        try:
-            json.loads(v)
-            return v
-        except json.JSONDecodeError:
-            raise ValueError('metadata must be a valid JSON string')
+        if not isinstance(v, dict):
+            return {}
+        return v
 
 class DocumentChunk(BaseModel):
     """Input model for document chunking"""

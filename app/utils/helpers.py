@@ -231,7 +231,7 @@ async def extract_relationships_from_text(content: str, max_retries: int = 3) ->
                 response = await client.post(
                     f"{OLLAMA_API_BASE}/api/generate",
                     json={
-                        "model": "llama2",
+                        "model": "llama3.2:1b",
                         "prompt": RELATIONSHIP_PROMPT.format(content=chunk),
                         "stream": False,
                         "raw": True,
@@ -306,7 +306,7 @@ async def get_ollama_response(query: str, context: str) -> str:
             # Acquire semaphore to ensure only one model call at a time
             async with semaphore:
                 # Simplified model name
-                model_name = "llama2"
+                model_name = "llama3.2:1b"
                 
                 # Truncate context if too long
                 max_context_length = 2048
@@ -324,15 +324,24 @@ async def get_ollama_response(query: str, context: str) -> str:
                     json={
                         "model": model_name,
                         "prompt": prompt,
-                        "temperature": 0.7
+                        "temperature": 0.7,
+                        "options": {
+                            "num_gpu": 1,
+                            "num_thread": 4,
+                            "num_ctx": 2048,
+                            "num_batch": 512,
+                            "timeout": 1000  # 5 minutes for model operations
+                        }
                     },
-                    timeout=httpx.Timeout(timeout=120.0)  # 2 minutes timeout
+                    timeout=httpx.Timeout(
+                        connect=30.0,    # connection timeout
+                        read=300.0,      # read timeout
+                        write=30.0,      # write timeout
+                        pool=30.0        # pool timeout
+                    )
                 )
                 response.raise_for_status()
-                result = response.json().get("response", "")
-                if not result:
-                    raise ValueError("Empty response from Ollama")
-                return result
+                return response.json().get("response", "")
                 
         except Exception as e:
             logger.error(f"Error getting Ollama response: {str(e)}")
@@ -405,7 +414,7 @@ async def _ensure_models_loaded(client: httpx.AsyncClient) -> None:
             raise Exception("Failed to get model list")
             
         loaded_models = [m["name"] for m in response.json().get("models", [])]
-        required_models = {"llama2", "nomic-embed-text"}
+        required_models = {"llama3.2:1b", "nomic-embed-text"}
         missing_models = required_models - set(loaded_models)
         
         if not missing_models:
@@ -458,7 +467,7 @@ async def create_ollama_response(query: str, context: str) -> str:
         response = await client.post(
             f"{OLLAMA_HOST}/api/generate",
             json={
-                "model": "llama2",
+                "model": "llama3.2:1b",
                 "prompt": f"Context:\n{context}\n\nQuestion: {query}\nAnswer:",
                 "options": {
                     "num_gpu": 1,
@@ -475,7 +484,7 @@ async def create_ollama_response(query: str, context: str) -> str:
                     "num_keep": -1
                 }
             },
-            timeout=httpx.Timeout(90.0)
+            timeout=httpx.Timeout(300.0)
         )
         
         if response.status_code != 200:
