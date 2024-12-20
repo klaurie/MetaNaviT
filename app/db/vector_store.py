@@ -6,6 +6,7 @@ import json
 from datetime import datetime
 import numpy as np
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -55,24 +56,61 @@ class PGVectorStore:
             logger.error(f"Failed to create database pool: {str(e)}")
             raise
 
-    async def add_chunk(self, snippet: str, embedding: List[float], metadata: Dict[str, Any]) -> None:
-        """Add a chunk to the vector store"""
+    async def add_chunk(
+        self,
+        chunk: str,
+        embedding: List[float],
+        metadata: Dict[str, Any],
+        chunk_index: int
+    ) -> None:
+        """Add a chunk to the vector store with proper formatting"""
         try:
+            await self.ensure_connection()
+            
+            # Ensure metadata is a dict and properly formatted
+            cleaned_metadata = {
+                "directory": metadata.get("directory", ""),
+                "file_name": metadata.get("file_name", ""),
+                "chunk_index": chunk_index,
+                "content_type": metadata.get("content_type", ""),
+                "start_char": metadata.get("start_char", 0),  # Add position tracking
+                "end_char": metadata.get("end_char", 0),
+                "page_number": metadata.get("page_number", 1)  # Add page number for PDFs
+            }
+            
             async with self.pool.acquire() as conn:
-                # Convert embedding list to string
-                embedding_str = json.dumps(embedding)
-                # Convert metadata to string if it's not already
-                metadata_str = json.dumps(metadata) if isinstance(metadata, dict) else metadata
+                # Check for duplicate content
+                existing = await conn.fetchval(
+                    """
+                    SELECT COUNT(*) 
+                    FROM vector_store 
+                    WHERE 
+                        metadata->>'file_name' = $1 
+                        AND metadata->>'chunk_index' = $2
+                        AND snippet = $3
+                    """,
+                    cleaned_metadata["file_name"],
+                    str(cleaned_metadata["chunk_index"]),
+                    chunk
+                )
                 
+                if existing > 0:
+                    self.logger.warning(f"Duplicate chunk detected for {cleaned_metadata['file_name']}, chunk {chunk_index}")
+                    return
+                
+                # Insert new chunk with properly formatted metadata
                 await conn.execute(
                     """
-                    INSERT INTO vector_store (snippet, embedding, metadata)
-                    VALUES ($1, $2, $3)
+                    INSERT INTO vector_store (metadata, snippet, embedding)
+                    VALUES ($1, $2, $3::vector)
                     """,
-                    snippet, embedding_str, metadata_str
+                    json.dumps(cleaned_metadata),  # Store as JSON
+                    chunk,
+                    f"[{','.join(str(x) for x in embedding)}]"
                 )
+                
         except Exception as e:
-            logger.error(f"Error adding chunk to vector store: {e}")
+            self.logger.error(f"Error adding chunk: {e}")
             raise
 
     async def similar_chunks(
@@ -175,7 +213,67 @@ class PGVectorStore:
         file_name: str,
         limit: int = 5
     ) -> List[Dict[str, Any]]:
-        """Get similar chunks for a specific file"""
+        """Get similar chunks with proper metadata handling"""
+        try:
+            if not self.pool:
+                await self.initialize()
+            
+            if isinstance(embedding, np.ndarray):
+                embedding = embedding.tolist()
+            
+            embedding_str = f"[{','.join(str(x) for x in embedding)}]"
+            
+            async with self.pool.acquire() as conn:
+                # Modified query to ensure unique chunks and proper ordering
+                chunks = await conn.fetch(
+                    """
+                    WITH RankedChunks AS (
+                        SELECT 
+                            id,
+                            metadata,
+                            snippet,
+                            1 - (embedding <=> $1::vector) as similarity,
+                            (metadata->>'chunk_index')::int as chunk_index,
+                            (metadata->>'page_number')::int as page_number
+                        FROM vector_store
+                        WHERE metadata->>'file_name' = $2
+                    )
+                    SELECT DISTINCT ON (snippet) 
+                        id,
+                        metadata,
+                        snippet,
+                        similarity
+                    FROM RankedChunks
+                    ORDER BY snippet, similarity DESC, page_number ASC, chunk_index ASC
+                    LIMIT $3
+                    """,
+                    embedding_str,
+                    file_name,
+                    limit
+                )
+                
+                # Format the response with parsed metadata
+                return [
+                    {
+                        'id': str(chunk['id']),
+                        'metadata': json.loads(chunk['metadata']),  # Parse JSON to dict
+                        'snippet': chunk['snippet'],
+                        'similarity': float(chunk['similarity'])
+                    }
+                    for chunk in chunks
+                ]
+                
+        except Exception as e:
+            self.logger.error(f"Error getting similar chunks for file {file_name}: {str(e)}")
+            raise
+
+    async def get_similar_chunks_for_directory(
+        self,
+        embedding: Union[List[float], np.ndarray],
+        directory_pattern: str = None,
+        limit: int = 5
+    ) -> List[Dict[str, Any]]:
+        """Get similar chunks across all files in a directory"""
         try:
             if not self.pool:
                 await self.initialize()
@@ -188,40 +286,41 @@ class PGVectorStore:
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
             
             async with self.pool.acquire() as conn:
-                self.logger.debug(f"Searching for chunks in file: {file_name}")
+                # Query with DISTINCT ON to avoid duplicates
+                if directory_pattern:
+                    chunks = await conn.fetch(
+                        """
+                        SELECT DISTINCT ON (snippet)
+                            id,
+                            metadata,
+                            snippet,
+                            1 - (embedding <=> $1::vector) as similarity
+                        FROM vector_store
+                        WHERE metadata->>'file_name' LIKE $2
+                        ORDER BY snippet, similarity DESC
+                        LIMIT $3
+                        """,
+                        embedding_str,
+                        f"%{directory_pattern}%",
+                        limit
+                    )
+                else:
+                    chunks = await conn.fetch(
+                        """
+                        SELECT DISTINCT ON (snippet)
+                            id,
+                            metadata,
+                            snippet,
+                            1 - (embedding <=> $1::vector) as similarity
+                        FROM vector_store
+                        ORDER BY snippet, similarity DESC
+                        LIMIT $2
+                        """,
+                        embedding_str,
+                        limit
+                    )
                 
-                file_check = await conn.fetch(
-                    """
-                    SELECT COUNT(*) 
-                    FROM vector_store 
-                    WHERE metadata->>'file_name' = $1
-                    """,
-                    file_name
-                )
-                
-                if file_check[0]['count'] == 0:
-                    self.logger.warning(f"No chunks found for file: {file_name}")
-                    return []
-
-                # Simplified query to get top similar chunks
-                chunks = await conn.fetch(
-                    """
-                    SELECT 
-                        id,
-                        metadata,
-                        snippet,
-                        1 - (embedding <=> $1::vector) as similarity
-                    FROM vector_store
-                    WHERE metadata->>'file_name' = $2
-                    ORDER BY similarity DESC
-                    LIMIT $3
-                    """,
-                    embedding_str,      # $1
-                    file_name,         # $2
-                    limit             # $3
-                )
-                
-                self.logger.info(f"Found {len(chunks)} chunks for file {file_name}")
+                self.logger.info(f"Found {len(chunks)} unique chunks in directory search")
                 
                 return [
                     {
@@ -234,54 +333,7 @@ class PGVectorStore:
                 ]
                 
         except Exception as e:
-            self.logger.error(f"Error getting similar chunks for file {file_name}: {str(e)}")
-            raise
-
-    async def get_similar_chunks_for_directory(
-        self, 
-        embedding: List[float], 
-        directory_path: str,
-        file_pattern: str = "*",
-        limit: int = 5
-    ) -> List[Dict[str, Any]]:
-        """Get similar chunks from files in a directory"""
-        if not self.pool:
-            await self.initialize()
-            
-        try:
-            embedding_str = f"[{','.join(str(x) for x in embedding)}]"
-            
-            async with self.pool.acquire() as conn:
-                query = """
-                WITH RankedChunks AS (
-                    SELECT DISTINCT ON (snippet)
-                        id,
-                        metadata,
-                        snippet,
-                        embedding <-> $1::vector as similarity
-                    FROM vector_store
-                    WHERE metadata->>'file_path' LIKE $3 || '%'
-                      AND metadata->>'file_name' LIKE $4
-                    ORDER BY snippet, (embedding <-> $1::vector)
-                )
-                SELECT id, metadata, snippet, similarity
-                FROM RankedChunks
-                ORDER BY similarity ASC
-                LIMIT $2;
-                """
-                
-                results = await conn.fetch(query, embedding_str, limit, directory_path, file_pattern)
-                return [
-                    {
-                        "id": str(row['id']),
-                        "metadata": row['metadata'] if isinstance(row['metadata'], dict) else json.loads(row['metadata']),
-                        "snippet": row['snippet'],
-                        "similarity": float(row['similarity'])
-                    }
-                    for row in results
-                ]
-        except Exception as e:
-            logger.error(f"Error getting similar chunks: {e}")
+            self.logger.error(f"Error getting similar chunks for directory: {str(e)}")
             raise
 
     async def similarity_search(self, embedding: List[float], limit: int = 4) -> List[Dict[str, Any]]:
@@ -572,105 +624,127 @@ class PGVectorStore:
             logger.error(f"Error getting related documents: {e}")
             raise
 
-    async def get_similar_chunks(self, embedding: List[float], file_pattern: Optional[str] = None, limit: int = 5) -> List[Dict[str, Any]]:
-        """Get chunks similar to the query embedding, optionally filtered by file pattern"""
+    async def get_similar_chunks(
+        self,
+        embedding: Union[List[float], np.ndarray],
+        limit: int = 5,
+        file_pattern: str = None,
+        file_path: str = None,
+        directory: str = None
+    ) -> List[Dict[str, Any]]:
+        """Get similar chunks across all files or matching pattern/path/directory"""
         try:
             if not self.pool:
                 await self.initialize()
             
+            if isinstance(embedding, np.ndarray):
+                embedding = embedding.tolist()
+            embedding_str = f"[{','.join(str(x) for x in embedding)}]"
+            
             async with self.pool.acquire() as conn:
-                # Convert numpy array to list then to string format for PostgreSQL
-                if hasattr(embedding, 'tolist'):
-                    embedding = embedding.tolist()
-                embedding_str = f"[{','.join(str(x) for x in embedding)}]"
-                
-                # Base query with cosine similarity
-                base_query = """
-                    SELECT 
-                        metadata->>'file_name' as file_name,
-                        metadata->>'start_line' as start_line,
-                        metadata->>'end_line' as end_line,
-                        snippet,
-                        1 - (embedding <=> $1::vector) as similarity
-                    FROM vector_store
-                    WHERE 1 - (embedding <=> $1::vector) > 0.2
+                query = """
+                    WITH SimilarChunks AS (
+                        SELECT DISTINCT ON (snippet)
+                            id,
+                            metadata,
+                            snippet,
+                            1 - (embedding <=> $1::vector) as similarity
+                        FROM vector_store
+                        WHERE 1=1
                 """
                 
                 params = [embedding_str]
                 
-                # Add file pattern filter if provided
-                if file_pattern:
-                    # First, check if any files match the pattern
-                    check_query = """
-                    SELECT DISTINCT metadata->>'file_name' as filename
-                    FROM vector_store
-                    WHERE metadata->>'file_name' IS NOT NULL
-                    """
-                    files = await conn.fetch(check_query)
-                    logger.info(f"Available files in database: {[f['filename'] for f in files]}")
+                # Handle different types of filtering
+                if directory:
+                    # Directory-based filtering
+                    query += " AND metadata->>'directory' = $2"
+                    params.append(directory)
+                    self.logger.info(f"Filtering by directory: {directory}")
+                elif file_path:
+                    # File path-based filtering
+                    dir_path = os.path.dirname(file_path)
+                    filename = os.path.basename(file_path)
                     
-                    # Handle wildcards and PDF patterns
-                    if '*' in file_pattern:
-                        # Convert glob pattern to SQL LIKE pattern
-                        sql_pattern = file_pattern.replace('*', '%')
-                        if not sql_pattern.startswith('%'):
-                            sql_pattern = '%' + sql_pattern
-                        if not sql_pattern.endswith('%'):
-                            sql_pattern = sql_pattern + '%'
-                        base_query += " AND LOWER(metadata->>'file_name') LIKE LOWER($2)"
-                        params.append(sql_pattern)
-                        logger.info(f"Using wildcard pattern: {sql_pattern}")
-                    elif file_pattern.lower() == '.pdf':
-                        # Special handling for PDF extension
-                        base_query += " AND LOWER(metadata->>'file_name') LIKE '%.pdf'"
-                        logger.info("Using PDF extension pattern")
-                    else:
-                        # For exact matches
-                        base_query += " AND LOWER(metadata->>'file_name') = LOWER($2)"
-                        params.append(file_pattern)
-                        logger.info(f"Using exact pattern: {file_pattern}")
+                    query += """
+                        AND metadata->>'directory' = $2 
+                        AND metadata->>'file_name' = $3
+                    """
+                    params.extend([dir_path, filename])
+                    self.logger.info(f"Filtering by directory: {dir_path} and file: {filename}")
+                elif file_pattern:
+                    # Pattern-based filtering
+                    sql_pattern = file_pattern.replace('*', '%')
+                    query += " AND metadata->>'file_name' LIKE $2"
+                    params.append(sql_pattern)
+                    self.logger.info(f"Filtering by pattern: {sql_pattern}")
                 
-                # Add ordering and limit
-                base_query += """
+                query += """
+                        ORDER BY snippet, similarity DESC
+                    )
+                    SELECT * FROM SimilarChunks
                     ORDER BY similarity DESC
-                    LIMIT ${}
-                """.format(len(params) + 1)
+                    LIMIT $""" + str(len(params) + 1)
+                
                 params.append(limit)
                 
-                # Log the query and parameters for debugging
-                logger.info(f"Executing query: {base_query}")
-                logger.info(f"With parameters: {params}")
+                # Debug: Log the query and parameters
+                self.logger.info(f"Executing query: {query}")
+                self.logger.info(f"With parameters: {params}")
                 
-                # Execute query
-                rows = await conn.fetch(base_query, *params)
+                chunks = await conn.fetch(query, *params)
+                self.logger.info(f"Found {len(chunks)} chunks")
                 
-                # Log the results
-                logger.info(f"Found {len(rows)} matching chunks")
-                if len(rows) == 0:
-                    # Additional debug query to check file names
-                    debug_query = """
-                    SELECT DISTINCT metadata->>'file_name' as filename
-                    FROM vector_store
-                    WHERE metadata->>'file_name' IS NOT NULL
-                    """
-                    debug_files = await conn.fetch(debug_query)
-                    logger.info(f"Available files in database: {[f['filename'] for f in debug_files]}")
+                # Process chunks with proper JSON parsing
+                processed_chunks = []
+                for chunk in chunks:
+                    try:
+                        metadata = json.loads(chunk['metadata']) if isinstance(chunk['metadata'], str) else chunk['metadata']
+                        
+                        chunk_data = {
+                            'id': str(chunk['id']),
+                            'file_name': metadata.get('file_name', 'Unknown'),
+                            'directory': metadata.get('directory', 'Unknown'),
+                            'chunk_index': int(metadata.get('chunk_index', 0)),
+                            'content_type': metadata.get('content_type', 'Unknown'),
+                            'snippet': chunk['snippet'],
+                            'similarity': float(chunk['similarity']),
+                            'snippet_preview': chunk['snippet'][:200] + "..." if len(chunk['snippet']) > 200 else chunk['snippet']
+                        }
+                        
+                        processed_chunks.append(chunk_data)
+                        
+                    except json.JSONDecodeError as e:
+                        self.logger.error(f"Error parsing metadata JSON: {e}")
+                        self.logger.error(f"Raw metadata: {chunk['metadata']}")
+                        continue
+                    except Exception as e:
+                        self.logger.error(f"Error processing chunk: {e}")
+                        self.logger.error(f"Problematic chunk data: {chunk}")
+                        continue
                 
-                # Format results
-                results = []
-                for row in rows:
-                    results.append({
-                        'file_name': row['file_name'],
-                        'start_line': row['start_line'],
-                        'end_line': row['end_line'],
-                        'snippet': row['snippet'],
-                        'similarity': float(row['similarity'])
-                    })
+                if not processed_chunks:
+                    # Debug: show available files and their locations
+                    files = await conn.fetch(
+                        """
+                        SELECT DISTINCT 
+                            metadata->>'file_name' as name,
+                            metadata->>'directory' as directory,
+                            COUNT(*) as chunk_count
+                        FROM vector_store
+                        GROUP BY metadata->>'file_name', metadata->>'directory'
+                        ORDER BY metadata->>'directory', metadata->>'file_name'
+                        """
+                    )
+                    self.logger.warning("No chunks found. Available files:")
+                    for file in files:
+                        self.logger.warning(f"  - {file['directory']}/{file['name']} ({file['chunk_count']} chunks)")
                 
-                return results
+                return processed_chunks
                 
         except Exception as e:
-            logger.error(f"Error getting similar chunks: {str(e)}")
+            self.logger.error(f"Error getting similar chunks: {str(e)}")
+            self.logger.error(f"Full error details: ", exc_info=True)
             raise
 
 # First create the global instance
