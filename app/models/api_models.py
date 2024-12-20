@@ -76,5 +76,7 @@ class DocumentMetadata(BaseModel):
 class ReasoningQuery(BaseModel):
     query: str
     analysis_type: AnalysisType = AnalysisType.AGGREGATE
-    file_pattern: Optional[str] = None
-    file_name: Optional[str] = None
+    path: Optional[str] = None  # Single file path
+    directory: Optional[str] = None  # Directory path
+    files: Optional[List[str]] = None  # List of file paths
+    file_pattern: Optional[str] = None  # Pattern for file matching
