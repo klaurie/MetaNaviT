@@ -34,7 +34,15 @@ async def get_client():
     )
 
 async def get_ollama_embedding(text):
-    """Get embedding using async client with optimized settings"""
+    """
+    Get embedding using async client with optimized settings
+
+    Args:
+        text (str): The text to embed.
+
+    Returns:
+        List[float]: The embedding of the text.
+    """
     try:
         if not text or not isinstance(text, str):
             raise ValueError("Invalid input text")

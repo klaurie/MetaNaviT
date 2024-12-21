@@ -7,6 +7,7 @@ import json
 import gc
 from app.utils.helpers import *
 from app.models.api_models import *
+from app.db.index_manager import IndexManager
 from app.db.vector_store import pg_storage
 import numpy as np
 from app.metadata.metadata_processor import MetadataProcessor
@@ -63,8 +64,19 @@ os.environ["GGML_CUDA_FORCE_FLAT"] = "1"  # Force flat memory
 # Semaphore for concurrent processing
 ollama_semaphore = asyncio.Semaphore(MAX_CONCURRENT_REQUESTS)
 
-# Helper function to get pg_storage from app state
+# Create a single instance
+index_manager = IndexManager()
+
 async def get_pg_storage(request: Request):
+    """
+    Get the pg_storage object from the request.
+
+    Args:
+        request (Request): The request object.
+
+    Returns:
+        pg_storage: The pg_storage object.
+    """
     if not hasattr(request.app.state, 'pg_storage'):
         raise HTTPException(status_code=500, detail="Database not initialized")
     return request.app.state.pg_storage
@@ -73,12 +85,29 @@ async def get_pg_storage(request: Request):
 
 @lru_cache(maxsize=100)
 async def get_cached_embedding(text: str) -> List[float]:
-    """Cache embeddings to avoid redundant calls"""
+    """
+    Cache embeddings to avoid redundant calls
+
+    Args:
+        text (str): The text to embed.
+
+    Returns:
+        List[float]: The embedding of the text.
+    """
     embedding = await get_ollama_embedding(text)
     return embedding.tolist() if isinstance(embedding, np.ndarray) else embedding
 
 async def create_ollama_response(query: str, context: str) -> str:
-    """Create a new response coroutine for each request"""
+    """
+    Create a new response coroutine for each request
+
+    Args:
+        query (str): The query to ask the LLM.
+        context (str): The context to use for the query.
+
+    Returns:
+        str: The response from the LLM.
+    """
     try:
         # Get client for this request
         client = await get_ollama_client()
@@ -225,188 +254,40 @@ async def get_reasoning(
 ) -> Dict[str, Any]:
     """Get reasoning based on document context"""
     try:
-        # Get embedding with caching
-        embedding = await get_ollama_embedding(query.query)
+        # Get similar chunks from PGVector
+        similar_chunks = await pg_storage.similar_chunks(
+            embedding=await get_ollama_embedding(query.query),
+            limit=5,
+            file_pattern=query.file_pattern
+        )
         
-        if query.analysis_type == AnalysisType.INDIVIDUAL:
-            try:
-                async def process_batch():
-                    async with pg_storage.pool.acquire() as conn:
-                        # Construct file pattern for SQL
-                        if query.file_pattern:
-                            # Convert glob pattern to SQL LIKE pattern
-                            sql_pattern = query.file_pattern.replace('*', '%')
-                            if not sql_pattern.startswith('%'):
-                                sql_pattern = '%' + sql_pattern
-                            if not sql_pattern.endswith('%'):
-                                sql_pattern = sql_pattern + '%'
-                            files_query = """
-                            SELECT DISTINCT metadata->>'file_name' as file_name
-                            FROM vector_store
-                            WHERE metadata->>'file_name' LIKE $1
-                            """
-                            params = [sql_pattern]
-                        else:
-                            files_query = """
-                            SELECT DISTINCT metadata->>'file_name' as file_name
-                            FROM vector_store
-                            WHERE metadata->>'file_name' IS NOT NULL
-                            """
-                            params = []
-                            
-                        files = await conn.fetch(files_query, *params)
-                        
-                        if not files:
-                            return {
-                                "analysis_type": "individual",
-                                "query": query.query,
-                                "results": [],
-                                "message": "No matching files found"
-                            }
-                        
-                        results = []
-                        for file_row in files:
-                            result = await process_file(
-                                file_row['file_name'],
-                                embedding,
-                                conn,
-                                query.query
-                            )
-                            results.append(result)
-                            await asyncio.sleep(VRAM_CLEANUP_DELAY)
-                        
-                        successful_results = [
-                            r for r in results
-                            if r.get("status") == "success"
-                        ]
-                        
-                        # Store the results in RAG history
-                        await conn.execute(
-                            """
-                            INSERT INTO query_history 
-                            (query, response, context)
-                            VALUES ($1, $2, $3)
-                            """,
-                            query.query,
-                            json.dumps(results),  # Store full results
-                            json.dumps({
-                                "analysis_type": "individual",
-                                "file_pattern": query.file_pattern,
-                                "total_files": len(files),
-                                "successful_analyses": len(successful_results)
-                            })
-                        )
-                        
-                        return {
-                            "analysis_type": "individual",
-                            "query": query.query,
-                            "results": results,
-                            "total_files_processed": len(files),
-                            "successful_analyses": len(successful_results)
-                        }
-                
-                return await asyncio.wait_for(process_batch(), timeout=BATCH_TIMEOUT)
-                
-            except asyncio.TimeoutError:
-                raise HTTPException(
-                    status_code=504,
-                    detail="Batch processing timed out"
-                )
-                
-        else:  # Aggregate analysis
-            try:
-                # Get top 5 chunks with optimized limits
-                similar_chunks = await pg_storage.get_similar_chunks(
-                    embedding=embedding,
-                    limit=CHUNK_LIMIT,
-                    file_pattern=query.file_pattern
-                )
-                
-                if not similar_chunks:
-                    return {
-                        "analysis_type": "aggregate",
-                        "query": query.query,
-                        "message": "No relevant content found"
-                    }
-                
-                # Build context efficiently
-                context_parts = []
-                chunk_details = []  # New list to store chunk details
-                
-                for chunk in similar_chunks:
-                    file_name = chunk.get('metadata', {}).get('file_name', 'Unknown')
-                    snippet = chunk['snippet']
-                    chunk_id = str(chunk.get('id', 'Unknown'))  # Get chunk ID
-                    similarity = float(chunk.get('similarity', 0.0))  # Get similarity score
-                    
-                    # Add to context
-                    if len(snippet) > SNIPPET_LENGTH:
-                        words = snippet.split()
-                        truncated_words = words[:SNIPPET_LENGTH//10]
-                        snippet = ' '.join(truncated_words) + "..."
-                    context_parts.append(f"\nFrom {file_name} (Chunk {chunk_id}):\n{snippet}")
-                    
-                    # Store chunk details
-                    chunk_details.append({
-                        "chunk_id": chunk_id,
-                        "file_name": file_name,
-                        "similarity_score": round(similarity, 3),
-                        "snippet_preview": snippet[:200] + "..." if len(snippet) > 200 else snippet
-                    })
-                
-                context = "\nDocument Excerpts:\n" + "\n".join(context_parts)
-                
-                try:
-                    # Create new response coroutine for this request
-                    response = await create_ollama_response(query=query.query, context=context)
-                    
-                    if not response:
-                        raise HTTPException(
-                            status_code=500,
-                            detail="Empty response from Ollama"
-                        )
-                    
-                    # Store in RAG history
-                    async with pg_storage.pool.acquire() as conn:
-                        await conn.execute(
-                            """
-                            INSERT INTO query_history 
-                            (query, response, context)
-                            VALUES ($1, $2, $3)
-                            """,
-                            query.query,
-                            response,
-                            json.dumps({
-                                "analysis_type": "aggregate",
-                                "chunks_used": similar_chunks,
-                                "file_pattern": query.file_pattern
-                            })
-                        )
-                    
-                    return {
-                        "analysis_type": "aggregate",
-                        "reasoning_result": response,
-                        "query": query.query,
-                        "chunks_used": chunk_details,  # Include detailed chunk information
-                        "total_chunks_found": len(similar_chunks),
-                        "status": "success"
-                    }
-                    
-                except Exception as e:
-                    logger.error(f"Error in aggregate analysis: {str(e)}")
-                    raise HTTPException(
-                        status_code=500,
-                        detail=str(e)
-                    )
-                    
-            except asyncio.TimeoutError:
-                raise HTTPException(
-                    status_code=504,
-                    detail="Ollama request timed out"
-                )
-                
+        if not similar_chunks:
+            return {
+                "message": "No relevant content found",
+                "query": query.query
+            }
+        
+        # Create index from chunks
+        index = await index_manager.create_index_from_chunks(similar_chunks)
+        
+        # Query the index
+        query_engine = index.as_query_engine()
+        response = await query_engine.aquery(query.query)
+        
+        return {
+            "query": query.query,
+            "response": str(response),
+            "sources": [
+                {
+                    "file": chunk.get('metadata', {}).get('file_name'),
+                    "snippet": chunk.get('snippet')[:200] + "..."
+                }
+                for chunk in similar_chunks
+            ]
+        }
+        
     except Exception as e:
-        logger.error(f"Ollama reasoning failed: {str(e)}")
+        logger.error(f"Error in reasoning endpoint: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/ollama/status")

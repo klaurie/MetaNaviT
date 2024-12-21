@@ -35,7 +35,7 @@ class PGVectorStore:
         self.logger = logging.getLogger(__name__)
         logger.info(f"Initializing PGVectorStore with URL: {database_url}")
 
-    async def init_pool(self):
+    async def initialize(self):
         """
             Initialize the connection pool. A pool is a collection of database connections that can be reused.
             This helps to save time and resources when connecting to the database multiple times.
@@ -121,7 +121,7 @@ class PGVectorStore:
             List[Dict[str, Any]]: A list of similar chunks.
         """
         if not self.pool:
-            await self.init_pool()
+            await self.initialize()
             
         try:
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
@@ -234,7 +234,7 @@ class PGVectorStore:
         """
         try:
             if not self.pool:
-                await self.init_pool()
+                await self.initialize()
             
             # Convert numpy array to list if needed
             if isinstance(embedding, np.ndarray):
@@ -307,7 +307,7 @@ class PGVectorStore:
             List[Dict[str, Any]]: A list of similar chunks.
         """
         if not self.pool:
-            await self.init_pool()
+            await self.initialize()
             
         try:
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
@@ -348,7 +348,7 @@ class PGVectorStore:
     async def similarity_search(self, embedding: List[float], limit: int = 4) -> List[Dict[str, Any]]:
         """Perform similarity search using embeddings with distinct results"""
         if not self.pool:
-            await self.init_pool()
+            await self.initialize()
             
         try:
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
@@ -407,7 +407,7 @@ class PGVectorStore:
             context (str): The context of the query.
         """
         if not self.pool:
-            await self.init_pool()
+            await self.initialize()
             
         try:
             async with self.pool.acquire() as conn:
@@ -453,7 +453,7 @@ class PGVectorStore:
             List[Dict[str, Any]]: A list of query history.
         """
         if not self.pool:
-            await self.init_pool()
+            await self.initialize()
             
         try:
             async with self.pool.acquire() as conn:
@@ -514,7 +514,7 @@ class PGVectorStore:
         """
         try:
             if not self.pool:
-                await self.init_pool()
+                await self.initialize()
 
             # Convert embedding to PostgreSQL vector format
             embedding_str = f"[{','.join(str(x) for x in embedding)}]"
@@ -540,7 +540,7 @@ class PGVectorStore:
     async def init_table(self):
         """Initialize the database tables"""
         if not self.pool:
-            await self.init_pool()
+            await self.initialize()
             
         async with self.pool.acquire() as conn:
             # Enable required extensions
@@ -608,7 +608,7 @@ class PGVectorStore:
             relationships_data (Dict[str, Any]): The relationships to store.
         """
         if not self.pool:
-            await self.init_pool()
+            await self.initialize()
             
         try:
             async with self.pool.acquire() as conn:
@@ -639,7 +639,7 @@ class PGVectorStore:
             List[Dict[str, Any]]: A list of related documents.
         """
         if not self.pool:
-            await self.init_pool()
+            await self.initialize()
             
         try:
             async with self.pool.acquire() as conn:
@@ -691,7 +691,7 @@ class PGVectorStore:
         """
         try:
             if not self.pool:
-                await self.init_pool()
+                await self.initialize()
             
             async with self.pool.acquire() as conn:
                 # Convert numpy array to list then to string format for PostgreSQL
@@ -796,5 +796,5 @@ async def get_pg_storage():
     """Get the PGVectorStore instance and ensure it's initialized"""
     global pg_storage  # Add this line to explicitly use the global variable
     if pg_storage.pool is None:
-        await pg_storage.init_pool()
+        await pg_storage.initialize()
     return pg_storage

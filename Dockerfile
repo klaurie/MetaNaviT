@@ -1,9 +1,14 @@
-
-# Use miniconda base image
-FROM continuumio/miniconda3:latest
-
-# Set working directory
+# Build stage
+FROM continuumio/miniconda3:latest as builder
 WORKDIR /app
+COPY environment.yml requirements.txt ./
+RUN conda env create -f environment.yml
+
+# Runtime stage
+FROM continuumio/miniconda3:latest
+WORKDIR /app
+COPY --from=builder /opt/conda/envs/ollama_env /opt/conda/envs/ollama_env
+COPY . .
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -20,12 +25,6 @@ RUN apt-get update && apt-get install -y \
 # Install Ollama CLI
 RUN curl -fsSL https://ollama.ai/install.sh | sh
 
-# Copy environment.yml and requirements.txt
-COPY environment.yml requirements.txt ./
-
-# Create conda environment and install dependencies
-RUN conda env create -f environment.yml
-
 # Add debug commands to verify installation
 RUN echo '#!/bin/bash\n\
 source /opt/conda/etc/profile.d/conda.sh\n\
@@ -37,7 +36,7 @@ chmod +x /entrypoint.sh
 # Verify llama-index installation explicitly
 RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
     conda activate ollama_env && \
-    pip install llama-index-core llama-index-readers-file && \
+    pip install llama-index-core llama-index-readers-file llama-index-llms-ollama llama-index-embeddings-ollama && \
     python -c 'from llama_index.core import SimpleDirectoryReader'"
 
 # Copy the application code
