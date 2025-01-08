@@ -1,66 +1,50 @@
+# ====================================
+# Build the frontend
+# ====================================
+FROM node:20 AS frontend
 
-# Use miniconda base image
-FROM continuumio/miniconda3:latest
+WORKDIR /app/frontend
 
-# Set working directory
+COPY .frontend /app/frontend
+
+RUN npm install && npm run build
+
+
+# ====================================
+# Backend
+# ====================================
+FROM python:3.11 AS build
+
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    postgresql-client \
-    curl \
-    tesseract-ocr \
-    poppler-utils \
-    libmagic1 \
-    pandoc \
-    && rm -rf /var/lib/apt/lists/*
+ENV PYTHONPATH=/app
 
-# Install Ollama CLI
-RUN curl -fsSL https://ollama.ai/install.sh | sh
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python && \
+    cd /usr/local/bin && \
+    ln -s /opt/poetry/bin/poetry && \
+    poetry config virtualenvs.create false
 
-# Copy environment.yml and requirements.txt
-COPY environment.yml requirements.txt ./
+# Install Chromium for web loader
+# Can disable this if you don't use the web loader to reduce the image size
+RUN apt update && apt install -y chromium chromium-driver
 
-# Create conda environment and install dependencies
-RUN conda env create -f environment.yml
+# Install dependencies
+COPY ./pyproject.toml ./poetry.lock* /app/
+RUN poetry install --no-root --no-cache --only main
 
-# Add debug commands to verify installation
-RUN echo '#!/bin/bash\n\
-source /opt/conda/etc/profile.d/conda.sh\n\
-conda activate ollama_env\n\
-echo "Python version:"\n\
-exec "$@"' > /entrypoint.sh && \
-chmod +x /entrypoint.sh
+# ====================================
+# Release
+# ====================================
+FROM build AS release
 
-# Verify llama-index installation explicitly
-RUN /bin/bash -c "source /opt/conda/etc/profile.d/conda.sh && \
-    conda activate ollama_env && \
-    pip install llama-index-core llama-index-readers-file && \
-    python -c 'from llama_index.core import SimpleDirectoryReader'"
+COPY --from=frontend /app/frontend/out /app/static
 
-# Copy the application code
-COPY ./app ./app
-COPY ./wait-for-postgres.sh .
-RUN chmod +x ./wait-for-postgres.sh
+COPY . .
 
-RUN echo '#!/bin/bash' > /app/entrypoint.sh && \
-    echo 'set -e' >> /app/entrypoint.sh && \
-    echo 'source /opt/conda/etc/profile.d/conda.sh' >> /app/entrypoint.sh && \
-    echo 'conda activate ollama_env' >> /app/entrypoint.sh && \
-    echo '' >> /app/entrypoint.sh && \
-    echo '# Wait for postgres' >> /app/entrypoint.sh && \
-    echo 'until PGPASSWORD=postgres pg_isready -h db -p 5432 -U postgres; do' >> /app/entrypoint.sh && \
-    echo '  >&2 echo "Postgres is unavailable - sleeping"' >> /app/entrypoint.sh && \
-    echo '  sleep 1' >> /app/entrypoint.sh && \
-    echo 'done' >> /app/entrypoint.sh && \
-    echo '>&2 echo "Postgres is up - executing command"' >> /app/entrypoint.sh && \
-    echo 'exec "$@"' >> /app/entrypoint.sh && \
-    chmod +x /app/entrypoint.sh
+# Remove frontend code
+RUN rm -rf .frontend
 
-# Remove any duplicate entrypoint scripts
-RUN rm -f /entrypoint.sh
+EXPOSE 8000
 
-ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
+CMD ["poetry", "run", "prod"]
