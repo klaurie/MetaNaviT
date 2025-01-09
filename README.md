@@ -1,29 +1,66 @@
 This is a [LlamaIndex](https://www.llamaindex.ai/) project using [FastAPI](https://fastapi.tiangolo.com/) bootstrapped with [`create-llama`](https://github.com/run-llama/LlamaIndexTS/tree/main/packages/create-llama).
 
-## Getting Started
+## Prerequisites
 
-First, setup the environment with poetry:
+1. Install Ollama (required for both dev container and manual setup):
+```bash
+# macOS/Linux
+curl -fsSL https://ollama.com/install.sh | sh
 
-> **_Note:_** This step is not needed if you are using the dev-container.
+# Windows
+# Download from https://ollama.com/download/windows
+```
 
+2. Start the Ollama service:
+```bash
+ollama serve
+```
+
+3. Pull the required model:
+```bash
+ollama pull llama3.2:1b
+```
+
+## Quick Start with Dev Container (Recommended)
+
+The easiest way to get started is using the dev container, which handles all dependencies except Ollama:
+
+1. Install [Docker](https://www.docker.com/products/docker-desktop/) and [VS Code](https://code.visualstudio.com/)
+2. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) in VS Code
+3. Open this project in VS Code
+4. Click the green button in the bottom-left corner (or press `F1` and select "Dev Containers: Reopen in Container")
+5. Wait for the container to build - all dependencies will be automatically installed!
+
+## Manual Setup (Alternative)
+
+If you prefer not to use the dev container, you'll need to additionally:
+
+1. Setup the environment with poetry:
 ```bash
 poetry install
 poetry env use python  # Create and activate a new virtual environment
 ```
 
-Then check the parameters that have been pre-configured in the `.env` file in this directory. (E.g. you might need to configure an `OPENAI_API_KEY` if you're using OpenAI as model provider).
+## Configuration
+
+Check the parameters that have been pre-configured in the `.env` file in this directory:
+```env
+MODEL_PROVIDER=ollama
+MODEL=llama3.2:1b
+OLLAMA_BASE_URL=http://localhost:11434
+```
 
 If you are using any tools or data sources, you can update their config files in the `config` folder.
 
-Second, generate the embeddings of the documents in the `./data` directory:
+## Running the Application
 
-```
+1. Generate the embeddings of the documents in the `./data` directory:
+```bash
 poetry run generate
 ```
 
-Third, run the app:
-
-```
+2. Run the app:
+```bash
 poetry run dev
 ```
 
