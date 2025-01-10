@@ -1,0 +1,26 @@
+__pycache__
+storage/
+cache/
+*.pyc
+__pycache__/
+.env
+.venv/
+dist/
+build/
+output
+.pnpm-store
+.pnpm-store/**/*
+static/
+.vscode/.pnpm-store
+/node_modules
+/.pnp
+.pnp.js
+/.next/
+/out/
+
+# production
+/build
+
+# cache files
+output/
+storage/
