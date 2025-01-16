@@ -1,6 +1,7 @@
-__pycache__
-storage
+__pycache__/
+storage/
 .env
 output
 static/
 .vscode/
+*.pyc
