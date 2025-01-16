@@ -5,6 +5,8 @@ load_dotenv()
 
 import logging
 import os
+import psycopg2
+from psycopg2 import sql
 
 from app.engine.loaders import get_documents
 from app.engine.vectordb import get_vector_store
@@ -29,7 +31,26 @@ def get_doc_store():
         return SimpleDocumentStore.from_persist_dir(STORAGE_DIR)
     else:
         return SimpleDocumentStore()
+
+
+def create_vector_extension():
+    conn_string = os.environ.get("PG_CONNECTION_STRING")
+    if conn_string is None or conn_string == "":
+        raise ValueError("PG_CONNECTION_STRING environment variable is not set.")
     
+    conn = psycopg2.connect(conn_string)
+    conn.autocommit = True
+    cursor = conn.cursor()
+    
+    try:
+        cursor.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+        logger.info("Vector extension created or already exists.")
+    except Exception as e:
+        logger.error(f"Error creating vector extension: {e}")
+    finally:
+        cursor.close()
+        conn.close()
+
 
 def run_pipeline(docstore, vector_store, documents):
     pipeline = IngestionPipeline(
@@ -39,13 +60,17 @@ def run_pipeline(docstore, vector_store, documents):
                 chunk_overlap=Settings.chunk_overlap,
             ),
             Settings.embed_model,
-        ]
+        ],
+        docstore=docstore,
+        docstore_strategy=DocstoreStrategy.UPSERTS_AND_DELETE,  # type: ignore
+        vector_store=vector_store,
     )
 
     # Run the ingestion pipeline and store the results
     nodes = pipeline.run(show_progress=True, documents=documents)
 
-    return nodes
+    return 
+    
 
 def persist_storage(docstore, vector_store):
     storage_context = StorageContext.from_defaults(
@@ -59,6 +84,9 @@ def generate_datasource():
     init_settings()
     logger.info("Generate index for the provided data")
 
+    # Ensure the vector extension is created
+    create_vector_extension()
+    
     # Get the stores and documents or create new ones
     documents = get_documents()
     # Set private=false to mark the document as public (required for filtering)
