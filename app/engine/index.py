@@ -8,7 +8,10 @@ from cachetools import TTLCache, cached  # type: ignore
 from llama_index.core.callbacks import CallbackManager
 from llama_index.core.indices import load_index_from_storage
 from llama_index.core.storage import StorageContext
+from llama_index.core.indices import VectorStoreIndex
 from pydantic import BaseModel
+
+from app.engine.vectordb import get_vector_store
 
 
 logger = logging.getLogger("uvicorn")
@@ -35,25 +38,11 @@ class IndexConfig(BaseModel):
 def get_index(config: IndexConfig = None):
     if config is None:
         config = IndexConfig()
-    storage_dir = os.getenv("STORAGE_DIR", "storage")
-    # check if storage already exists
-    if not os.path.exists(storage_dir):
-        return None
-    # load the existing index
-    logger.info(f"Loading index from {storage_dir}...")
-    storage_context = get_storage_context(storage_dir)
-    index = load_index_from_storage(
-        storage_context, callback_manager=config.callback_manager
+    logger.info("Connecting vector store...")
+    store = get_vector_store()
+    index = VectorStoreIndex.from_vector_store(
+        store, callback_manager=config.callback_manager
     )
-    logger.info(f"Finished loading index from {storage_dir}")
+    logger.info(f"Finished loading index from {store}")
+    logger.info(f"index\n\n\n{index.index_struct}")
     return index
-
-
-
-
-@cached(
-    TTLCache(maxsize=10, ttl=timedelta(minutes=5).total_seconds()),
-    key=lambda *args, **kwargs: "global_storage_context",
-)
-def get_storage_context(persist_dir: str) -> StorageContext:
-    return StorageContext.from_defaults(persist_dir=persist_dir)

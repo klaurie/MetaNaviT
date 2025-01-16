@@ -1,6 +1,9 @@
 import os
+import logging
 from llama_index.vector_stores.postgres import PGVectorStore
 from urllib.parse import urlparse
+
+logger = logging.getLogger("uvicorn")
 
 PGVECTOR_SCHEMA = "public"
 PGVECTOR_TABLE = "llamaindex_embedding"
@@ -33,5 +36,6 @@ def get_vector_store():
             table_name=PGVECTOR_TABLE,
             embed_dim=int(os.environ.get("EMBEDDING_DIM", 1024)),
         )
+        logger.info(f"info: {vars(vector_store)}")
 
     return vector_store
