@@ -44,5 +44,4 @@ def get_index(config: IndexConfig = None):
         store, callback_manager=config.callback_manager
     )
     logger.info(f"Finished loading index from {store}")
-    logger.info(f"index\n\n\n{index.index_struct}")
     return index

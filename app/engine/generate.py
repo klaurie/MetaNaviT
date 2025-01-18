@@ -9,7 +9,7 @@ import psycopg2
 from psycopg2 import sql
 
 from app.engine.loaders import get_documents
-from app.engine.vectordb import get_vector_store
+from app.engine.vectordb import get_vector_store, match_vector_dim
 from app.settings import init_settings
 
 from llama_index.core.ingestion import DocstoreStrategy, IngestionPipeline
@@ -53,6 +53,7 @@ def create_vector_extension():
 
 
 def run_pipeline(docstore, vector_store, documents):
+    logger.info(f"embedding model {Settings.embed_model}\n\n\n")
     pipeline = IngestionPipeline(
         transformations=[
             SentenceSplitter(
@@ -61,8 +62,8 @@ def run_pipeline(docstore, vector_store, documents):
             ),
             Settings.embed_model,
         ],
-        docstore=docstore,
-        docstore_strategy=DocstoreStrategy.UPSERTS_AND_DELETE,  # type: ignore
+        #docstore=docstore,
+        #docstore_strategy=DocstoreStrategy.UPSERTS_AND_DELETE,  # type: ignore
         vector_store=vector_store,
     )
 
@@ -86,7 +87,7 @@ def generate_datasource():
 
     # Ensure the vector extension is created
     create_vector_extension()
-    
+
     # Get the stores and documents or create new ones
     documents = get_documents()
     # Set private=false to mark the document as public (required for filtering)
