@@ -62,8 +62,8 @@ def run_pipeline(docstore, vector_store, documents):
             ),
             Settings.embed_model,
         ],
-        #docstore=docstore,
-        #docstore_strategy=DocstoreStrategy.UPSERTS_AND_DELETE,  # type: ignore
+        docstore=docstore,
+        docstore_strategy=DocstoreStrategy.UPSERTS_AND_DELETE,  # type: ignore
         vector_store=vector_store,
     )
 
