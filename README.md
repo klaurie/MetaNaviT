@@ -33,7 +33,7 @@ ollama pull llama3.2:1b
 
 ## Quick Start with Dev Container
 
-The easiest way to get started is using the dev container, which handles all dependencies except Ollama:
+The easiest way to get started is using the dev container, which handles all dependencies except Ollama and Database dependencies:
 
 1. Install [Docker](https://www.docker.com/products/docker-desktop/) and [VS Code](https://code.visualstudio.com/)
 2. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) in VS Code
