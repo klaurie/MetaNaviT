@@ -5,3 +5,5 @@ output
 static/
 .vscode/
 *.pyc
+whisper-build/models/*
+
