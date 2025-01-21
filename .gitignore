@@ -6,4 +6,6 @@ static/
 .vscode/
 *.pyc
 whisper-build/models/*
+whisper-build/models/ggml-base.en.bin
+whisper-build/models/ggml-medium.bin
 
