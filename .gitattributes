@@ -1,0 +1,2 @@
+whisper-build/models/ggml-base.en.bin filter=lfs diff=lfs merge=lfs -text
+whisper-build/models/ggml-medium.bin filter=lfs diff=lfs merge=lfs -text
