@@ -4,6 +4,7 @@ import { ChatInput, useChatUI, useFile } from "@llamaindex/chat-ui";
 import { DocumentInfo, ImagePreview } from "@llamaindex/chat-ui/widgets";
 import { LlamaCloudSelector } from "./custom/llama-cloud-selector";
 import { useClientConfig } from "./hooks/use-config";
+import { Mic } from "lucide-react";
 
 export default function CustomChatInput() {
   const { requestData, isLoading, input } = useChatUI();
@@ -38,6 +39,31 @@ export default function CustomChatInput() {
     }
   };
 
+  const handleMediaUpload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('file', 'C:/Users/joses/Desktop/Whisper/Meta_record.wav');
+      formData.append('temperature', '0.0');
+      formData.append('response_format', 'json');
+
+      const response = await fetch('http://127.0.0.1:8080/inference', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      const data = await response.json();
+      if (data.text) {
+        await requestData(data.text);
+      }
+    } catch (error) {
+      console.error('Media upload failed:', error);
+      alert('Failed to process media file');
+    }
+  };
+
   // Get references to the upload files in message annotations format, see https://github.com/run-llama/chat-ui/blob/main/packages/chat-ui/src/hook/use-file.tsx#L56
   const annotations = getAnnotations();
 
@@ -69,6 +95,14 @@ export default function CustomChatInput() {
       <ChatInput.Form>
         <ChatInput.Field />
         <ChatInput.Upload onUpload={handleUploadFile} />
+        <button
+          onClick={handleMediaUpload}
+          className="p-2 hover:bg-gray-100 rounded-lg"
+          title="Process media"
+          type="button"
+        >
+          <Mic className="h-5 w-5" />
+        </button>
         <LlamaCloudSelector />
         <ChatInput.Submit
           disabled={
