@@ -21,7 +21,7 @@ ollama serve
 ollama pull llama3.2:1b
 ```
 
-4. Install PosgreSQL
+4. Install PosgreSQL version 16
     Follow instructions here: https://www.postgresql.org/download/
    
 6. Install pgvector
