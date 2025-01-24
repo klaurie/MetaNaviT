@@ -21,17 +21,11 @@ ollama serve
 ollama pull llama3.2:1b
 ```
 
-4. Install PosgreSQL version 16
-    Follow instructions here: https://www.postgresql.org/download/
-   
-6. Install pgvector
-    Follow Instructions here: https://github.com/pgvector/pgvector
+4. Download PostgreSQL 
 
-    In .env you may need to change the connection string based on your own configuration. The default user is postgres
-    and I just set my password to 'password' for ease of use right now.
+    Linux: 
 
-
-## Quick Start with Dev Container
+## Quick Start with Dev Container (Recommended)
 
 The easiest way to get started is using the dev container, which handles all dependencies except Ollama and Database dependencies:
 
@@ -41,9 +35,9 @@ The easiest way to get started is using the dev container, which handles all dep
 4. Click the green button in the bottom-left corner (or press `F1` and select "Dev Containers: Reopen in Container")
 5. Wait for the container to build - all dependencies will be automatically installed!
 
-## Manual Setup
+## Manual Setup (Alternative)
 
-If you prefer not to use the dev container, you'll need to:
+If you prefer not to use the dev container, you'll need to additionally:
 
 1. Setup the environment with poetry:
 ```bash
