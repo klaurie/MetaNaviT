@@ -1,23 +1,62 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 import os
 import logging
 from llama_index.vector_stores.postgres import PGVectorStore
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 import psycopg2
+from psycopg2 import sql
 
 logger = logging.getLogger("uvicorn")
 
 PGVECTOR_SCHEMA = "public"
 PGVECTOR_TABLE = "llamaindex_embedding"
 EMBEDDING_DIM = os.getenv("EMBEDDING_DIM", 1024)
+DATABASE_NAME = os.getenv("DB_NAME", "metanavit_db")
 
 vector_store: PGVectorStore = None
 
+def create_database():
+    original_conn_string = os.getenv("PG_CONNECTION_STRING")
+    if original_conn_string is None or original_conn_string == "":
+        raise ValueError("PG_CONNECTION_STRING environment variable is not set.")
 
+    # Remove the database name from the connection string to connect to the default database
+    parsed_url = urlparse(original_conn_string)
+    conn_string_without_db = urlunparse(parsed_url._replace(path="/postgres"))
+
+    conn = psycopg2.connect(conn_string_without_db)
+    conn.autocommit = True
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(f"SELECT 1 FROM pg_database WHERE datname = '{DATABASE_NAME}'")
+        exists = cursor.fetchone()
+        if not exists:
+            cursor.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier(DATABASE_NAME)))
+            logger.info(f"Database '{DATABASE_NAME}' created successfully.")
+
+            try:
+                cursor.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+                logger.info("Vector extension created or already exists.")
+            except Exception as e:
+                logger.error(f"Error creating vector extension: {e}")
+        else:
+            logger.info(f"Database '{DATABASE_NAME}' already exists.")
+    except Exception as e:
+        logger.error(f"Error creating database: {e}")
+    finally:
+        cursor.close()
+        conn.close()
 
 def get_vector_store():
     global vector_store
 
     if vector_store is None:
+        create_database()
+
         original_conn_string = os.environ.get("PG_CONNECTION_STRING")
         if original_conn_string is None or original_conn_string == "":
             raise ValueError("PG_CONNECTION_STRING environment variable is not set.")
@@ -32,6 +71,8 @@ def get_vector_store():
             original_scheme, "postgresql+asyncpg://"
         )
 
+        logger.info(conn_string)
+
         vector_store = PGVectorStore(
             connection_string=conn_string,
             async_connection_string=async_conn_string,
@@ -44,46 +85,20 @@ def get_vector_store():
     return vector_store
 
 
-def match_vector_dim(conn_string):
-    p = urlparse(conn_string)
-
-    pg_connection_dict = {
-        'dbname': p.path[1:],
-        'user': p.username,
-        'password': p.password,
-        'port': p.port,
-        'host': p.hostname
-    }
-    conn = psycopg2.connect(**pg_connection_dict)
+def create_vector_extension():
+    conn_string = os.environ.get("PG_CONNECTION_STRING")
+    if conn_string is None or conn_string == "":
+        raise ValueError("PG_CONNECTION_STRING environment variable is not set.")
+    
+    conn = psycopg2.connect(conn_string)
     conn.autocommit = True
     cursor = conn.cursor()
     
     try:
-        cursor.execute(f"""
-            SELECT column_name, data_type
-            FROM information_schema.columns
-            WHERE table_schema = '{PGVECTOR_SCHEMA}' AND table_name = '{PGVECTOR_TABLE}' AND column_name = 'embedding';
-        """)
-        result = cursor.fetchone()
-        if result:
-            current_dim = int(result[1].split('(')[1].strip(')'))
-            if current_dim != int(EMBEDDING_DIM):
-                logger.info(f"Current embedding dimension ({current_dim}) does not match expected dimension ({EMBEDDING_DIM}). Updating...")
-                cursor.execute(f"""
-                    ALTER TABLE {PGVECTOR_SCHEMA}.{PGVECTOR_TABLE}
-                    DROP COLUMN embedding;
-                """)
-                cursor.execute(f"""
-                    ALTER TABLE {PGVECTOR_SCHEMA}.{PGVECTOR_TABLE}
-                    ADD COLUMN embedding VECTOR({EMBEDDING_DIM});
-                """)
-                logger.info(f"Updated embedding dimension to {EMBEDDING_DIM}.")
-            else:
-                logger.info(f"Embedding dimension is already correct: {current_dim}.")
-        else:
-            logger.error("Embedding column not found in the table.")
+        cursor.execute("CREATE EXTENSION IF NOT EXISTS vector;")
+        logger.info("Vector extension created or already exists.")
     except Exception as e:
-        logger.error(f"Error ensuring correct vector dimension: {e}")
+        logger.error(f"Error creating vector extension: {e}")
     finally:
         cursor.close()
         conn.close()

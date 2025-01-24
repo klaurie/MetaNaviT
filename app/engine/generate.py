@@ -1,7 +1,8 @@
 # flake8: noqa: E402
 from dotenv import load_dotenv
 
-load_dotenv()
+# VSCode caches .env files somewhere, so we need to override the environment variables 
+load_dotenv(override=True)
 
 import logging
 import os
@@ -9,7 +10,7 @@ import psycopg2
 from psycopg2 import sql
 
 from app.engine.loaders import get_documents
-from app.engine.vectordb import get_vector_store, match_vector_dim
+from app.engine.vectordb import get_vector_store, create_vector_extension
 from app.settings import init_settings
 
 from llama_index.core.ingestion import DocstoreStrategy, IngestionPipeline
@@ -33,25 +34,6 @@ def get_doc_store():
         return SimpleDocumentStore()
 
 
-def create_vector_extension():
-    conn_string = os.environ.get("PG_CONNECTION_STRING")
-    if conn_string is None or conn_string == "":
-        raise ValueError("PG_CONNECTION_STRING environment variable is not set.")
-    
-    conn = psycopg2.connect(conn_string)
-    conn.autocommit = True
-    cursor = conn.cursor()
-    
-    try:
-        cursor.execute("CREATE EXTENSION IF NOT EXISTS vector;")
-        logger.info("Vector extension created or already exists.")
-    except Exception as e:
-        logger.error(f"Error creating vector extension: {e}")
-    finally:
-        cursor.close()
-        conn.close()
-
-
 def run_pipeline(docstore, vector_store, documents):
     logger.info(f"embedding model {Settings.embed_model}\n\n\n")
     pipeline = IngestionPipeline(
@@ -62,8 +44,6 @@ def run_pipeline(docstore, vector_store, documents):
             ),
             Settings.embed_model,
         ],
-        docstore=docstore,
-        docstore_strategy=DocstoreStrategy.UPSERTS_AND_DELETE,  # type: ignore
         vector_store=vector_store,
     )
 
@@ -85,16 +65,18 @@ def generate_datasource():
     init_settings()
     logger.info("Generate index for the provided data")
 
-    # Ensure the vector extension is created
-    create_vector_extension()
-
     # Get the stores and documents or create new ones
     documents = get_documents()
+    
     # Set private=false to mark the document as public (required for filtering)
     for doc in documents:
         doc.metadata["private"] = "false"
+
     docstore = get_doc_store()
     vector_store = get_vector_store()
+
+    #logger.info(f"Document store: {docstore}")
+    #logger.info(f"Vector store: {vector_store}")
 
     # Run the ingestion pipeline
     _ = run_pipeline(docstore, vector_store, documents)
