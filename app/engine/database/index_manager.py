@@ -2,6 +2,7 @@ import logging
 import psycopg2
 from psycopg2 import sql
 import os
+import time
 from urllib.parse import urlparse, urlunparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
@@ -20,6 +21,21 @@ class IndexManager:
         Args:
             conn_string: The connection string for the database.
         """
+        # Default system paths to skip crawling
+        self.blocked_dirs = {
+            '/proc',
+            '/sys',
+            '/run',
+            '/dev',
+            '/tmp',
+            '/var/cache',
+            '/var/tmp',
+            '/anaconda3'
+        }
+
+        # during testing processing hidden takes forever so im going to block it for now
+        self.block_hidden_files = True
+
         if conn_string is None:
             conn_string = os.getenv("PSYCOPG2_CONNECTION_STRING")
             if conn_string is None:
@@ -121,6 +137,42 @@ class IndexManager:
             self.conn.rollback()
             print(f"Error creating directory_processing_results table: {e}")
 
+    def _is_path_blocked(self, path: str) -> bool:
+            """
+        Check if a path should be blocked from processing.
+        Uses pathlib for cross-platform compatibility (at least it should).
+            
+            Args:
+                path: Path to check
+            
+            Returns:
+                bool: True if path should be blocked
+            """
+            # Conver string to Path object for better handling
+            path_obj = Path(path).resolve() #  Resolve eliminates symlinks
+
+            # Check if path is hidden and block if feature is enabled
+            if self.block_hidden_files and path_obj.name.startswith('.'):
+                logger.debug(f"Blocking hidden path: {path_obj}")
+                return True
+            
+            # Check blocked patterns
+            for pattern in self.blocked_dirs:
+                pattern_obj = Path(pattern) # COnvert to Path for consistent comparison
+                
+                # Handle wildcard patterns
+                if str(pattern_obj).endswith('/*'):
+                    pattern_base = pattern_obj.parent
+                    if path_obj == pattern_base or pattern_base in path_obj.parents:
+                        logger.debug(f"Blocking matched pattern {pattern}: {path_obj}")
+                        return True
+                # Handle contains and ends with matches
+                elif str(pattern_obj) in str(path_obj) or str(path_obj).endswith(str(pattern_obj)):
+                    logger.debug(f"Blocking pattern match {pattern}: {path_obj}")
+                    return True
+            
+            return False
+
     def update_indexed_file(self, file_path, process_name, process_version, new_data):
         """
         Updates the processed data for a specific file in the indexed_files table.
@@ -131,7 +183,21 @@ class IndexManager:
             process_version: Processing strategy version.
             new_data: New binary data to update the file with.
         """
-        pass
+        try:
+            with self.conn.cursor() as cur:
+                query = sql.SQL("""
+                    UPDATE indexed_files
+                    SET data = %s, mtime = EXTRACT(EPOCH FROM NOW())::BIGINT
+                    WHERE file_path = %s
+                    AND process_name = %s
+                    AND process_version = %s;
+                """)
+                cur.execute(query, (new_data, file_path, process_name, process_version))
+                self.conn.commit()
+                print("File data updated successfully.")
+        except Exception as e:
+            self.conn.rollback()
+            print(f"Error updating file data: {e}")
 
     def update_directory_processing_result(self, dir_path, process_name, process_version, new_is_applicable):
         """
@@ -143,7 +209,21 @@ class IndexManager:
             process_version: Processing strategy version.
             new_is_applicable: New value for the 'is_applicable' field (boolean).
         """
-        pass
+        try:
+            with self.conn.cursor() as cur:
+                query = sql.SQL("""
+                    UPDATE directory_processing_results
+                    SET is_applicable = %s, mtime = EXTRACT(EPOCH FROM NOW())::BIGINT
+                    WHERE dir_path = %s
+                    AND process_name = %s
+                    AND process_version = %s;
+                """)
+                cur.execute(query, (new_is_applicable, dir_path, process_name, process_version))
+                self.conn.commit()
+                print("Directory processing result updated successfully.")
+        except Exception as e:
+            self.conn.rollback()
+            print(f"Error updating directory processing result: {e}")
 
     def insert_indexed_file(self, file_path, process_name, process_version, mtime, data):
         """ Inserts a new record into the indexed_files table """
@@ -220,10 +300,123 @@ class IndexManager:
         
         Args:
             directory: The root directory to start crawling from. Default is root directory.
+        
+        Returns:
 
         """
         pass
 
+    def crawl_file_system(self, dir_path, max_workers=4, batch_size=1000):
+        """
+        Crawls a directory recursively using multiple threads, yielding results in batches.
+
+        Note: Threads are only created for first level directories, so right now that feature is useless
+              if there are no subdirectories in the root folder.
+        
+        Args:
+            dir_path: The root directory to start crawling from.
+            max_workers: Maximum number of threads to use.
+            batch_size: Number of files to accumulate before yielding.
+        
+        Yields:
+            Lists of dictionaries containing file information:
+            - pathname: str
+            - modified_time: float
+            - file_type: str
+        Raises:
+            OSError: If directory access fails
+        """
+        result_queue = Queue()
+        batch_lock = Lock()
+        current_batch =[]
+
+        def add_to_batch(item):
+            """current_batch is not thread-safe, so we need to use a lock to protect it"""
+            nonlocal current_batch
+            with batch_lock:
+                # If the batch is full, wait for it to be processed
+                while len(current_batch) >= batch_size:
+                    # this should be fine since we are only adding one item at a time
+                    batch_lock.release()  # Release lock temporarily to avoid blocking other threads
+                    time.sleep(0.1)  # Sleep a short time before retrying
+                    batch_lock.acquire()  # Reacquire the lock
+
+                current_batch.append(item)
+
+                # if batch is full yeild results to be processed
+                if len(current_batch) >= batch_size:
+                    batch_to_yield = current_batch
+                    current_batch = []
+                    return batch_to_yield
+            return None
+        
+        def process_directory(directory: str):
+            try:
+                for root, dirs, files in os.walk(directory):
+                    # Filter out blocked directories
+                    dirs[:] = [d for d in dirs if not self._is_path_blocked(os.path.join(root, d))]
+                
+                    for name in files:
+                        file_path = os.path.join(root, name)
+                        
+                        # Skip blocked files
+                        if self._is_path_blocked(file_path):
+                            logger.debug(f"Skipping blocked file: {file_path}")
+                            continue
+                        try:
+                            modified_time = os.path.getmtime(file_path)
+                            file_type = os.path.splitext(name)[1]
+                            
+                            file_info = {
+                                "pathname": file_path,
+                                "modified_time": modified_time,
+                                "file_type": file_type
+                            }
+                            # Thread-safe addition to batch
+                            if batch := add_to_batch(file_info):
+                                result_queue.put(batch)
+                        except OSError as e:
+                            logger.error(f"Error processing file {file_path}: {e}")
+            except Exception as e:
+                logger.error(f"Error processing directory {directory}: {e}")
+
+        # Get immediate subdirectories
+        try:
+            # Get immediate subdirectories, filtering blocked ones
+            subdirs = [os.path.join(dir_path, d) for d in os.listdir(dir_path) 
+                    if os.path.isdir(os.path.join(dir_path, d)) 
+                    and not self._is_path_blocked(os.path.join(dir_path, d))]
+            print(subdirs)
+            logger.info(f"Found {subdirs} in {dir_path}")
+        except OSError as e:
+            logger.error(f"Error accessing directory {dir_path}: {e}")
+            return
+
+        # Process directories in parallel
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            """
+             Execute process_directory for each subdirectory and current directory
+             The Future objects allow us to check task status and get results
+             This is nice because the object is created even when it's not immediately able to run
+            """
+            futures = [executor.submit(process_directory, d) for d in subdirs]
+            futures.append(executor.submit(process_directory, dir_path))
+            
+            # Process and yield batches as they complete
+            while futures or not result_queue.empty():
+                while not result_queue.empty():
+                    yield result_queue.get_nowait()
+                
+                done, futures = futures[:], []
+                for future in as_completed(done):
+                    # check for any errors that occurred during processing
+                    if future.exception():
+                        raise future.exception()
+
+        # Yield any remaining files
+        with batch_lock:
+            if current_batch:
+                yield current_batch
 
     def close(self):
         """ Close the connection to the database """
@@ -231,5 +424,11 @@ class IndexManager:
 
 
 if __name__=='__main__':
+    from pathlib import Path
     index_manager = IndexManager()
+    home_dir = os.path.expanduser('~')
+    logger.info(f"Starting filesystem crawl from: {home_dir}")
+    for batch in index_manager.crawl_file_system(home_dir):
+        for file in batch:
+            print(file)
     index_manager.close()
