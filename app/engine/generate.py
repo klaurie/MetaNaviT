@@ -10,7 +10,8 @@ import psycopg2
 from psycopg2 import sql
 
 from app.engine.loaders import get_documents
-from app.engine.vectordb import get_vector_store, create_vector_extension
+from app.engine.database.vector_store import get_vector_store, create_vector_extension
+from app.engine.database.dir_processing import create_dir_processing_table
 from app.settings import init_settings
 
 from llama_index.core.ingestion import DocstoreStrategy, IngestionPipeline
@@ -62,6 +63,7 @@ def persist_storage(docstore, vector_store):
 
     
 def generate_datasource():
+    create_dir_processing_table()
     init_settings()
     logger.info("Generate index for the provided data")
 
@@ -85,6 +87,12 @@ def generate_datasource():
     persist_storage(docstore, vector_store)
 
     logger.info("Finished generating the index")
+
+
+
+def print_all_env_variables():
+    for key, value in os.environ.items():
+        print(f"{key}={value}")
 
 
 if __name__ == "__main__":
