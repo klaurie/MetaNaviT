@@ -21,13 +21,19 @@ ollama serve
 ollama pull llama3.2:1b
 ```
 
-4. Download PostgreSQL 
+4. Install PosgreSQL
+    Follow instructions here: https://www.postgresql.org/download/
+   
+6. Install pgvector
+    Follow Instructions here: https://github.com/pgvector/pgvector
 
-    Linux: 
+    In .env you may need to change the connection string based on your own configuration. The default user is postgres
+    and I just set my password to 'password' for ease of use right now.
 
-## Quick Start with Dev Container (Recommended)
 
-The easiest way to get started is using the dev container, which handles all dependencies except Ollama:
+## Quick Start with Dev Container
+
+The easiest way to get started is using the dev container, which handles all dependencies except Ollama and Database dependencies:
 
 1. Install [Docker](https://www.docker.com/products/docker-desktop/) and [VS Code](https://code.visualstudio.com/)
 2. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) in VS Code
