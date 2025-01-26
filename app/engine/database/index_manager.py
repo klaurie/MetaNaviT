@@ -4,6 +4,7 @@ from psycopg2 import sql
 import os
 import time
 from urllib.parse import urlparse, urlunparse
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 from queue import Queue
@@ -304,7 +305,11 @@ class IndexManager:
         Returns:
 
         """
-        pass
+        home_dir = os.path.expanduser('~')
+        logger.info(f"Starting filesystem crawl from: {home_dir}")
+        for batch in self.crawl_file_system(home_dir):
+            for file in batch:
+                print(file)
 
     def crawl_file_system(self, dir_path, max_workers=4, batch_size=1000):
         """
@@ -424,11 +429,5 @@ class IndexManager:
 
 
 if __name__=='__main__':
-    from pathlib import Path
     index_manager = IndexManager()
-    home_dir = os.path.expanduser('~')
-    logger.info(f"Starting filesystem crawl from: {home_dir}")
-    for batch in index_manager.crawl_file_system(home_dir):
-        for file in batch:
-            print(file)
     index_manager.close()
