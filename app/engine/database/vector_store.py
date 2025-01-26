@@ -14,7 +14,7 @@ logger = logging.getLogger("uvicorn")
 PGVECTOR_SCHEMA = "public"
 PGVECTOR_TABLE = "llamaindex_embedding"
 EMBEDDING_DIM = os.getenv("EMBEDDING_DIM", 1024)
-DATABASE_NAME = os.getenv("DB_NAME", "metanavit_db")
+DATABASE_NAME = os.getenv("DB_NAME", "metanavit")
 
 vector_store: PGVectorStore = None
 
@@ -30,7 +30,7 @@ def create_database():
     conn = psycopg2.connect(conn_string_without_db)
     conn.autocommit = True
     cursor = conn.cursor()
-
+    
     try:
         cursor.execute(f"SELECT 1 FROM pg_database WHERE datname = '{DATABASE_NAME}'")
         exists = cursor.fetchone()
