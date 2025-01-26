@@ -174,7 +174,7 @@ class IndexManager:
             
             return False
 
-    def update_indexed_file(self, file_path, process_name, process_version, new_data):
+    def update_indexed_file(self, file_path, process_name, process_version, new_data, mtime):
         """
         Updates the processed data for a specific file in the indexed_files table.
         
@@ -188,19 +188,19 @@ class IndexManager:
             with self.conn.cursor() as cur:
                 query = sql.SQL("""
                     UPDATE indexed_files
-                    SET data = %s, mtime = EXTRACT(EPOCH FROM NOW())::BIGINT
+                    SET data = %s, mtime = %s
                     WHERE file_path = %s
                     AND process_name = %s
                     AND process_version = %s;
                 """)
-                cur.execute(query, (new_data, file_path, process_name, process_version))
+                cur.execute(query, (new_data, mtime, file_path, process_name, process_version))
                 self.conn.commit()
                 print("File data updated successfully.")
         except Exception as e:
             self.conn.rollback()
             print(f"Error updating file data: {e}")
 
-    def update_directory_processing_result(self, dir_path, process_name, process_version, new_is_applicable):
+    def update_directory_processing_result(self, dir_path, process_name, process_version, new_is_applicable, mtime):
         """
         Updates the 'is_applicable' field for a specific directory in the directory_processing_results table.
         
@@ -209,22 +209,23 @@ class IndexManager:
             process_name: Processing strategy name.
             process_version: Processing strategy version.
             new_is_applicable: New value for the 'is_applicable' field (boolean).
+            mtime: Modified time of the directory (epoch timestamp).
         """
         try:
             with self.conn.cursor() as cur:
                 query = sql.SQL("""
                     UPDATE directory_processing_results
-                    SET is_applicable = %s, mtime = EXTRACT(EPOCH FROM NOW())::BIGINT
+                    SET is_applicable = %s, mtime = %s
                     WHERE dir_path = %s
                     AND process_name = %s
                     AND process_version = %s;
                 """)
-                cur.execute(query, (new_is_applicable, dir_path, process_name, process_version))
+                cur.execute(query, (new_is_applicable, mtime, dir_path, process_name, process_version))
                 self.conn.commit()
-                print("Directory processing result updated successfully.")
+                logger.info("Directory processing result updated successfully.")
         except Exception as e:
             self.conn.rollback()
-            print(f"Error updating directory processing result: {e}")
+            logger.error(f"Error updating directory processing result: {e}")
 
     def insert_indexed_file(self, file_path, process_name, process_version, mtime, data):
         """ Inserts a new record into the indexed_files table """
@@ -260,6 +261,103 @@ class IndexManager:
         except Exception as e:
             self.conn.rollback()
             print(f"Error inserting directory processing result: {e}")
+    
+    def batch_insert_indexed_files(self, batch):
+        """
+        Insert a batch of files into indexed_files table.
+        
+        Args:
+            batch: List of dictionaries containing file information.
+                Each dictionary must have:
+                {
+                    'pathname': str,       # Full path to the file
+                    'modified_time': int,  # File modification timestamp
+                    'process_name': str,   # Name of the processing strategy (optional, default='default')
+                    'process_version': str, # Version of process (optional, default='1.0')
+                    'data': bytes          # Processed file data (optional, default=None)
+                }
+        
+        Raises:
+            ValueError: If required fields are missing
+            psycopg2.Error: For database related errors
+        """
+        try:
+            with self.conn.cursor() as cur:
+                # Prepare batch data
+                # TODO: Remove default values. I only need it while I have not implemented the setup fully
+                values = [(
+                    file['pathname'],
+                    file.get('process_name', 'default'),
+                    file.get('process_version', '1.0'),
+                    int(file['modified_time']),
+                    file.get('data', None)
+                ) for file in batch]
+                
+                # Execute batch insert, if those records already exist, update just the modified time and data
+                cur.executemany("""
+                    INSERT INTO indexed_files 
+                    (file_path, process_name, process_version, mtime, data)
+                    VALUES (%s, %s, %s, %s, %s)
+                    ON CONFLICT (file_path, process_name, process_version) 
+                    DO UPDATE SET 
+                        mtime = EXCLUDED.mtime,
+                        data = EXCLUDED.data;
+                """, values)
+                
+                self.conn.commit()
+                logger.info(f"Inserted batch of {len(batch)} files")
+                
+        except Exception as e:
+            self.conn.rollback()
+            logger.error(f"Error in batch insert: {e}")
+            raise
+
+    def batch_insert_dir_processing_results(self, batch):
+        """
+        Insert a batch of directories into directory_processing_results table.
+        
+        Args:
+            batch: List of dictionaries containing file information with already processed data
+               Each dictionary must have:
+               {
+                   'pathname': str,        # Full path to the file
+                   'modified_time': int,   # File modification timestamp 
+                   'file_type': str,       # File extension with dot (e.g., '.txt')
+                   'process_name': str,    # Name of the processing strategy (optional, default='default')
+                   'process_version': str, # Version of process (optional, default='1.0')
+                   'is_applicable': bool   # Whether the file is applicable for the process
+               }
+        """
+        try:
+            with self.conn.cursor() as cur:
+                # Prepare batch data
+                # TODO: Remove default values. I only need it while I have not implemented the setup fully
+                values = [(
+                    dir['pathname'],
+                    dir.get('process_name', 'default'),
+                    dir.get('process_version', '1.0'),
+                    dir.get('is_applicable', False),
+                    int(dir['modified_time'])
+                ) for dir in batch]
+                
+                # Execute batch insert, if those records already exist, update just the modified time and is_applicable
+                cur.executemany("""
+                    INSERT INTO directory_processing_results
+                    (dir_path, process_name, process_version, is_applicable, mtime)
+                    VALUES (%s, %s, %s, %s, %s)
+                    ON CONFLICT (dir_path, process_name, process_version) 
+                    DO UPDATE SET 
+                        is_applicable = EXCLUDED.is_applicable,
+                        mtime = EXCLUDED.mtime;
+                """, values)
+                
+                self.conn.commit()
+                logger.info(f"Inserted batch of {len(batch)} directories")
+                
+        except Exception as e:
+            self.conn.rollback()
+            logger.error(f"Error in batch insert: {e}")
+            raise
 
     def delete_indexed_file(self, file_path, process_name, process_version):
         """ Deletes a record from the indexed_files table """
@@ -301,15 +399,17 @@ class IndexManager:
         
         Args:
             directory: The root directory to start crawling from. Default is root directory.
-        
-        Returns:
-
+    
         """
-        home_dir = os.path.expanduser('~')
-        logger.info(f"Starting filesystem crawl from: {home_dir}")
-        for batch in self.crawl_file_system(home_dir):
-            for file in batch:
-                print(file)
+
+        # for testing im just going to add 1 batch
+        count = 0
+        for batch in self.crawl_file_system(dir_path):
+            if count == 0:
+                self.batch_insert_indexed_files(batch)
+                count += 1  
+                logger.info(f"Processed batch of {len(batch)} files")
+            
 
     def crawl_file_system(self, dir_path, max_workers=4, batch_size=1000):
         """
@@ -430,4 +530,6 @@ class IndexManager:
 
 if __name__=='__main__':
     index_manager = IndexManager()
+    home_dir = os.path.expanduser('~')
+    index_manager.update_filesystem_info(home_dir)
     index_manager.close()
