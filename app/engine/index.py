@@ -11,7 +11,7 @@ from llama_index.core.storage import StorageContext
 from llama_index.core.indices import VectorStoreIndex
 from pydantic import BaseModel
 
-from app.engine.vectordb import get_vector_store
+from app.engine.database.vector_store import get_vector_store
 
 
 logger = logging.getLogger("uvicorn")
@@ -31,8 +31,6 @@ class IndexConfig(BaseModel):
                 }
             }
         }
-
-
 
 
 def get_index(config: IndexConfig = None):

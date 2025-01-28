@@ -401,15 +401,17 @@ class IndexManager:
             directory: The root directory to start crawling from. Default is root directory.
     
         """
-
-        # for testing im just going to add 1 batch
+        # Process files in batches
+        # for testing im just going to add 1 batch to the database
         count = 0
         for batch in self.crawl_file_system(dir_path):
             if count == 0:
                 self.batch_insert_indexed_files(batch)
                 count += 1  
                 logger.info(f"Processed batch of {len(batch)} files")
+        # TODO: add handling for files
             
+        
 
     def crawl_file_system(self, dir_path, max_workers=4, batch_size=1000):
         """
@@ -456,6 +458,7 @@ class IndexManager:
             return None
         
         def process_directory(directory: str):
+            # TODO: Add a check to see if the directory has already been processed
             try:
                 for root, dirs, files in os.walk(directory):
                     # Filter out blocked directories
