@@ -1,3 +1,18 @@
+"""
+Document Ingestion Pipeline Module
+
+Handles the process of:
+1. Loading documents from sources
+2. Setting up document storage
+3. Creating embedding pipeline
+4. Processing documents into vector store
+
+Key Components:
+- Document store initialization
+- Vector store setup
+- Ingestion pipeline configuration
+- Environment-based settings
+"""
 # flake8: noqa: E402
 from dotenv import load_dotenv
 
@@ -11,7 +26,7 @@ from psycopg2 import sql
 
 from app.engine.loaders import get_documents
 from app.engine.database.vector_store import get_vector_store, create_vector_extension
-from app.engine.database.dir_processing import create_dir_processing_table
+
 from app.settings import init_settings
 
 from llama_index.core.ingestion import DocstoreStrategy, IngestionPipeline
@@ -27,6 +42,15 @@ logger = logging.getLogger()
 STORAGE_DIR = os.getenv("STORAGE_DIR", "storage")
 
 def get_doc_store():
+    """
+    Initialize document store from storage directory or memory.
+    
+    Returns:
+        SimpleDocumentStore: Initialized document store
+        
+    Note:
+        Falls back to in-memory store if storage directory doesn't exist
+    """
     # If the storage directory is there, load the document store from it.
     # If not, set up an in-memory document store since we can't load from a directory that doesn't exist.
     if os.path.exists(STORAGE_DIR):
@@ -36,6 +60,22 @@ def get_doc_store():
 
 
 def run_pipeline(docstore, vector_store, documents):
+    """
+    Run document ingestion pipeline with configured transformations.
+    
+    Args:
+        docstore: Document storage backend
+        vector_store: Vector database connection
+        documents: List of documents to process
+        
+    Returns:
+        List of processed document nodes
+        
+    Steps:
+        1. Split documents into chunks
+        2. Generate embeddings
+        3. Store in vector database
+    """
     logger.info(f"embedding model {Settings.embed_model}\n\n\n")
     pipeline = IngestionPipeline(
         transformations=[
@@ -63,7 +103,6 @@ def persist_storage(docstore, vector_store):
 
     
 def generate_datasource():
-    create_dir_processing_table()
     init_settings()
     logger.info("Generate index for the provided data")
 

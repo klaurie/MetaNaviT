@@ -1,3 +1,19 @@
+"""
+Code Artifact Generation Module
+
+Provides tools and models for generating code artifacts using LLM capabilities.
+Supports multiple project templates and handles dependency management.
+
+Key Features:
+- Template-based code generation (Jupyter, Next.js, Vue, Streamlit, Gradio)
+- Automatic dependency detection and installation
+- Structured output via Pydantic models
+- LlamaIndex integration for LLM interaction
+
+Dependencies:
+- llama_index: For LLM integration and tool registration
+- pydantic: For data validation and schema definition
+"""
 import logging
 from typing import Dict, List, Optional
 
@@ -7,8 +23,8 @@ from llama_index.core.tools import FunctionTool
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
-
-# Prompt based on https://github.com/e2b-dev/ai-artifacts
+# Template-based code generation prompt
+# Adapted from e2b-dev/ai-artifacts for structured code generation on https://github.com/e2b-dev/ai-artifacts
 CODE_GENERATION_PROMPT = """You are a skilled software engineer. You do not make mistakes. Generate an artifact. You can install additional dependencies. You can use one of the following templates:
 
 1. code-interpreter-multilang: "Runs code as a Jupyter notebook cell. Strong data analysis angle. Can use complex visualisation to explain results.". File: script.py. Dependencies installed: python, jupyter, numpy, pandas, matplotlib, seaborn, plotly. Port: none.
@@ -74,6 +90,12 @@ class CodeGeneratorTool:
     ) -> Dict:
         """Generate a code artifact based on the provided input.
 
+        Flow:
+        1. Construct message with query and optional existing code
+        2. Add any sandbox files to context
+        3. Use structured LLM to generate CodeArtifact
+        4. Convert response to dictionary format
+
         Args:
             query (str): A description of the application you want to build.
             sandbox_files (Optional[List[str]], optional): A list of sandbox file paths. Defaults to None. Include these files if the code requires them.
@@ -83,21 +105,28 @@ class CodeGeneratorTool:
             Dict: A dictionary containing information about the generated artifact.
         """
 
+        # Construct user message with existing code if provided
         if old_code:
             user_message = f"{query}\n\nThe existing code is: \n```\n{old_code}\n```"
         else:
             user_message = query
+
+        # Add sandbox files to message if provided
         if sandbox_files:
             user_message += f"\n\nThe provided files are: \n{str(sandbox_files)}"
 
+        # Prepare chat messages for LLM
         messages: List[ChatMessage] = [
             ChatMessage(role="system", content=CODE_GENERATION_PROMPT),
             ChatMessage(role="user", content=user_message),
         ]
         try:
+            # Get structured LLM that outputs CodeArtifact
             sllm = Settings.llm.as_structured_llm(output_cls=CodeArtifact)  # type: ignore
             response = sllm.chat(messages)
             data: CodeArtifact = response.raw
+
+            # Convert to dict and add sandbox files if present
             data_dict = data.model_dump()
             if sandbox_files:
                 data_dict["files"] = sandbox_files
@@ -108,4 +137,5 @@ class CodeGeneratorTool:
 
 
 def get_tools(**kwargs):
+    """Register CodeGeneratorTool as a LlamaIndex function tool"""
     return [FunctionTool.from_defaults(fn=CodeGeneratorTool().artifact)]

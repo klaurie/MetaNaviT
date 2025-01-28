@@ -1,66 +1,60 @@
+"""
+File Document Loader Module
+
+Handles loading documents from local filesystem using LlamaIndex's SimpleDirectoryReader.
+Provides error handling for common issues like empty directories.
+
+Note:
+- This will most likely be moved around or obsolete with the addtion of the IndexManager I'm (Kaitlyn) working on.
+"""
+
 import os
 import logging
 from typing import Dict
-from llama_parse import LlamaParse
 from pydantic import BaseModel
 
+# Currently DATA_DIR is only /data for testing
+# TODO: integrate with index manager
 from app.config import DATA_DIR
 
 logger = logging.getLogger(__name__)
 
 
 class FileLoaderConfig(BaseModel):
-    use_llama_parse: bool = False
-
-
-def llama_parse_parser():
-    if os.getenv("LLAMA_CLOUD_API_KEY") is None:
-        raise ValueError(
-            "LLAMA_CLOUD_API_KEY environment variable is not set. "
-            "Please set it in .env file or in your shell environment then run again!"
-        )
-    parser = LlamaParse(
-        result_type="markdown",
-        verbose=True,
-        language="en",
-        ignore_errors=False,
-    )
-    return parser
-
-
-def llama_parse_extractor() -> Dict[str, LlamaParse]:
-    from llama_parse.utils import SUPPORTED_FILE_TYPES
-
-    parser = llama_parse_parser()
-    return {file_type: parser for file_type in SUPPORTED_FILE_TYPES}
+    """Configuration model for file loading parameters"""
+    pass  # Currently unused but we might want configuration options in the future
 
 
 def get_file_documents(config: FileLoaderConfig):
+    """
+    Load documents from configured data directory.
+    
+    Uses SimpleDirectoryReader with settings:
+    - recursive: True (process subdirectories)
+    - filename_as_id: True (use filenames as document IDs)
+    - raise_on_error: True (fail on invalid files)
+    
+    Returns:
+        List of loaded documents, or empty list if directory is empty
+    
+    Raises:
+        Exception: For any errors except empty directory
+    """
     from llama_index.core.readers import SimpleDirectoryReader
 
     try:
-        file_extractor = None
-        if config.use_llama_parse:
-            # LlamaParse is async first,
-            # so we need to use nest_asyncio to run it in sync mode
-            import nest_asyncio
-
-            nest_asyncio.apply()
-
-            file_extractor = llama_parse_extractor()
         reader = SimpleDirectoryReader(
             DATA_DIR,
             recursive=True,
             filename_as_id=True,
-            raise_on_error=True,
-            file_extractor=file_extractor,
+            raise_on_error=True
         )
         return reader.load_data()
     except Exception as e:
         import sys
         import traceback
 
-        # Catch the error if the data dir is empty
+        # Catch if the data directory is empty
         # and return as empty document list
         _, _, exc_traceback = sys.exc_info()
         function_name = traceback.extract_tb(exc_traceback)[-1].name
