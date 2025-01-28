@@ -1,2 +1,5 @@
 file:
-  use_llama_parse: false
+  # none at the moment
+db:
+  # connection: connection string
+  # queries: list of queries to run

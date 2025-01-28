@@ -1,57 +1,44 @@
+"""
+Chat Configuration Router Module
+
+Provides API endpoints for retrieving chat interface configuration:
+- Conversation starters/suggested questions
+- Chat interface settings
+- Environment-based customization
+"""
+
 import logging
 import os
 
 from fastapi import APIRouter, HTTPException
-
 from app.api.routers.models import ChatConfig
 
+# Initialize router with prefix handled by main app
 config_router = r = APIRouter()
 
+# Configure logging
 logger = logging.getLogger("uvicorn")
-
-
-def _is_llama_cloud_service_configured():
-    try:
-        from app.engine.service import (
-            LLamaCloudFileService,  # type: ignore # noqa: F401
-        )
-
-        return True
-    except ImportError:
-        return False
-
-
-async def chat_llama_cloud_config():
-    from app.engine.service import LLamaCloudFileService  # type: ignore
-
-    if not os.getenv("LLAMA_CLOUD_API_KEY"):
-        raise HTTPException(
-            status_code=500, detail="LlamaCloud API KEY is not configured"
-        )
-    projects = LLamaCloudFileService.get_all_projects_with_pipelines()
-    pipeline = os.getenv("LLAMA_CLOUD_INDEX_NAME")
-    project = os.getenv("LLAMA_CLOUD_PROJECT_NAME")
-    pipeline_config = None
-    if pipeline and project:
-        pipeline_config = {
-            "pipeline": pipeline,
-            "project": project,
-        }
-    return {
-        "projects": projects,
-        "pipeline": pipeline_config,
-    }
-
-
-if _is_llama_cloud_service_configured():
-    logger.info("LlamaCloud is configured. Adding /config/llamacloud route.")
-    r.add_api_route("/llamacloud", chat_llama_cloud_config, methods=["GET"])
-
 
 @r.get("")
 async def chat_config() -> ChatConfig:
+    """
+    Get chat interface configuration.
+    
+    Reads CONVERSATION_STARTERS from environment:
+    - Each line becomes a starter question
+    - Empty/missing env var means no starters
+    - Whitespace is stripped from questions
+    
+    Returns:
+        ChatConfig: Configuration including starter questions
+    """
+    # Initialize starters as None (optional field)
     starter_questions = None
+    
+    # Get starters from environment if configured
     conversation_starters = os.getenv("CONVERSATION_STARTERS")
     if conversation_starters and conversation_starters.strip():
+        # Split on newlines to create question list
         starter_questions = conversation_starters.strip().split("\n")
+        
     return ChatConfig(starter_questions=starter_questions)
