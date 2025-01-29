@@ -7,7 +7,7 @@ import {
 import { JSONValue } from "ai";
 import { useMemo } from "react";
 import { Artifact, CodeArtifact } from "./artifact";
-import { WeatherCard, WeatherData } from "./weather-card";
+
 
 export function ToolAnnotations({ message }: { message: Message }) {
   // TODO: This is a bit of a hack to get the artifact version. better to generate the version in the tool call and
@@ -49,9 +49,6 @@ function ChatTools({
   }
 
   switch (toolCall.name) {
-    case "get_weather_information":
-      const weatherData = toolOutput.output as unknown as WeatherData;
-      return <WeatherCard data={weatherData} />;
     case "artifact":
       return (
         <Artifact

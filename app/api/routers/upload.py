@@ -1,3 +1,6 @@
+"""
+File Upload Router Module
+"""
 import logging
 from typing import Any
 
@@ -13,6 +16,12 @@ logger = logging.getLogger("uvicorn")
 
 
 class FileUploadRequest(BaseModel):
+    """
+    File upload request structure:
+    - base64: Encoded file content
+    - name: Original filename
+    - params: Optional processing parameters
+    """
     base64: str
     name: str
     params: Any = None
@@ -21,7 +30,10 @@ class FileUploadRequest(BaseModel):
 @r.post("")
 def upload_file(request: FileUploadRequest) -> DocumentFile:
     """
-    To upload a private file from the chat UI.
+    Process private file uploads from chat UI.
+
+    Raises:
+        HTTPException: For processing errors
     """
     try:
         logger.info(f"Processing file: {request.name}")

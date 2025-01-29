@@ -2,7 +2,6 @@
 
 import { ChatInput, useChatUI, useFile } from "@llamaindex/chat-ui";
 import { DocumentInfo, ImagePreview } from "@llamaindex/chat-ui/widgets";
-import { LlamaCloudSelector } from "./custom/llama-cloud-selector";
 import { useClientConfig } from "./hooks/use-config";
 
 export default function CustomChatInput() {
@@ -69,7 +68,6 @@ export default function CustomChatInput() {
       <ChatInput.Form>
         <ChatInput.Field />
         <ChatInput.Upload onUpload={handleUploadFile} />
-        <LlamaCloudSelector />
         <ChatInput.Submit
           disabled={
             isLoading || (!input.trim() && files.length === 0 && !imageUrl)
