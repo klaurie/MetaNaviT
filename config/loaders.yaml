@@ -1,5 +1,5 @@
 file:
   # none at the moment
-db:
+#db:
   # connection: connection string
   # queries: list of queries to run

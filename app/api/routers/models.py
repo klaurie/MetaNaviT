@@ -1,3 +1,27 @@
+"""
+Data Models Module
+
+Contains Pydantic models for:
+1. File Handling
+   - Document annotations
+   - File metadata
+   - URL management
+   
+2. Chat System
+   - Message structure
+   - Chat history
+   - Role management
+   
+3. Source Management
+   - Node tracking
+   - URL construction
+   - Metadata handling
+   
+4. Configuration
+   - Chat settings
+   - Starter questions
+"""
+
 import logging
 import os
 from typing import Any, Dict, List, Optional
@@ -12,14 +36,23 @@ from app.services.file import DocumentFile
 
 logger = logging.getLogger("uvicorn")
 
-
 class AnnotationFileData(BaseModel):
+    """
+    Handles file metadata and content preparation for LLM.
+    Manages file URLs and paths for different contexts.
+
+    Usage:
+    - Stores a list of `DocumentFile` objects containing metadata.
+    - Generates LLM-friendly file descriptions via `to_llm_content()`.
+    - Constructs accessible file URLs if `FILESERVER_URL_PREFIX` is set.
+    """
     files: List[DocumentFile] = Field(
         default=[],
-        description="List of files",
+        description="List of files with metadata",
     )
 
     class Config:
+        # Example shows base64 encoded file content
         json_schema_extra = {
             "example": {
                 "files": [
@@ -34,6 +67,10 @@ class AnnotationFileData(BaseModel):
 
     @staticmethod
     def _get_url_llm_content(file: DocumentFile) -> Optional[str]:
+        """
+        Constructs file URL for LLM context
+        This is needed for remote file servers
+        """
         url_prefix = os.getenv("FILESERVER_URL_PREFIX")
         if url_prefix:
             if file.url is not None:
@@ -50,16 +87,23 @@ class AnnotationFileData(BaseModel):
     @classmethod
     def _get_file_content(cls, file: DocumentFile) -> str:
         """
-        Construct content for LLM from the file metadata
+        Builds complete file context including for the LLM:
+        - File name
+        - URL if available
+        - Document references
+        - File paths (sandbox and local)
         """
         default_content = f"=====File: {file.name}=====\n"
+        
         # Include file URL if it's available
         url_content = cls._get_url_llm_content(file)
         if url_content:
             default_content += url_content
+        
         # Include document IDs if it's available
         if file.refs is not None:
             default_content += f"Document IDs: {file.refs}\n"
+        
         # file path
         sandbox_file_path = f"/tmp/{file.name}"
         local_file_path = f"output/uploaded/{file.name}"
@@ -75,16 +119,25 @@ class AnnotationFileData(BaseModel):
 
 
 class AgentAnnotation(BaseModel):
+    """Tracks agent responses and associated text"""
     agent: str
     text: str
 
 
 class ArtifactAnnotation(BaseModel):
+    """Records tool calls and their outputs"""
     toolCall: Dict[str, Any]
     toolOutput: Dict[str, Any]
 
 
 class Annotation(BaseModel):
+    """
+    Generic annotation container supporting:
+    - Document files
+    - Images (planned)
+    - Agent messages
+    - Tool artifacts
+    """
     type: str
     data: AnnotationFileData | List[str] | AgentAnnotation | ArtifactAnnotation
 
@@ -101,12 +154,25 @@ class Annotation(BaseModel):
 
 
 class Message(BaseModel):
+    """
+    Chat message structure with:
+    - Role (user/assistant)
+    - Content text
+    - Optional annotations
+    """
     role: MessageRole
     content: str
     annotations: List[Annotation] | None = None
 
 
 class ChatData(BaseModel):
+    """
+    Complete chat session data including:
+    - Message history
+    - Custom data payload
+    - Document handling
+    - Code artifact tracking
+    """
     messages: List[Message]
     data: Any = None
 
@@ -124,13 +190,17 @@ class ChatData(BaseModel):
 
     @validator("messages")
     def messages_must_not_be_empty(cls, v):
+        """Ensures chat contains at least one message"""
         if len(v) == 0:
             raise ValueError("Messages must not be empty")
         return v
 
     def get_last_message_content(self) -> str:
         """
-        Get the content of the last message along with the data content from all user messages
+        Retrieves latest message with:
+        - Message content
+        - Associated annotations
+        - Document contexts
         """
         if len(self.messages) == 0:
             raise ValueError("There is not any message in the chat")
@@ -206,12 +276,20 @@ class ChatData(BaseModel):
         include_code_artifact: bool = True,
     ) -> List[ChatMessage]:
         """
-        Get the history messages
+        Constructs chat history for LLM context
+
+        Flow:
+        1. Convert previous messages to ChatMessage format (excluding last)
+        2. Optionally add last 5 agent interaction messages
+        3. Optionally add most recent code artifact
         """
+        # Convert previous messages to ChatMessage format (excluding last)
         chat_messages = [
             ChatMessage(role=message.role, content=message.content)
             for message in self.messages[:-1]
         ]
+        
+        # Optionally add agent interaction history
         if include_agent_messages:
             agent_messages = self._get_agent_messages(max_messages=5)
             if len(agent_messages) > 0:
@@ -220,6 +298,8 @@ class ChatData(BaseModel):
                     content="Previous agent events: \n" + "\n".join(agent_messages),
                 )
                 chat_messages.append(message)
+
+        # Optionally add most recent code artifact
         if include_code_artifact:
             latest_code_artifact = self._get_latest_code_artifact()
             if latest_code_artifact:
@@ -248,6 +328,11 @@ class ChatData(BaseModel):
     def get_document_files(self) -> List[DocumentFile]:
         """
         Get the uploaded files from the chat data
+        The files are only ones uploaded by the user
+
+        Note: 
+        yes the llm should have access to the entire(ish) file system
+        but to for more specific this will probably be helpful? Maybe. Still deciding.
         """
         uploaded_files = []
         for message in self.messages:
@@ -261,6 +346,13 @@ class ChatData(BaseModel):
 
 
 class SourceNodes(BaseModel):
+    """
+    Manages document source references:
+    - Node identification
+    - Metadata tracking
+    - URL construction
+    - Relevance scoring
+    """
     id: str
     metadata: Dict[str, Any]
     score: Optional[float]
@@ -282,6 +374,12 @@ class SourceNodes(BaseModel):
 
     @classmethod
     def get_url_from_metadata(cls, metadata: Dict[str, Any]) -> Optional[str]:
+        """
+        Builds source URLs based on:
+        - File location (local/cloud)
+        - Privacy settings
+        - Pipeline origin
+        """
         url_prefix = os.getenv("FILESERVER_URL_PREFIX")
         if not url_prefix:
             logger.warning(
@@ -290,12 +388,6 @@ class SourceNodes(BaseModel):
         file_name = metadata.get("file_name")
 
         if file_name and url_prefix:
-            # file_name exists and file server is configured
-            pipeline_id = metadata.get("pipeline_id")
-            if pipeline_id:
-                # file is from LlamaCloud
-                file_name = f"{pipeline_id}${file_name}"
-                return f"{url_prefix}/output/llamacloud/{file_name}"
             is_private = metadata.get("private", "false") == "true"
             if is_private:
                 # file is a private upload
@@ -316,11 +408,19 @@ class SourceNodes(BaseModel):
 
 
 class Result(BaseModel):
+    """Container for chat responses with sources"""
     result: Message
     nodes: List[SourceNodes]
 
 
 class ChatConfig(BaseModel):
+    """
+    Chat interface configuration:
+    - Starter questions
+    - UI settings
+
+    Once we have more capabilities in our app, it would be good to show specific capabilities for new users.
+    """
     starter_questions: Optional[List[str]] = Field(
         default=None,
         description="List of starter questions",

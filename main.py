@@ -10,7 +10,6 @@ import os
 import uvicorn
 from app.api.routers import api_router
 from app.middlewares.frontend import FrontendProxyMiddleware
-from app.observability import init_observability
 from app.settings import init_settings
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
@@ -23,7 +22,6 @@ if app_name:
 app = FastAPI(servers=servers)
 
 init_settings()
-init_observability()
 
 environment = os.getenv("ENVIRONMENT", "dev")  # Default to 'development' if not set
 logger = logging.getLogger("uvicorn")

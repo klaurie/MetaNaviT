@@ -1,3 +1,18 @@
+"""
+Vercel Stream Response Handler
+
+Formats LLM output into Vercel's streaming format:
+1. Text Stream (0:): LLM response chunks
+2. Data Stream (8:): Events, sources, suggestions
+3. Error Stream (3:): Error messages
+
+Flow:
+1. Initialize response handlers
+2. Merge chat and event streams
+3. Process response chunks
+4. Add metadata (sources)
+"""
+
 import json
 import logging
 from typing import Awaitable, List
@@ -6,23 +21,19 @@ from aiostream import stream
 from fastapi import BackgroundTasks, Request
 from fastapi.responses import StreamingResponse
 from llama_index.core.chat_engine.types import StreamingAgentChatResponse
-from llama_index.core.schema import NodeWithScore
 
 from app.api.routers.events import EventCallbackHandler
-from app.api.routers.models import ChatData, Message, SourceNodes
-from app.api.services.suggestion import NextQuestionSuggestion
+from app.api.routers.models import ChatData, SourceNodes
 
 logger = logging.getLogger("uvicorn")
 
-
 class VercelStreamResponse(StreamingResponse):
-    """
-    Class to convert the response from the chat engine to the streaming format expected by Vercel
-    """
+    """Formats LLM response for Vercel's streaming protocol"""
 
-    TEXT_PREFIX = "0:"
-    DATA_PREFIX = "8:"
-    ERROR_PREFIX = "3:"
+    # Stream type prefixes
+    TEXT_PREFIX = "0:"   # Raw LLM output
+    DATA_PREFIX = "8:"   # Metadata/events
+    ERROR_PREFIX = "3:"  # Error messages
 
     def __init__(
         self,
@@ -32,20 +43,18 @@ class VercelStreamResponse(StreamingResponse):
         chat_data: ChatData,
         background_tasks: BackgroundTasks,
     ):
-        content = VercelStreamResponse.content_generator(
+        """Initialize streaming response with handlers"""
+        content = self.content_generator(
             request, event_handler, response, chat_data, background_tasks
         )
         super().__init__(content=content)
 
     @classmethod
-    async def content_generator(
-        cls,
-        request: Request,
-        event_handler: EventCallbackHandler,
-        response: Awaitable[StreamingAgentChatResponse],
-        chat_data: ChatData,
-        background_tasks: BackgroundTasks,
-    ):
+    async def content_generator(cls, request, event_handler, response, chat_data, background_tasks):
+        """
+        Merge and stream chat response with events.
+        Handles disconnections and errors.
+        """
         chat_response_generator = cls._chat_response_generator(
             response, background_tasks, event_handler, chat_data
         )
@@ -77,30 +86,21 @@ class VercelStreamResponse(StreamingResponse):
 
     @classmethod
     async def _event_generator(cls, event_handler: EventCallbackHandler):
-        """
-        Yield the events from the event handler
-        """
+        """Stream events from callback handler"""
         async for event in event_handler.async_event_gen():
             event_response = event.to_response()
             if event_response is not None:
                 yield cls.convert_data(event_response)
 
     @classmethod
-    async def _chat_response_generator(
-        cls,
-        response: Awaitable[StreamingAgentChatResponse],
-        background_tasks: BackgroundTasks,
-        event_handler: EventCallbackHandler,
-        chat_data: ChatData,
-    ):
+    async def _chat_response_generator(cls, response, background_tasks, event_handler, chat_data):
         """
-        Yield the text response and source nodes from the chat engine
+        Stream chat response with:
+        - Source documents
+        - Text chunks
         """
         # Wait for the response from the chat engine
         result = await response
-
-        # Once we got a source node, start a background task to download the files (if needed)
-        cls._process_response_nodes(result.source_nodes, background_tasks)
 
         # Yield the source nodes
         yield cls.convert_data(
@@ -120,58 +120,24 @@ class VercelStreamResponse(StreamingResponse):
             final_response += token
             yield cls.convert_text(token)
 
-        # Generate next questions if next question prompt is configured
-        question_data = await cls._generate_next_questions(
-            chat_data.messages, final_response
-        )
-        if question_data:
-            yield cls.convert_data(question_data)
-
         # the text_generator is the leading stream, once it's finished, also finish the event stream
         event_handler.is_done = True
 
     @classmethod
     def convert_text(cls, token: str):
+        """Format text chunks for streaming"""
         # Escape newlines and double quotes to avoid breaking the stream
         token = json.dumps(token)
         return f"{cls.TEXT_PREFIX}{token}\n"
 
     @classmethod
     def convert_data(cls, data: dict):
+        """Format metadata for streaming"""
         data_str = json.dumps(data)
         return f"{cls.DATA_PREFIX}[{data_str}]\n"
 
     @classmethod
     def convert_error(cls, error: str):
+        """Format error messages for streaming"""
         error_str = json.dumps(error)
         return f"{cls.ERROR_PREFIX}{error_str}\n"
-
-    @staticmethod
-    def _process_response_nodes(
-        source_nodes: List[NodeWithScore],
-        background_tasks: BackgroundTasks,
-    ):
-        try:
-            # Start background tasks to download documents from LlamaCloud if needed
-            from app.engine.service import LLamaCloudFileService  # type: ignore
-
-            LLamaCloudFileService.download_files_from_nodes(
-                source_nodes, background_tasks
-            )
-        except ImportError:
-            logger.debug(
-                "LlamaCloud is not configured. Skipping post processing of nodes"
-            )
-            pass
-
-    @staticmethod
-    async def _generate_next_questions(chat_history: List[Message], response: str):
-        questions = await NextQuestionSuggestion.suggest_next_questions(
-            chat_history, response
-        )
-        if questions:
-            return {
-                "type": "suggested_questions",
-                "data": questions,
-            }
-        return None

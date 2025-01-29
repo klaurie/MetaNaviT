@@ -52,7 +52,7 @@ def get_documents() -> List[Document]:
         )
         match loader_type:
             case "file":
-                document = get_file_documents(FileLoaderConfig(**loader_config))
+                document = get_file_documents(FileLoaderConfig())
             case "db":
                 document = get_db_documents(
                     configs=[DBLoaderConfig(**cfg) for cfg in loader_config]
