@@ -29,6 +29,11 @@ ollama pull llama3.2:1b
 
    https://github.com/pgvector/pgvector
 
+6. Make sure Poetry package manager is installed
+
+    ```bash
+   curl -sSL https://install.python-poetry.org | python3 -
+    ```
 ## Quick Start with Dev Container (Recommended)
 
 The easiest way to get started is using the dev container, which handles all dependencies except Ollama and Database dependencies:
