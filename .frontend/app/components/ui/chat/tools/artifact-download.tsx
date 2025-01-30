@@ -7,6 +7,7 @@ import { Button } from "../../button";
 import { ScrollArea } from "../../scroll-area";
 import { Artifact, CodeArtifact } from "./artifact";
 import { cn } from "../../lib/utils";
+import JSZip from "jszip";
 
 interface ArtifactItem {
   id: string;
@@ -27,36 +28,11 @@ const mockArtifacts: ArtifactItem[] = [
     print("Hello, World!")
     return "Hello, World!"`,
           language: "python"
-        },
-        {
-          name: "test.js",
-          content: `function testFunction() {
-    console.log("Testing");
-    return true;
-}`,
-          language: "javascript"
         }
       ]
     },
     timestamp: new Date(),
     version: 1
-  },
-  {
-    id: "2",
-    artifact: {
-      files: [
-        {
-          name: "style.css",
-          content: `.container {
-    display: flex;
-    padding: 20px;
-}`,
-          language: "css"
-        }
-      ]
-    },
-    timestamp: new Date(Date.now() - 86400000), // 1 day ago
-    version: 2
   }
 ];
 
