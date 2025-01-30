@@ -23,7 +23,11 @@ ollama pull llama3.2:1b
 
 4. Download PostgreSQL 
 
-    Linux: 
+    https://www.postgresql.org/download/
+
+5. Download postgres
+
+   https://github.com/pgvector/pgvector
 
 ## Quick Start with Dev Container (Recommended)
 
