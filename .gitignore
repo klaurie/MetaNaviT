@@ -5,3 +5,4 @@ output
 static/
 .vscode/
 *.pyc
+/node_modules
