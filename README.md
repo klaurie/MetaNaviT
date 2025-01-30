@@ -51,7 +51,7 @@ If you prefer not to use the dev container, you'll need to additionally:
 1. Setup the environment with poetry:
 ```bash
 poetry install
-poetry env use python  # Create and activate a new virtual environment
+poetry env use python3.11  # Create and activate a new virtual environment
 ```
 
 ## Configuration
