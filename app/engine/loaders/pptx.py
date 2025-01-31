@@ -4,16 +4,25 @@ PPTX Document Loader Module
 Handles loading and processing of PPTX files. Extracts text content, speaker notes, 
 and metadata from the slides. 
 
-Carlana is on this
+Carlana is on this.
 """
 
 import os
 import logging
 from typing import List, Dict, Any
-from unstructured.partition.pptx import partition_pptx
 from pydantic import BaseModel
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Try to import partition_pptx
+try:
+    from unstructured.partition.pptx import partition_pptx
+except ImportError:
+    logger.error("Failed to import partition_pptx. Ensure 'unstructured' is installed.")
+    raise
+
 
 class PPTXLoaderConfig(BaseModel):
     """
@@ -22,25 +31,36 @@ class PPTXLoaderConfig(BaseModel):
     """
     directory: str  # Directory containing PPTX files to load
 
+
 def extract_pptx_content(file_path: str) -> Dict[str, Any]:
     """
     Extracts text, speaker notes, and metadata from a PPTX file.
-
+    Ensures a structured JSON format.
     """
     try:
-        # Use unstructured to extract content and normalize it to JSON
         elements = partition_pptx(file_path)
-        
-        # Combine elements into a JSON-like structure
+
+        slides = []
+        slide_index = 0  # Track slide numbers manually (if needed)
+
+        for element in elements:
+            slide_data = {
+                "slide_number": slide_index + 1,  # Assign slide numbers
+                "text": element.text.strip() if element.text else "",
+                "metadata": element.metadata.to_dict() if element.metadata else {},
+                "speaker_notes": None  # Default value
+            }
+
+            # Check if the element contains speaker notes
+            if hasattr(element, "category") and element.category == "Slide Notes":
+                slide_data["speaker_notes"] = element.text.strip()
+
+            slides.append(slide_data)
+            slide_index += 1  # Increment slide count
+
         content = {
             "file_name": os.path.basename(file_path),
-            "slides": [
-                {
-                    "text": element.text,
-                    "metadata": element.metadata.to_dict() if element.metadata else {}
-                }
-                for element in elements
-            ]
+            "slides": slides,
         }
 
         logger.info(f"Successfully extracted content from {file_path}")
@@ -50,11 +70,10 @@ def extract_pptx_content(file_path: str) -> Dict[str, Any]:
         logger.error(f"Failed to extract content from {file_path}: {e}")
         raise
 
+
 def load_pptx_documents(config: PPTXLoaderConfig) -> List[Dict[str, Any]]:
     """
     Loads all PPTX files in a given directory and extracts their content.
-
-    A
     """
     documents = []
 
