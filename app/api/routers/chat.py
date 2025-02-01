@@ -24,6 +24,7 @@ chat_router = r = APIRouter()
 
 logger = logging.getLogger("uvicorn")
 
+
 @r.post("")
 async def chat(
     request: Request,
