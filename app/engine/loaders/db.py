@@ -61,4 +61,4 @@ def get_db_documents(configs: list[DBLoaderConfig]):
             documents = loader.load_data(query=query)
             docs.extend(documents)
 
-    return documents
+    return docs
