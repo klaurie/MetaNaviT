@@ -26,6 +26,7 @@ llama-index-embeddings-nomic = "^0.6.0"
 llama-index-vector-stores-postgres = "^0.4.1"
 pgvector = "^0.3.6"
 psycopg2-binary = "^2.9.10"
+flake8 = "^7.1.1"
 
 
 [tool.poetry.dependencies.uvicorn]
