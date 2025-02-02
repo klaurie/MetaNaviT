@@ -2,7 +2,7 @@
 Query Filter Module
 
 Handles document access control by managing public/private document filters
-for vector store queries. Ensures proper document visibility based on 
+for vector store queries. Ensures proper document visibility based on
 specified document IDs.
 """
 from llama_index.core.vector_stores.types import MetadataFilter, MetadataFilters

@@ -27,6 +27,7 @@ from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 
+
 class CallbackEvent(BaseModel):
     """
     Models events from LLM operations for frontend display.

@@ -7,7 +7,7 @@ for setting up different AI model backends.
 
 Supported Providers:
 - OpenAI
-- Azure OpenAI 
+- Azure OpenAI
 - Anthropic
 - Gemini
 - Mistral
@@ -32,9 +32,11 @@ from llama_index.core.settings import Settings
 # Global storage for multi-modal LLM since Settings doesn't support it
 _multi_modal_llm: Optional[MultiModalLLM] = None
 
+
 def get_multi_modal_llm():
     """Access the globally configured multi-modal LLM instance"""
     return _multi_modal_llm
+
 
 def init_settings():
     """
@@ -69,6 +71,7 @@ def init_settings():
     Settings.chunk_size = int(os.getenv("CHUNK_SIZE", "1024"))
     Settings.chunk_overlap = int(os.getenv("CHUNK_OVERLAP", "20"))
 
+
 def init_ollama():
     """
     Initialize Ollama local LLM configuration.
@@ -89,16 +92,16 @@ def init_ollama():
         os.getenv("OLLAMA_REQUEST_TIMEOUT", DEFAULT_REQUEST_TIMEOUT)
     )
     embed_model = NomicEmbedding(
-           model_name="nomic-embed-text-v1.5",
-           embed_batch_size=10,
-           api_key="nk-iRJoZSa_JCBYcfNJnSqrph5TS6qWlQpg3JsVpy0w74I"       )
+        model_name="nomic-embed-text-v1.5",
+        embed_batch_size=10,
+        api_key="nk-iRJoZSa_JCBYcfNJnSqrph5TS6qWlQpg3JsVpy0w74I")
     llm = Ollama(
-           model=os.getenv("MODEL", "llama3.2:1b"),
-           base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-           temperature=0.7,
-       )    # Update global settings
+        model=os.getenv("MODEL", "llama3.2:1b"),
+        base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+        temperature=0.7)    # Update global settings
     Settings.llm = llm
     Settings.embed_model = embed_model
+
 
 def init_openai():
     """
@@ -130,6 +133,7 @@ def init_openai():
         dimensions=int(dimensions) if dimensions is not None else None,
     )
 
+
 def init_azure_openai():
     """
     Initialize Azure OpenAI configuration.
@@ -155,8 +159,8 @@ def init_azure_openai():
     azure_config = {
         "api_key": os.environ["AZURE_OPENAI_API_KEY"],
         "azure_endpoint": os.environ["AZURE_OPENAI_ENDPOINT"],
-        "api_version": os.getenv("AZURE_OPENAI_API_VERSION")
-        or os.getenv("OPENAI_API_VERSION"),
+        "api_version": os.getenv("AZURE_OPENAI_API_VERSION") or
+        os.getenv("OPENAI_API_VERSION"),
     }
 
     Settings.llm = AzureOpenAI(
@@ -173,6 +177,7 @@ def init_azure_openai():
         deployment_name=embedding_deployment,
         **azure_config,
     )
+
 
 def init_fastembed():
     """
@@ -203,6 +208,7 @@ def init_fastembed():
         model_name=embed_model_map[embedding_model]
     )
 
+
 def init_huggingface_embedding():
     try:
         from llama_index.embeddings.huggingface import HuggingFaceEmbedding
@@ -223,6 +229,7 @@ def init_huggingface_embedding():
         backend=backend,
     )
 
+
 def init_huggingface():
     """
     Initialize HuggingFace models configuration.
@@ -242,6 +249,7 @@ def init_huggingface():
     )
     init_huggingface_embedding()
 
+
 def init_groq():
     """
     Initialize Groq cloud API configuration.
@@ -258,6 +266,7 @@ def init_groq():
     Settings.llm = Groq(model=os.getenv("MODEL"))
     # Groq does not provide embeddings, so we use FastEmbed instead
     init_fastembed()
+
 
 def init_anthropic():
     """
@@ -284,6 +293,7 @@ def init_anthropic():
     # Anthropic does not provide embeddings, so we use FastEmbed instead
     init_fastembed()
 
+
 def init_gemini():
     """
     Initialize Google Gemini models.
@@ -304,6 +314,7 @@ def init_gemini():
     Settings.llm = Gemini(model=model_name)
     Settings.embed_model = GeminiEmbedding(model_name=embed_model_name)
 
+
 def init_mistral():
     """
     Initialize Mistral AI configuration.
@@ -315,3 +326,4 @@ def init_mistral():
 
     Settings.llm = MistralAI(model=os.getenv("MODEL"))
     Settings.embed_model = MistralAIEmbedding(model_name=os.getenv("EMBEDDING_MODEL"))
+    

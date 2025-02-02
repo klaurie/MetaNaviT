@@ -4,7 +4,7 @@ Database Document Loader Module
 Handles loading documents from SQL databases using LlamaIndex's DatabaseReader.
 Supports multiple database connections and queries through configuration.
 
-Honestly I haven't dug into the customization that can be applied with llamaindex's DatabaseReader, 
+Honestly I haven't dug into the customization that can be applied with llamaindex's DatabaseReader,
 but it's easier to implement than doing it manually for now, so we might as well use it.
 
 I may end up implementing this manually if I don't like it though. Or someone else can figure that out.
@@ -61,4 +61,4 @@ def get_db_documents(configs: list[DBLoaderConfig]):
             documents = loader.load_data(query=query)
             docs.extend(documents)
 
-    return documents
+    return docs

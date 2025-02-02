@@ -21,8 +21,9 @@ from app.engine.index import IndexConfig, get_index
 from app.engine.tools import ToolFactory
 from app.engine.tools.query_engine import get_query_engine_tool
 
+
 def get_chat_engine(
-    params: Optional[Dict[str, Any]] = None, 
+    params: Optional[Dict[str, Any]] = None,
     event_handlers: Optional[List[Any]] = None,
     **kwargs
 ) -> AgentRunner:
