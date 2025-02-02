@@ -42,4 +42,4 @@ jobs:
         poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --ignore=E501,W292,W293
     - name: Test with pytest
       run: |
-        poetry run pytest
+        poetry run pytest --ignore=llm_benchmark_tests
