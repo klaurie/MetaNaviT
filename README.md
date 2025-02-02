@@ -86,7 +86,7 @@ The example provides two different API endpoints:
 
 You can test the streaming endpoint with the following curl request:
 
-```
+```bash
 curl --location 'localhost:8000/api/chat' \
 --header 'Content-Type: application/json' \
 --data '{ "messages": [{ "role": "user", "content": "Hello" }] }'
@@ -94,7 +94,7 @@ curl --location 'localhost:8000/api/chat' \
 
 And for the non-streaming endpoint run:
 
-```
+```bash
 curl --location 'localhost:8000/api/chat/request' \
 --header 'Content-Type: application/json' \
 --data '{ "messages": [{ "role": "user", "content": "Hello" }] }'
@@ -104,7 +104,7 @@ You can start editing the API endpoints by modifying `app/api/routers/chat.py`. 
 
 To start the app optimized for **production**, run:
 
-```
+```bash
 poetry run prod
 ```
 
