@@ -1,9 +1,10 @@
 # tests/test_file.py
 
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 from app.engine.loaders.file import get_file_documents, FileLoaderConfig
 from app.config import DATA_DIR
+
 
 def test_get_file_documents_success(mocker):
     # Arrange
@@ -33,6 +34,7 @@ def test_get_file_documents_success(mocker):
         raise_on_error=True
     )
     assert documents == ["doc1", "doc2"]
+
 
 def test_get_file_documents_empty_directory(mocker):
     # Arrange
@@ -68,6 +70,7 @@ def test_get_file_documents_empty_directory(mocker):
         "Failed to load file documents, error message: _add_files . Return as empty document list."
     )
 
+
 def test_get_file_documents_other_exception(mocker):
     # Arrange
     # Mock the import itself
@@ -83,8 +86,9 @@ def test_get_file_documents_other_exception(mocker):
     
     # Act & Assert
     with pytest.raises(Exception) as exc_info:
-        documents = get_file_documents(config)
+        _ = get_file_documents(config)
     assert "Other error" in str(exc_info.value)
+
 
 def test_get_file_documents_with_subfolders(mocker):
     # Arrange
@@ -114,6 +118,7 @@ def test_get_file_documents_with_subfolders(mocker):
     )
     assert documents == ["doc1", "doc2", "doc3"]
 
+
 def test_get_file_documents_missing_directory(mocker):
     # Arrange
     mock_SimpleDirectoryReader = MagicMock()
@@ -130,6 +135,7 @@ def test_get_file_documents_missing_directory(mocker):
     # Act & Assert
     with pytest.raises(FileNotFoundError):
         get_file_documents(config)
+
 
 def test_get_file_documents_invalid_format(mocker):
     # Arrange

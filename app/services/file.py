@@ -4,7 +4,6 @@ import mimetypes
 import os
 import re
 import uuid
-from io import BytesIO
 from pathlib import Path
 from typing import List, Optional, Tuple
 
@@ -118,9 +117,9 @@ class FileService:
         
         Args:
             content: Raw file content as bytes or string
-            file_name: Original name of uploaded file 
+            file_name: Original name of uploaded file
             save_dir: Custom storage directory (defaults to output/uploaded)
-        
+
         Returns:
             DocumentFile with metadata including generated URL
         """
@@ -188,7 +187,6 @@ class FileService:
             refs=None,  # References to indexed documents, populated later
         )
 
-
     @staticmethod
     def _preprocess_base64_file(base64_content: str) -> Tuple[bytes, str | None]:
         """Decodes base64 content and determines file type"""
@@ -226,11 +224,11 @@ class FileService:
         pass
 
 
-
 def _sanitize_file_name(file_name: str) -> str:
     """Cleans file names by replacing invalid characters"""
     sanitized_name = re.sub(r"[^a-zA-Z0-9.]", "_", file_name)
     return sanitized_name
+
 
 def _default_file_loaders_map():
     """Provides mapping of file extensions to appropriate document loaders"""

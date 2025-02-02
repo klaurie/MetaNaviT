@@ -8,11 +8,11 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 from queue import Queue
-from typing import List, Dict
 
 DATABASE_NAME = os.getenv("DB_NAME", "metanavit")
 
 logger = logging.getLogger("uvicorn")
+
 
 class IndexManager:
     def __init__(self, conn_string=None):
@@ -83,7 +83,7 @@ class IndexManager:
         cursor = conn.cursor()
 
         try:
-            cursor.execute(f"SELECT 1 FROM pg_database WHERE datname = 'metanavit'")
+            cursor.execute("SELECT 1 FROM pg_database WHERE datname = 'metanavit'")
             exists = cursor.fetchone()
             if not exists:
                 cursor.execute(sql.SQL("CREATE DATABASE {}").format(sql.Identifier("metanavit")))
@@ -139,40 +139,40 @@ class IndexManager:
             print(f"Error creating directory_processing_results table: {e}")
 
     def _is_path_blocked(self, path: str) -> bool:
-            """
+        """
         Check if a path should be blocked from processing.
         Uses pathlib for cross-platform compatibility (at least it should).
             
-            Args:
-                path: Path to check
-            
-            Returns:
-                bool: True if path should be blocked
-            """
-            # Conver string to Path object for better handling
-            path_obj = Path(path).resolve() #  Resolve eliminates symlinks
+        Args:
+            path: Path to check
+        
+        Returns:
+            bool: True if path should be blocked
+        """
+        # Conver string to Path object for better handling
+        path_obj = Path(path).resolve()  # Resolve eliminates symlinks
 
-            # Check if path is hidden and block if feature is enabled
-            if self.block_hidden_files and path_obj.name.startswith('.'):
-                logger.debug(f"Blocking hidden path: {path_obj}")
-                return True
+        # Check if path is hidden and block if feature is enabled
+        if self.block_hidden_files and path_obj.name.startswith('.'):
+            logger.debug(f"Blocking hidden path: {path_obj}")
+            return True
+        
+        # Check blocked patterns
+        for pattern in self.blocked_dirs:
+            pattern_obj = Path(pattern)  # Convert to Path for consistent comparison
             
-            # Check blocked patterns
-            for pattern in self.blocked_dirs:
-                pattern_obj = Path(pattern) # COnvert to Path for consistent comparison
-                
-                # Handle wildcard patterns
-                if str(pattern_obj).endswith('/*'):
-                    pattern_base = pattern_obj.parent
-                    if path_obj == pattern_base or pattern_base in path_obj.parents:
-                        logger.debug(f"Blocking matched pattern {pattern}: {path_obj}")
-                        return True
-                # Handle contains and ends with matches
-                elif str(pattern_obj) in str(path_obj) or str(path_obj).endswith(str(pattern_obj)):
-                    logger.debug(f"Blocking pattern match {pattern}: {path_obj}")
+            # Handle wildcard patterns
+            if str(pattern_obj).endswith('/*'):
+                pattern_base = pattern_obj.parent
+                if path_obj == pattern_base or pattern_base in path_obj.parents:
+                    logger.debug(f"Blocking matched pattern {pattern}: {path_obj}")
                     return True
-            
-            return False
+            # Handle contains and ends with matches
+            elif str(pattern_obj) in str(path_obj) or str(path_obj).endswith(str(pattern_obj)):
+                logger.debug(f"Blocking pattern match {pattern}: {path_obj}")
+                return True
+        
+        return False
 
     def update_indexed_file(self, file_path, process_name, process_version, new_data, mtime):
         """
@@ -295,11 +295,11 @@ class IndexManager:
                 
                 # Execute batch insert, if those records already exist, update just the modified time and data
                 cur.executemany("""
-                    INSERT INTO indexed_files 
+                    INSERT INTO indexed_files
                     (file_path, process_name, process_version, mtime, data)
                     VALUES (%s, %s, %s, %s, %s)
-                    ON CONFLICT (file_path, process_name, process_version) 
-                    DO UPDATE SET 
+                    ON CONFLICT (file_path, process_name, process_version)
+                    DO UPDATE SET
                         mtime = EXCLUDED.mtime,
                         data = EXCLUDED.data;
                 """, values)
@@ -321,7 +321,7 @@ class IndexManager:
                Each dictionary must have:
                {
                    'pathname': str,        # Full path to the file
-                   'modified_time': int,   # File modification timestamp 
+                   'modified_time': int,   # File modification timestamp
                    'file_type': str,       # File extension with dot (e.g., '.txt')
                    'process_name': str,    # Name of the processing strategy (optional, default='default')
                    'process_version': str, # Version of process (optional, default='1.0')
@@ -345,8 +345,8 @@ class IndexManager:
                     INSERT INTO directory_processing_results
                     (dir_path, process_name, process_version, is_applicable, mtime)
                     VALUES (%s, %s, %s, %s, %s)
-                    ON CONFLICT (dir_path, process_name, process_version) 
-                    DO UPDATE SET 
+                    ON CONFLICT (dir_path, process_name, process_version)
+                    DO UPDATE SET
                         is_applicable = EXCLUDED.is_applicable,
                         mtime = EXCLUDED.mtime;
                 """, values)
@@ -407,12 +407,10 @@ class IndexManager:
         for batch in self.crawl_file_system(dir_path):
             if count == 0:
                 self.batch_insert_indexed_files(batch)
-                count += 1  
+                count += 1
                 logger.info(f"Processed batch of {len(batch)} files")
         # TODO: add handling for files
-            
-        
-
+                    
     def crawl_file_system(self, dir_path, max_workers=4, batch_size=1000):
         """
         Crawls a directory recursively using multiple threads, yielding results in batches.
@@ -435,7 +433,7 @@ class IndexManager:
         """
         result_queue = Queue()
         batch_lock = Lock()
-        current_batch =[]
+        current_batch = []
 
         def add_to_batch(item):
             """current_batch is not thread-safe, so we need to use a lock to protect it"""
@@ -491,9 +489,9 @@ class IndexManager:
         # Get immediate subdirectories
         try:
             # Get immediate subdirectories, filtering blocked ones
-            subdirs = [os.path.join(dir_path, d) for d in os.listdir(dir_path) 
-                    if os.path.isdir(os.path.join(dir_path, d)) 
-                    and not self._is_path_blocked(os.path.join(dir_path, d))]
+            subdirs = [os.path.join(dir_path, d) for d in os.listdir(dir_path)
+                       if os.path.isdir(os.path.join(dir_path, d)) and not
+                       self._is_path_blocked(os.path.join(dir_path, d))]
             print(subdirs)
             logger.info(f"Found {subdirs} in {dir_path}")
         except OSError as e:
@@ -531,8 +529,9 @@ class IndexManager:
         self._close_connection()
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     index_manager = IndexManager()
     home_dir = os.path.expanduser('~')
     index_manager.update_filesystem_info(home_dir)
     index_manager.close()
+    

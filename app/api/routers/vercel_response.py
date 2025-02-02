@@ -15,7 +15,7 @@ Flow:
 
 import json
 import logging
-from typing import Awaitable, List
+from typing import Awaitable
 
 from aiostream import stream
 from fastapi import BackgroundTasks, Request
@@ -26,6 +26,7 @@ from app.api.routers.events import EventCallbackHandler
 from app.api.routers.models import ChatData, SourceNodes
 
 logger = logging.getLogger("uvicorn")
+
 
 class VercelStreamResponse(StreamingResponse):
     """Formats LLM response for Vercel's streaming protocol"""

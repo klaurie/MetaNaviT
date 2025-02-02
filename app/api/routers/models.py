@@ -36,6 +36,7 @@ from app.services.file import DocumentFile
 
 logger = logging.getLogger("uvicorn")
 
+
 class AnnotationFileData(BaseModel):
     """
     Handles file metadata and content preparation for LLM.
@@ -232,8 +233,7 @@ class ChatData(BaseModel):
         agent_messages = []
         for message in self.messages:
             if (
-                message.role == MessageRole.ASSISTANT
-                and message.annotations is not None
+                message.role == MessageRole.ASSISTANT and message.annotations is not None
             ):
                 for annotation in message.annotations:
                     if annotation.type == "agent" and isinstance(
@@ -253,8 +253,7 @@ class ChatData(BaseModel):
         """
         for message in reversed(self.messages):
             if (
-                message.role == MessageRole.ASSISTANT
-                and message.annotations is not None
+                message.role == MessageRole.ASSISTANT and message.annotations is not None
             ):
                 for annotation in message.annotations:
                     # type is tools and has `toolOutput` attribute
@@ -330,7 +329,7 @@ class ChatData(BaseModel):
         Get the uploaded files from the chat data
         The files are only ones uploaded by the user
 
-        Note: 
+        Note:
         yes the llm should have access to the entire(ish) file system
         but to for more specific this will probably be helpful? Maybe. Still deciding.
         """

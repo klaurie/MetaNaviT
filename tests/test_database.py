@@ -4,6 +4,7 @@ import pytest
 from unittest.mock import MagicMock
 from app.engine.loaders.db import get_db_documents, DBLoaderConfig
 
+
 def test_get_db_documents_success(mocker):
     # Arrange
     # Mock the import itself
@@ -43,6 +44,7 @@ def test_get_db_documents_success(mocker):
     assert calls[0][1]['query'] == "SELECT * FROM table1"
     assert calls[1][1]['query'] == "SELECT * FROM table2"
 
+
 def test_get_db_documents_import_error(mocker):
     # Arrange
     mocker.patch('llama_index.readers.database.DatabaseReader', side_effect=ImportError)
@@ -52,6 +54,7 @@ def test_get_db_documents_import_error(mocker):
     # Act & Assert
     with pytest.raises(ImportError):
         get_db_documents([config])
+
 
 def test_get_db_documents_query_error(mocker):
     # Arrange
@@ -75,6 +78,7 @@ def test_get_db_documents_query_error(mocker):
         get_db_documents([config])
     assert str(exc_info.value) == "Invalid query"
 
+
 def test_get_db_documents_empty_results(mocker):
     # Arrange
     mock_DatabaseReader = MagicMock()
@@ -97,6 +101,7 @@ def test_get_db_documents_empty_results(mocker):
     # Assert
     assert docs == []
 
+
 def test_get_db_documents_multiple_queries_per_db(mocker):
     # Arrange
     mock_DatabaseReader = MagicMock()
@@ -110,7 +115,7 @@ def test_get_db_documents_multiple_queries_per_db(mocker):
     })
     
     mock_reader_instance.load_data.side_effect = [
-        ["doc1"], 
+        ["doc1"],
         ["doc2"],
         ["doc3"]
     ]

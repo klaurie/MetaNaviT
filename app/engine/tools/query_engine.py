@@ -108,7 +108,7 @@ class MultiModalSynthesizer(BaseSynthesizer):
     both text and image content in the knowledge base.
     """
     
-    def __init__(self, multimodal_model: MultiModalLLM, 
+    def __init__(self, multimodal_model: MultiModalLLM,
                  response_synthesizer: Optional[BaseSynthesizer] = None,
                  text_qa_template: Optional[BasePromptTemplate] = None,
                  *args, **kwargs):
@@ -244,3 +244,4 @@ class MultiModalSynthesizer(BaseSynthesizer):
             source_nodes=nodes,
             metadata={"text_nodes": text_nodes, "image_nodes": image_nodes},
         )
+    

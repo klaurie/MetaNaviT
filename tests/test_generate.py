@@ -1,10 +1,8 @@
 # tests/test_file.py
 
-import pytest
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock
 from app.engine.generate import get_doc_store, run_pipeline, generate_datasource
-from llama_index.core.ingestion import IngestionPipeline
-from llama_index.core.node_parser import SentenceSplitter
+
 
 def test_get_doc_store_no_storage_dir(mocker):
     # Arrange
@@ -13,10 +11,11 @@ def test_get_doc_store_no_storage_dir(mocker):
     mock_simple_store = mocker.patch('app.engine.generate.SimpleDocumentStore')
     
     # Act
-    store = get_doc_store()
+    _ = get_doc_store()
     
     # Assert
     mock_simple_store.assert_called_once()
+
 
 def test_get_doc_store_with_storage_dir(mocker):
     # Arrange
@@ -24,10 +23,11 @@ def test_get_doc_store_with_storage_dir(mocker):
     mock_simple_store = mocker.patch('app.engine.generate.SimpleDocumentStore')
     
     # Act
-    store = get_doc_store()
+    _ = get_doc_store()
     
     # Assert
     mock_simple_store.from_persist_dir.assert_called_once()
+
 
 def test_run_pipeline_success(mocker):
     # Arrange
@@ -46,7 +46,7 @@ def test_run_pipeline_success(mocker):
     documents = ["doc1", "doc2"]
     
     # Act
-    result = run_pipeline(docstore, vector_store, documents)
+    _ = run_pipeline(docstore, vector_store, documents)
     
     # Assert
     mock_pipeline.assert_called_once()
@@ -54,6 +54,7 @@ def test_run_pipeline_success(mocker):
         show_progress=True,
         documents=documents
     )
+
 
 def test_generate_datasource_success(mocker):
     # Arrange
