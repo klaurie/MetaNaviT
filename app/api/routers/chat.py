@@ -33,7 +33,7 @@ async def chat(
 ):
     """
     Streaming chat endpoint.
-    
+ 
     Flow:
     1. Extract last message and history
     2. Apply document filters
@@ -60,12 +60,13 @@ async def chat(
         # - event_handlers: Track operations and stream chunks
         event_handler = EventCallbackHandler()
         chat_engine = get_chat_engine(
-            filters=filters, 
-            params=params, 
+            filters=filters,
+            params=params,
             event_handlers=[event_handler]
         )
         
-        # Stream response using Vercel's streaming response (Returns response chunks incrementally)
+        # Stream response using Vercel's streaming response
+        # (Returns response chunks incrementally)
         response = chat_engine.astream_chat(last_message_content, messages)
         return VercelStreamResponse(
             request, event_handler, response, data, background_tasks

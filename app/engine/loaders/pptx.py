@@ -1,8 +1,8 @@
 """
 PPTX Document Loader Module
 
-Handles loading and processing of PPTX files. Extracts text content, speaker notes, 
-and metadata from the slides. 
+Handles loading and processing of PPTX files. Extracts text content, speaker notes,
+and metadata from the slides.
 
 Carlana is on this.
 """

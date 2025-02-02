@@ -1,13 +1,6 @@
 import logging
-import os
-from datetime import timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
-
-from cachetools import TTLCache, cached  # type: ignore
-from llama_index.core.callbacks import CallbackManager
-from llama_index.core.indices import load_index_from_storage
-from llama_index.core.storage import StorageContext
 from llama_index.core.indices import VectorStoreIndex
 from pydantic import BaseModel
 
@@ -15,8 +8,6 @@ from app.engine.database.vector_store import get_vector_store
 
 
 logger = logging.getLogger("uvicorn")
-
-
 
 
 class IndexConfig(BaseModel):

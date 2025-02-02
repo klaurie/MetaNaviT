@@ -10,7 +10,7 @@ Provides API endpoints for retrieving chat interface configuration:
 import logging
 import os
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from app.api.routers.models import ChatConfig
 
 # Initialize router with prefix handled by main app
@@ -18,6 +18,7 @@ config_router = r = APIRouter()
 
 # Configure logging
 logger = logging.getLogger("uvicorn")
+
 
 @r.get("")
 async def chat_config() -> ChatConfig:

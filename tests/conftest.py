@@ -39,6 +39,7 @@ mock_modules['llama_index.core.multi_modal_llms'].MultiModalLLM = mock_multi_mod
 for mod_name, mock in mock_modules.items():
     sys.modules[mod_name] = mock
 
+
 @pytest.fixture
 def mock_vector_store(mocker):
     """Fixture to mock the vector store."""
@@ -46,12 +47,14 @@ def mock_vector_store(mocker):
     mocker.patch('app.engine.database.vector_store.get_vector_store', return_value=mock_store)
     return mock_store
 
+
 @pytest.fixture
 def mock_database_reader(mocker):
     """Fixture to mock the DatabaseReader."""
     mock_reader = MagicMock()
     mocker.patch('llama_index.readers.database.DatabaseReader', return_value=mock_reader)
     return mock_reader
+
 
 @pytest.fixture(autouse=True)
 def mock_env_vars(mocker):
@@ -61,6 +64,7 @@ def mock_env_vars(mocker):
         'STORAGE_DIR': 'test_storage',
         'DATA_DIR': '/test_data'
     })
+
 
 @pytest.fixture(autouse=True)
 def mock_llama_index(mocker):
