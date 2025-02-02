@@ -22,8 +22,42 @@ ollama pull llama3.2:1b
 ```
 
 4. Download PostgreSQL 
-
     https://www.postgresql.org/download/
+
+```bash
+#If you are using MacOS, you might want to try this:
+brew install postgresql@14
+
+# To start postgresql@14 now and restart at login:
+brew services start postgresql@14
+
+# Or, if you don't want/need a background service you can just run:
+/opt/homebrew/opt/postgresql@14/bin/postgres -D /opt/homebrew/var/postgresql@14
+```
+If you need to install Homebrew: https://brew.sh/
+
+5. Download pgvector
+    https://github.com/pgvector/pgvector 
+
+6. Make sure Poetry package manager is installed
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+7. MacOS user might want to check NVM installed version. An installed version can be old.
+```bash
+node -v
+# If your version is not 20, follow this:
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+
+nvm install 20
+
+nvm use 20
+
+nvm alias default 20
+# Check the version again.
+node -v
+```
 
 5. Download postgres
 
