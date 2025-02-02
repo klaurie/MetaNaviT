@@ -8,9 +8,7 @@ Note:
 - This will most likely be moved around or obsolete with the addtion of the IndexManager I'm (Kaitlyn) working on.
 """
 
-import os
 import logging
-from typing import Dict
 from pydantic import BaseModel
 
 # Currently DATA_DIR is only /data for testing

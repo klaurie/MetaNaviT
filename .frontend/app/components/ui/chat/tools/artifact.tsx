@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, ChevronDown, Code, Copy, Loader2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { Button, buttonVariants } from "../../button";
 import {
   Collapsible,
@@ -10,24 +10,22 @@ import {
 } from "../../collapsible";
 import { cn } from "../../lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../tabs";
+import { ScrollArea } from "../../scroll-area";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Markdown } from "../custom/markdown";
 import { useClientConfig } from "../hooks/use-config";
 import { useCopyToClipboard } from "../hooks/use-copy-to-clipboard";
 
-// detail information to execute code
-export type CodeArtifact = {
-  commentary: string;
-  template: string;
-  title: string;
-  description: string;
-  additional_dependencies: string[];
-  has_additional_dependencies: boolean;
-  install_dependencies_command: string;
-  port: number | null;
-  file_path: string;
-  code: string;
-  files?: string[];
-};
+export interface CodeFile {
+  name: string;
+  content: string;
+  language: string;
+}
+
+export interface CodeArtifact {
+  files: CodeFile[];
+}
 
 type OutputUrl = {
   url: string;
@@ -43,7 +41,43 @@ type ArtifactResult = {
   url: string;
 };
 
-export function Artifact({
+export function Artifact({ artifact }: { artifact: CodeArtifact }) {
+  const fileIds = useMemo(
+    () => artifact.files.map((file) => file.name.replace(/[^a-zA-Z0-9]/g, "_")),
+    [artifact]
+  );
+
+  return (
+    <Tabs defaultValue={fileIds[0]} className="w-full">
+      <TabsList className="mb-4">
+        {artifact.files.map((file, index) => (
+          <TabsTrigger key={fileIds[index]} value={fileIds[index]}>
+            {file.name}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {artifact.files.map((file, index) => (
+        <TabsContent key={fileIds[index]} value={fileIds[index]}>
+          <ScrollArea className="relative rounded-md border">
+            <SyntaxHighlighter
+              language={file.language}
+              style={vscDarkPlus}
+              customStyle={{
+                margin: 0,
+                borderRadius: "0.375rem",
+                background: "transparent",
+              }}
+            >
+              {file.content}
+            </SyntaxHighlighter>
+          </ScrollArea>
+        </TabsContent>
+      ))}
+    </Tabs>
+  );
+}
+
+export function ArtifactCode({
   artifact,
   version,
 }: {
@@ -114,7 +148,7 @@ export function Artifact({
         <Code className="h-6 w-6" />
         <div className="flex flex-col gap-1">
           <h4 className="font-semibold m-0">
-            {artifact.title} v{version}
+            {artifact.files[0].name} v{version}
           </h4>
           <span className="text-xs text-gray-500">Click to open code</span>
         </div>
@@ -127,7 +161,7 @@ export function Artifact({
         >
           <div className="flex justify-between items-center pl-5 pr-10 py-6 border-b">
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold m-0">{artifact?.title}</h2>
+              <h2 className="text-2xl font-bold m-0">{artifact.files[0].name}</h2>
               <span className="text-sm text-gray-500">Version: v{version}</span>
             </div>
             <Button
@@ -176,8 +210,8 @@ function ArtifactOutput({
   result: ArtifactResult;
   version: number;
 }) {
-  const fileExtension = artifact.file_path.split(".").pop() || "";
-  const markdownCode = `\`\`\`${fileExtension}\n${artifact.code}\n\`\`\``;
+  const fileExtension = artifact.files[0].name.split(".").pop() || "";
+  const markdownCode = `\`\`\`${fileExtension}\n${artifact.files[0].content}\n\`\`\``;
   const { url: sandboxUrl, outputUrls, runtimeError, stderr, stdout } = result;
 
   return (

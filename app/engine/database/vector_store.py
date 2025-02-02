@@ -1,13 +1,12 @@
-from dotenv import load_dotenv
-
-load_dotenv()
-
 import os
 import logging
 from llama_index.vector_stores.postgres import PGVectorStore
 from urllib.parse import urlparse, urlunparse
 import psycopg2
 from psycopg2 import sql
+from dotenv import load_dotenv
+
+load_dotenv()
 
 logger = logging.getLogger("uvicorn")
 
@@ -17,6 +16,7 @@ EMBEDDING_DIM = os.getenv("EMBEDDING_DIM", 1024)
 DATABASE_NAME = os.getenv("DB_NAME", "metanavit")
 
 vector_store: PGVectorStore = None
+
 
 def create_database():
     original_conn_string = os.getenv("PG_CONNECTION_STRING")
@@ -50,6 +50,7 @@ def create_database():
     finally:
         cursor.close()
         conn.close()
+
 
 def get_vector_store():
     global vector_store
@@ -102,3 +103,4 @@ def create_vector_extension():
     finally:
         cursor.close()
         conn.close()
+        
