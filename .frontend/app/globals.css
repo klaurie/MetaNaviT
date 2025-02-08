@@ -79,12 +79,14 @@
   }
   body {
     @apply bg-background text-foreground h-full;
+    background-color: #121212;
+    color: #000000;
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
   }
   .background-gradient {
-    background-color: #fff;
+    background-color: #121212;
     background-image: radial-gradient(
         at 21% 11%,
         rgba(186, 186, 233, 0.53) 0,
