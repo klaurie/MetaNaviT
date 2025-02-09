@@ -5,6 +5,7 @@ static/
 .vscode/
 *.pyc
 /node_modules
+time_test_data/
 datasets/
 .deepeval*
 benchmark_tests/*.csv
