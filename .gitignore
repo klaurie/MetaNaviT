@@ -6,6 +6,7 @@ static/
 *.pyc
 /node_modules
 time_test_data/
+.DS_Store
 datasets/
 .deepeval*
 benchmark_tests/*.csv
