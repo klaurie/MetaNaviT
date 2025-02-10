@@ -8,3 +8,5 @@ static/
 /node_modules
 datasets/
 .deepeval_telemetry.txt
+time_test_data/
+
