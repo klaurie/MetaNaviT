@@ -51,5 +51,5 @@ def get_index(config: IndexConfig = None):
     index = VectorStoreIndex.from_vector_store(
         store, callback_manager=config.callback_manager
     )
-    logger.info(f"Finished loading index from {store}")
+    # logger.info(f"Finished loading index from {store}")
     return index

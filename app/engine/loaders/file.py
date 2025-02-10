@@ -41,6 +41,7 @@ def get_file_documents(config: FileLoaderConfig):
     from llama_index.core.readers import SimpleDirectoryReader
 
     try:
+        # TODO: customize Document() metadata fields **default excludes needed metadata (check vector store)
         reader = SimpleDirectoryReader(
             DATA_DIR,
             recursive=True,

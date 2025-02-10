@@ -91,6 +91,7 @@ def get_query_engine_tool(
         query_engine=query_engine,
         name=name,
         description=description,
+        return_direct=True,
     )
 
 

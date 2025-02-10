@@ -12,7 +12,7 @@ from llama_index.core.readers.file.base import (
     _try_loading_included_file_formats as get_file_loaders_map,
 )
 from llama_index.core.schema import Document
-from llama_index.readers.file import FlatReader
+from llama_index.readers.file.flat import FlatReader
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)

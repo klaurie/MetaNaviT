@@ -69,5 +69,5 @@ def get_chat_engine(
         system_prompt=system_prompt,
         callback_manager=callback_manager,
         verbose=True,
-        max_iterations=10,
+        max_iterations=15,
     )
