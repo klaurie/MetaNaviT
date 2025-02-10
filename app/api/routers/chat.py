@@ -12,9 +12,15 @@ Features:
 
 import logging
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, status
+from llama_index.core.llms import MessageRole
 
 from app.api.routers.events import EventCallbackHandler
-from app.api.routers.models import ChatData
+from app.api.routers.models import (
+    ChatData,
+    Message,
+    Result,
+    SourceNodes,
+)
 from app.api.routers.vercel_response import VercelStreamResponse
 from app.engine.engine import get_chat_engine
 from app.engine.query_filter import generate_filters
@@ -48,7 +54,7 @@ async def chat(
         # Set up document filtering
         doc_ids = data.get_chat_document_ids()
 
-        # THe only filter generated at the moment is public/private file type
+        # The only filter generated at the moment is public/private file type
         filters = generate_filters(doc_ids)
         params = data.data or {}
         
@@ -78,3 +84,27 @@ async def chat(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error in chat engine: {e}",
         ) from e
+
+
+# non-streaming endpoint for testing
+@r.post("/request")
+async def chat_request(
+    data: ChatData,
+) -> Result:
+    last_message_content = data.get_last_message_content()
+    messages = data.get_history_messages()
+
+    doc_ids = data.get_chat_document_ids()
+    filters = generate_filters(doc_ids)
+    params = data.data or {}
+    logger.info(
+        f"Creating chat engine with filters: {str(filters)}",
+    )
+
+    chat_engine = get_chat_engine(filters=filters, params=params)
+
+    response = await chat_engine.achat(last_message_content, messages)
+    return Result(
+        result=Message(role=MessageRole.ASSISTANT, content=response.response),
+        nodes=SourceNodes.from_source_nodes(response.source_nodes),
+    )

@@ -6,3 +6,6 @@ static/
 .vscode/
 *.pyc
 /node_modules
+datasets/
+benchmark_tests/
+.deepeval_telemetry.txt
