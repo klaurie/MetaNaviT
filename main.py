@@ -15,15 +15,12 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-servers = []
-app_name = os.getenv("FLY_APP_NAME")
-if app_name:
-    servers = [{"url": f"https://{app_name}.fly.dev"}]
-app = FastAPI(servers=servers)
+# Initialize FastAPI app
+app = FastAPI()
 
 init_settings()
 
-environment = os.getenv("ENVIRONMENT", "dev")  # Default to 'development' if not set
+environment = os.getenv("ENVIRONMENT", "dev")
 logger = logging.getLogger("uvicorn")
 
 
