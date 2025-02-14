@@ -4,6 +4,7 @@ from typing import Dict, Optional
 
 from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.settings import Settings
+import nomic
 
 
 # `Settings` does not support setting `MultiModalLLM`
@@ -34,10 +35,6 @@ def init_settings():
             init_azure_openai()
         case "huggingface":
             init_huggingface()
-        case "t-systems":
-            from .llmhub import init_llmhub
-
-            init_llmhub()
         case _:
             raise ValueError(f"Invalid model provider: {model_provider}")
 
@@ -48,7 +45,7 @@ def init_settings():
 def init_ollama():
     try:
         from llama_index.llms.ollama import Ollama
-        from llama_index.embeddings.nomic import NomicEmbedding
+        from llama_index.embeddings.huggingface import HuggingFaceEmbedding
         from llama_index.llms.ollama.base import DEFAULT_REQUEST_TIMEOUT, Ollama
     except ImportError:
         raise ImportError(
@@ -59,11 +56,7 @@ def init_ollama():
     request_timeout = float(
         os.getenv("OLLAMA_REQUEST_TIMEOUT", DEFAULT_REQUEST_TIMEOUT)
     )
-    embed_model = NomicEmbedding(
-        model_name="nomic-embed-text-v1.5",
-        embed_batch_size=10,
-        api_key="nk-iRJoZSa_JCBYcfNJnSqrph5TS6qWlQpg3JsVpy0w74I"
-    )
+    embed_model = HuggingFaceEmbedding(model_name=os.getenv("EMBEDDING_MODEL"))
     llm = Ollama(
         model=os.getenv("MODEL", "llama3.2:1b"),
         base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
@@ -253,4 +246,4 @@ def init_mistral():
     from llama_index.llms.mistralai import MistralAI
 
     Settings.llm = MistralAI(model=os.getenv("MODEL"))
-    Settings.embed_model = MistralAIEmbedding(model_name=os.getenv("EMBEDDING_MODEL"))
+    embed_model = MistralAIEmbedding(model_name=os.getenv("EMBEDDING_MODEL"))
