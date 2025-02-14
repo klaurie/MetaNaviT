@@ -36,6 +36,27 @@ const mockArtifacts: ArtifactItem[] = [
   }
 ];
 
+// Function to handle the download of an artifact item
+const onDownload = async (item: ArtifactItem) => {
+  try {
+    const zip = new JSZip();
+    
+    item.artifact.files.forEach((file) => {
+      zip.file(file.name, file.content);
+    });
+
+    // Generate the zip file and trigger download
+    const content = await zip.generateAsync({ type: 'blob' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(content);
+    link.download = `${item.artifact.name}.zip`;
+    link.click();
+  } catch (error) {
+    console.error('Error downloading artifact:', error);
+  }
+};
+
+// Main component to handle artifact preview and download
 export function ArtifactDownload() {
   const [artifacts, setArtifacts] = useState<ArtifactItem[]>(mockArtifacts);
   const [isOpen, setIsOpen] = useState(false);
@@ -45,27 +66,6 @@ export function ArtifactDownload() {
   const onPreview = (item: ArtifactItem) => {
     setPreviewArtifact(item.artifact);
     setShowPreview(true);
-  };
-
-  const onDownload = async (item: ArtifactItem) => {
-    try {
-      const zip = new JSZip();
-      
-      item.artifact.files.forEach((file) => {
-        zip.file(file.name, file.content);
-      });
-      
-      const content = await zip.generateAsync({ type: "blob" });
-      const url = window.URL.createObjectURL(content);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `artifact-${item.version}.zip`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error('Download failed:', error);
-    }
   };
 
   const onDelete = (item: ArtifactItem) => {
@@ -78,12 +78,11 @@ export function ArtifactDownload() {
         <SheetTrigger asChild>
           <Button variant="outline" className="fixed top-4 right-4">
             <FileDown className="h-4 w-4 mr-2" />
-            Artifacts
           </Button>
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Generated Artifacts</SheetTitle>
+            <SheetTitle></SheetTitle>
           </SheetHeader>
           <ScrollArea className="h-[calc(100vh-8rem)] mt-4">
             <div className="space-y-4">
@@ -130,6 +129,7 @@ export function ArtifactDownload() {
   );
 }
 
+// Component to display an artifact card with preview, download, and delete options
 function ArtifactCard({
   item,
   onPreview,
@@ -179,4 +179,4 @@ function ArtifactCard({
       </div>
     </div>
   );
-} 
+}
