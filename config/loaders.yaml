@@ -1,5 +1,15 @@
-file:
-  # none at the moment
+file_system:
+  # Base directory to start crawling from
+  path: "datasets/file_organization/Easy"
+  # Optional crawler settings
+  max_workers: 4
+  batch_size: 1000
+  # Optional file exclusion patterns
+  exclude:
+    - "**/*.git/*"
+    - "**/*.pyc"
+    - "**/node_modules/*"
+    - "**/__pycache__/*"
 #db:
   # connection: connection string
   # queries: list of queries to run

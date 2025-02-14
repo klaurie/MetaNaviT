@@ -25,11 +25,11 @@ import psycopg2
 from psycopg2 import sql
 
 from app.engine.loaders import get_documents
-from app.engine.database.vector_store import get_vector_store, create_vector_extension
+from app.database.vector_store_manager import get_vector_store
 
 from app.settings import init_settings
 
-from llama_index.core.ingestion import DocstoreStrategy, IngestionPipeline
+from llama_index.core.ingestion import  IngestionPipeline
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.settings import Settings
 from llama_index.core.storage import StorageContext

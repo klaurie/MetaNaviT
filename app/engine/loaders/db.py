@@ -23,7 +23,7 @@ class DBLoaderConfig(BaseModel):
     
     Attributes:
         uri: SQLAlchemy connection string (e.g. postgresql://user:pass@host/db)
-        queries: List of SQL queries to execute for document extraction
+        queries: List of SQL queries to execute for document extraction`
     """
     uri: str
     queries: List[str]

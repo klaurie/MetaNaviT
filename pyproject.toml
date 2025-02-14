@@ -30,6 +30,9 @@ flake8 = "^7.1.1"
 llama-index-readers-file = "^0.4.4"
 transformers = "^4.48.3"
 torch = "2.2.1"
+nomic = "^3.4.1"
+llama-index-embeddings-huggingface = "0.4.0"
+llama-index-embeddings-instructor = "^0.3.0"
 
 
 [tool.poetry.dependencies.uvicorn]

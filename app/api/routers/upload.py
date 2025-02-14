@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from app.api.routers.models import DocumentFile
-from app.services.file import FileService
+from app.engine.loaders.file import FileService
 
 file_upload_router = r = APIRouter()
 

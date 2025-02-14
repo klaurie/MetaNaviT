@@ -8,3 +8,4 @@ static/
 /node_modules
 datasets/
 .deepeval_telemetry.txt
+benchmark_tests/*.csv

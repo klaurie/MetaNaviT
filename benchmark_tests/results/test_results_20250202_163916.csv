@@ -1,2 +1,0 @@
-timestamp,query,expected_answer,actual_response,relevancy_score,faithfulness_score,passed_threshold
-2025-02-02T16:39:20.531999,What standards for letters exist?,There are several ISO standards...,ERROR: AnswerRelevancyMetric.__init__() got an unexpected keyword argument 'expected_answer',0.0,0.0,False
