@@ -22,18 +22,43 @@ ollama pull llama3.2:1b
 ```
 
 4. Download PostgreSQL 
-
     https://www.postgresql.org/download/
 
-5. Download postgres
+```bash
+#If you are using MacOS, you might want to try this:
+brew install postgresql@14
 
-   https://github.com/pgvector/pgvector
+# To start postgresql@14 now and restart at login:
+brew services start postgresql@14
+
+# Or, if you don't want/need a background service you can just run:
+/opt/homebrew/opt/postgresql@14/bin/postgres -D /opt/homebrew/var/postgresql@14
+```
+If you need to install Homebrew: https://brew.sh/
+
+5. Download pgvector
+    https://github.com/pgvector/pgvector 
 
 6. Make sure Poetry package manager is installed
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
 
-    ```bash
-   curl -sSL https://install.python-poetry.org | python3 -
-    ```
+7. MacOS user might want to check NVM installed version. An installed version can be old.
+```bash
+node -v
+# If your version is not 20, follow this:
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+
+nvm install 20
+
+nvm use 20
+
+nvm alias default 20
+# Check the version again.
+node -v
+```
+
 ## Quick Start with Dev Container (Recommended)
 
 The easiest way to get started is using the dev container, which handles all dependencies except Ollama and Database dependencies:
@@ -86,7 +111,7 @@ The example provides two different API endpoints:
 
 You can test the streaming endpoint with the following curl request:
 
-```
+```bash
 curl --location 'localhost:8000/api/chat' \
 --header 'Content-Type: application/json' \
 --data '{ "messages": [{ "role": "user", "content": "Hello" }] }'
@@ -94,7 +119,7 @@ curl --location 'localhost:8000/api/chat' \
 
 And for the non-streaming endpoint run:
 
-```
+```bash
 curl --location 'localhost:8000/api/chat/request' \
 --header 'Content-Type: application/json' \
 --data '{ "messages": [{ "role": "user", "content": "Hello" }] }'
@@ -104,7 +129,7 @@ You can start editing the API endpoints by modifying `app/api/routers/chat.py`. 
 
 To start the app optimized for **production**, run:
 
-```
+```bash
 poetry run prod
 ```
 
