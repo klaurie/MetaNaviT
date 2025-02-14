@@ -65,7 +65,6 @@ def build():
 
         rich.print(
             "\n[bold]Built frontend successfully![/bold]"
-            "\n[bold]Run: 'poetry run prod' to start the app[/bold]"
             "\n[bold]Don't forget to update the .env file![/bold]"
         )
     except CalledProcessError as e:
@@ -76,10 +75,6 @@ def build():
 
 def dev():
     asyncio.run(start_development_servers())
-
-
-def prod():
-    asyncio.run(start_production_server())
 
 
 async def start_development_servers():
@@ -126,28 +121,6 @@ async def start_development_servers():
 
     except Exception as e:
         raise SystemError(f"Failed to start development servers: {str(e)}") from e
-
-
-async def start_production_server():
-    if _is_frontend_included():
-        is_frontend_built = (FRONTEND_DIR / "out" / "index.html").exists()
-        is_frontend_static_dir_exists = STATIC_DIR.exists()
-        if not is_frontend_built or not is_frontend_static_dir_exists:
-            build()
-
-    try:
-        process = await _run_backend(
-            envs={"ENVIRONMENT": "prod"},
-        )
-        await process.wait()
-    except Exception as e:
-        raise SystemError(f"Failed to start production server: {str(e)}") from e
-    finally:
-        process.terminate()
-        try:
-            await asyncio.wait_for(process.wait(), timeout=5)
-        except asyncio.TimeoutError:
-            process.kill()
 
 
 async def _run_frontend(
