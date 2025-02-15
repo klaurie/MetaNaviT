@@ -1,3 +1,28 @@
+"""
+Vector Store Manager Module
+
+Manages PostgreSQL vector operations using pgvector extension for document embeddings.
+Provides connection pooling and vector store management through a singleton pattern.
+
+Features:
+    - Vector store initialization and management
+    - Connection pooling via parent DatabaseManager
+    - pgvector extension handling
+    - Both sync (psycopg2) and async (asyncpg) support
+    - Automatic table creation and dimension handling
+
+Configuration (via environment variables):
+    PGVECTOR_SCHEMA: Schema name for vector tables (default: "public")
+    PGVECTOR_TABLE: Table name for embeddings (default: "llamaindex_embedding")
+    EMBEDDING_DIM: Embedding dimension size (default: 1024)
+    PG_CONNECTION_STRING: PostgreSQL connection string
+
+Dependencies:
+    - PostgreSQL with pgvector extension
+    - llama-index for vector store operations
+    - psycopg2 for database connections
+    - asyncpg for async operations
+"""
 import os
 import logging
 from llama_index.vector_stores.postgres import PGVectorStore

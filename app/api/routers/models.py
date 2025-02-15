@@ -32,7 +32,7 @@ from pydantic import BaseModel, Field, validator
 from pydantic.alias_generators import to_camel
 
 from app.config import DATA_DIR
-from app.services.file import DocumentFile
+from app.engine.loaders.file import DocumentFile
 
 logger = logging.getLogger("uvicorn")
 
