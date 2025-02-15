@@ -10,3 +10,4 @@ datasets/
 .deepeval_telemetry.txt
 benchmark_tests/*.csv
 time_test_data/
+.coverage
