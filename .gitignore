@@ -14,6 +14,7 @@ config/loaders.yaml
 .pytest_cache/
 time_test_data/
 .coverage
+.coverage
 
 config/loaders.yaml
 .pytest_cache/
