@@ -9,5 +9,8 @@ static/
 datasets/
 .deepeval*
 benchmark_tests/*.csv
+time_test_data/
+.coverage
+
 config/loaders.yaml
 .pytest_cache/
