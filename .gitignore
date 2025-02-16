@@ -9,3 +9,4 @@ static/
 datasets/
 .deepeval_telemetry.txt
 benchmark_tests/*.csv
+config/loaders.yaml
