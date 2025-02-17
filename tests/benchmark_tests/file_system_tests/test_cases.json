@@ -1,0 +1,9 @@
+{
+    "test_cases": [
+        {
+            "id": "oeasy organize by category",
+            "input": "organize the files in the Easy/test_cases/ folder by category",
+            "expected_output": "Easy\n|-Finance\n|\t|- annual_report_2019.docx\n|\t|- Financial Management.pdf\n|\t|- State and local Government Finances in Covid-19 Era.pdf\n|-Statistics\n|\t|- On Probability Calculus in Applicaiton to.pdf\n|\t|- Fundamentals of Research and Statistics for Physicians.pdf\n|-Programming Project\n|\t|- E\n|\t|- README.md\n|\t|- main.py\n|\t|- utils.pdf\n|\t|- requirements.txt"
+        }
+    ]
+}
