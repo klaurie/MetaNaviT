@@ -1,9 +1,10 @@
 {
     "test_cases": [
         {
-            "id": "oeasy organize by category",
+            "id": "Easy organize by category",
             "input": "organize the files in the Easy/test_cases/ folder by category",
-            "expected_output": "Easy\n|-Finance\n|\t|- annual_report_2019.docx\n|\t|- Financial Management.pdf\n|\t|- State and local Government Finances in Covid-19 Era.pdf\n|-Statistics\n|\t|- On Probability Calculus in Applicaiton to.pdf\n|\t|- Fundamentals of Research and Statistics for Physicians.pdf\n|-Programming Project\n|\t|- E\n|\t|- README.md\n|\t|- main.py\n|\t|- utils.pdf\n|\t|- requirements.txt"
+            "expected_output": "Easy\n|-Finance\n|\t|- annual_report_2019.docx\n|\t|- Financial Management.pdf\n|\t|- State and local Government Finances in Covid-19 Era.pdf\n|-Statistics\n|\t|- On Probability Calculus in Applicaiton to.pdf\n|\t|- Fundamentals of Research and Statistics for Physicians.pdf\n|-Programming Project\n|\t|- E\n|\t|- README.md\n|\t|- main.py\n|\t|- utils.pdf\n|\t|- requirements.txt",
+            "context": ["Initial directory structure contains various files in Easy/test_cases/:\n- PDF documents about finance, statistics, and programming\n- Python source files and project documentation\n- Financial reports in Word format\n\nOrganizational rules:\n1. Group by subject matter (Finance, Statistics, Programming)\n2. Maintain original filenames\n3. Create subdirectories for each category\n4. Keep related files together (e.g., code with its documentation)"]
         }
     ]
 }
