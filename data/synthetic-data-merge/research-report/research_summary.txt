@@ -1,0 +1,5 @@
+
+Summary of AI in Healthcare:
+- AI enhances diagnostics and personalized medicine but faces challenges like data privacy.
+- Machine learning aids in early disease detection, improving patient outcomes.
+- Future trends include AI-driven robotic surgeries and predictive healthcare analytics.

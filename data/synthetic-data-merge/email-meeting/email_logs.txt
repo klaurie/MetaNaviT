@@ -1,0 +1,24 @@
+
+From: manager@example.com
+To: team@example.com
+Subject: Project Update
+
+Hi Team,
+
+Please ensure all deliverables are submitted by Friday. We will discuss the next phase in Monday’s meeting.
+
+Best, 
+Manager
+
+---
+
+From: hr@example.com
+To: all@example.com
+Subject: Policy Update
+
+Dear Team,
+
+A new remote work policy has been implemented effective immediately. Please review the attached document.
+
+Best, 
+HR Department
