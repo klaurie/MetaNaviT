@@ -1,0 +1,6 @@
+
+Patient Notes for John Doe:
+- Reported occasional dizziness and fatigue.
+- Blood pressure recorded at 140/90 mmHg.
+- Recent lab tests show stable glucose levels.
+- Advised to monitor symptoms and follow prescribed medication.
