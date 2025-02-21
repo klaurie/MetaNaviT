@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import MagicMock
-from app.engine.loaders.file import get_file_documents, FileLoaderConfig
+from app.engine.loaders.file_system_manager import get_file_documents, FileLoaderConfig
 from app.config import DATA_DIR
 
 

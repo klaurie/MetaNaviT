@@ -6,5 +6,9 @@ static/
 .vscode/
 *.pyc
 /node_modules
+datasets/
+.deepeval_telemetry.txt
+benchmark_tests/*.csv
 time_test_data/
+.coverage
 .DS_Store

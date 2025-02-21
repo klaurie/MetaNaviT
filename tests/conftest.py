@@ -44,7 +44,7 @@ for mod_name, mock in mock_modules.items():
 def mock_vector_store(mocker):
     """Fixture to mock the vector store."""
     mock_store = MagicMock()
-    mocker.patch('app.engine.database.vector_store.get_vector_store', return_value=mock_store)
+    mocker.patch('app.database.vector_store.get_vector_store', return_value=mock_store)
     return mock_store
 
 
