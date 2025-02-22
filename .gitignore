@@ -7,6 +7,6 @@ static/
 *.pyc
 /node_modules
 datasets/
-.deepeval_telemetry.txt
+.deepeval*
 benchmark_tests/*.csv
 config/loaders.yaml
