@@ -96,11 +96,25 @@ def setup_conda_environment() -> None:
             check=True
         )
         
-        # Install requirements using conda run
+        # Activate the environment and install dependencies
         subprocess.run(
-            ["conda", "run", "--name", "metanavit", "pip", "install", "-r", "requirements.txt"],
+            ["conda", "run", "--name", "metanavit", "python", "-m", "pip", "install", "--upgrade", "pip"],
             check=True
         )
+
+        subprocess.run(
+            ["conda", "activate", "--name", "metanavit"],
+            shell=True,
+            check=True
+        )
+
+        subprocess.run("pip install -r requirements.txt",
+        shell=True,
+        check=True)
+
+        subprocess.run("pip install -U deepeval",
+        shell=True,
+        check=True)
         
         logger.info("Conda environment setup complete")
     except subprocess.CalledProcessError as e:
@@ -125,40 +139,6 @@ def check_environment() -> bool:
         return False
     return True
 
-def init_database() -> None:
-    """Initialize PostgreSQL database with pgvector."""
-    conn_string = os.getenv("PG_CONNECTION_STRING")
-    if not conn_string or "postgresql://" not in conn_string:
-        logger.error("Invalid or missing PostgreSQL connection string")
-        sys.exit(1)
-    
-    try:
-        with psycopg2.connect(conn_string) as conn:
-            with conn.cursor() as cur:
-                # Enable pgvector extension
-                cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
-                logger.info("Enabled pgvector extension")
-    except Exception as e:
-        logger.error(f"Database initialization failed: {e}")
-        raise
-
-def setup_ollama() -> None:
-    """Download and verify Ollama model."""
-    model = os.getenv("MODEL", "llama3.2:1b")
-    try:
-        subprocess.run(["ollama", "pull", model], check=True)
-        verify_ollama_model()
-        logger.info(f"Downloaded Ollama model: {model}")
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Ollama model download failed: {e}")
-        raise
-
-def verify_ollama_model():
-    """Verify that the Ollama model was downloaded successfully."""
-    result = subprocess.run(["ollama", "list"], capture_output=True, text=True)
-    if os.getenv("MODEL", "llama3.2:1b") not in result.stdout:
-        logger.error("Ollama model not found after download.")
-        sys.exit(1)
 
 def main():
     """Main setup routine."""
@@ -191,23 +171,9 @@ def main():
         logger.error(f"Conda environment setup failed: {e}")
         sys.exit(1)
     
-    # Initialize database
-    try:
-        init_database()
-    except Exception as e:
-        logger.error(f"Database setup failed: {e}")
-        sys.exit(1)
-    
-    # Setup Ollama if using it
-    if os.getenv("MODEL_PROVIDER") == "ollama":
-        try:
-            setup_ollama()
-        except Exception as e:
-            logger.error(f"Ollama setup failed: {e}")
-            sys.exit(1)
-    
     logger.info("Setup completed successfully!")
     logger.info("To activate the environment, run: conda activate metanavit")
 
 if __name__ == "__main__":
     main()
+    sys.exit(0)
