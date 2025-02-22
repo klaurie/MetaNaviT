@@ -42,12 +42,11 @@ class NodePackageManager(str):
 
 
 def build():
-    """
-    Build the frontend and copy the static files to the backend.
-
-    Raises:
-        SystemError: If any build step fails
-    """
+    """Builds frontend and copies static files to backend"""
+    # 1. Gets package manager (npm/pnpm)
+    # 2. Installs dependencies
+    # 3. Builds frontend
+    # 4. Copies to static directory
     static_dir = Path("static")
 
     try:
