@@ -1,6 +1,6 @@
 [tool]
 [tool.poetry]
-name = "MetaNaviT"
+name = "app"
 version = "0.1.0"
 description = ""
 authors = [ "Kaitlyn Laurie <k.laurie124@gmail.com>" ]
