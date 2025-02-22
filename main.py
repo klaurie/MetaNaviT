@@ -39,6 +39,7 @@ from app.settings import init_settings
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from run import dev
 
 # Initialize FastAPI app
 app = FastAPI()

@@ -6,6 +6,7 @@ from asyncio.subprocess import Process
 from pathlib import Path
 from shutil import which
 from subprocess import CalledProcessError, run
+import uvicorn
 
 import dotenv
 import rich
@@ -42,11 +43,12 @@ class NodePackageManager(str):
 
 
 def build():
-    """Builds frontend and copies static files to backend"""
-    # 1. Gets package manager (npm/pnpm)
-    # 2. Installs dependencies
-    # 3. Builds frontend
-    # 4. Copies to static directory
+    """
+    Build the frontend and copy the static files to the backend.
+
+    Raises:
+        SystemError: If any build step fails
+    """
     static_dir = Path("static")
 
     try:
@@ -160,32 +162,22 @@ async def _run_frontend(
     raise TimeoutError(f"Frontend dev server failed to start within {timeout} seconds")
 
 
-async def _run_backend(
-    envs: dict[str, str | None] = {},
-) -> Process:
-    """
-    Start the backend development server.
-
-    Returns:
-        Process: The backend process
-    """
+async def _run_backend(envs: dict[str, str | None] = {}) -> Process:
+    """Start the backend development server."""
     # Merge environment variables
     envs = {**os.environ, **(envs or {})}
-    # Check if the port is free
+    
     if not _is_port_available(APP_PORT):
         raise SystemError(
-            f"Port {APP_PORT} is not available! Please change the port in .env file or kill the process running on this port."
+            f"Port {APP_PORT} is not available! Please change the port in .env file."
         )
-    rich.print(f"\n[bold]Starting app on port {APP_PORT}...[/bold]")
-    poetry_executable = _get_poetry_executable()
-    process = await asyncio.create_subprocess_exec(
-        poetry_executable,
-        "run",
-        "python",
-        "main.py",
-        env=envs,
-    )
-    # Wait for port is started
+    
+    rich.print(f"\n[bold]Starting backend on port {APP_PORT}...[/bold]")
+    
+    # Run uvicorn directly instead of using poetry
+    uvicorn.run(app="main:app", host=APP_HOST, port=APP_PORT, reload=True)
+    
+    # Wait for port to start
     timeout = 30
     for _ in range(timeout):
         await asyncio.sleep(1)
@@ -193,12 +185,12 @@ async def _run_backend(
             raise RuntimeError("Could not start backend dev server")
         if _is_server_running(APP_PORT):
             rich.print(
-                f"\n[bold green]App is running. You now can access it at http://{APP_HOST}:{APP_PORT}[/bold green]"
+                f"\n[bold green]Backend running at http://{APP_HOST}:{APP_PORT}[/bold green]"
             )
             return process
-    # Timeout, kill the process
+            
     process.terminate()
-    raise TimeoutError(f"Backend dev server failed to start within {timeout} seconds")
+    raise TimeoutError(f"Backend failed to start within {timeout} seconds")
 
 
 def _install_frontend_dependencies():
@@ -237,23 +229,6 @@ def _get_node_package_manager() -> NodePackageManager:
     )
 
 
-def _get_poetry_executable() -> str:
-    """
-    Check for available Poetry executables and return the preferred one.
-    Returns 'poetry' if installed, falls back to 'poetry.cmd'.
-    Raises SystemError if neither is installed.
-
-    Returns:
-        str: The full path to the available Poetry executable
-    """
-    poetry_cmds = ["poetry", "poetry.cmd"]
-    for cmd in poetry_cmds:
-        cmd_path = which(cmd)
-        if cmd_path is not None:
-            return cmd_path
-    raise SystemError("Poetry is not installed. Please install Poetry first.")
-
-
 def _is_port_available(port: int) -> bool:
     """Check if a port is available for binding."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -282,3 +257,6 @@ def _find_free_port(start_port: int) -> int:
 def _is_frontend_included() -> bool:
     """Check if the app has frontend"""
     return FRONTEND_DIR.exists()
+
+if __name__ == "__main__":
+    dev()
