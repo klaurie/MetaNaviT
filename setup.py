@@ -20,6 +20,10 @@ from pathlib import Path
 import logging
 import psycopg2
 from typing import List, Dict
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -37,8 +41,34 @@ REQUIRED_ENV_VARS = [
     "MODEL_PROVIDER",
     "MODEL",
     "EMBEDDING_MODEL",
-    "PG_CONNECTION_STRING"
+    "PG_CONNECTION_STRING",
+    "APP_HOST",
+    "APP_PORT",
+    "FRONTEND_DIR",
+    "STATIC_DIR",
+    "DATA_DIR",
+    "STORAGE_DIR"
 ]
+
+def create_env_file():
+    """Create .env file if it doesn't exist with default values."""
+    env_path = Path(".env")
+    if not env_path.exists():
+        logger.info("Creating default .env file")
+        with open(env_path, "w") as f:
+            f.write("""# MetaNaviT Environment Configuration
+MODEL_PROVIDER=ollama
+MODEL=llama2:7b
+EMBEDDING_MODEL=all-MiniLM-L6-v2
+PG_CONNECTION_STRING=postgresql://postgres:postgres@localhost:5432/metanavit
+APP_HOST=localhost
+APP_PORT=8000
+FRONTEND_DIR=.frontend
+STATIC_DIR=static
+DATA_DIR=datasets
+STORAGE_DIR=storage
+""")
+        logger.info("Created default .env file. Please update
 
 def check_system_dependencies() -> List[str]:
     """Check if required system tools are installed."""
