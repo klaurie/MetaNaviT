@@ -7,11 +7,12 @@ static/
 *.pyc
 /node_modules
 datasets/
-.deepeval_telemetry.txt
+.deepeval*
 benchmark_tests/*.csv
 <<<<<<< HEAD
 time_test_data/
 .coverage
 =======
 config/loaders.yaml
+
 >>>>>>> a548eb31 (reorganized test structure)

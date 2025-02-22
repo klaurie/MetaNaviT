@@ -1,15 +1,15 @@
 [tool]
 [tool.poetry]
-name = "app"
+name = "MetaNaviT"
 version = "0.1.0"
 description = ""
-authors = [ "Marcus Schiesser <mail@marcusschiesser.de>" ]
+authors = [ "Kaitlyn Laurie <k.laurie124@gmail.com>" ]
 readme = "README.md"
 
 [tool.poetry.scripts]
 generate = "app.engine.generate:generate_datasource"
 dev = "run:dev"
-prod = "run:prod"
+setup = "setup:main"
 build = "run:build"
 
 [tool.poetry.dependencies]
