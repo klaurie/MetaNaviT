@@ -68,7 +68,7 @@ STATIC_DIR=static
 DATA_DIR=datasets
 STORAGE_DIR=storage
 """)
-        logger.info("Created default .env file. Please update
+        logger.info("Created default .env file. Please update with your settings.")
 
 def check_system_dependencies() -> List[str]:
     """Check if required system tools are installed."""
@@ -163,6 +163,12 @@ def verify_ollama_model():
 def main():
     """Main setup routine."""
     logger.info("Starting MetaNaviT setup...")
+    
+    # Create .env file if it doesn't exist
+    create_env_file()
+    
+    # Reload environment variables
+    load_dotenv()
     
     # Check system dependencies
     missing_deps = check_system_dependencies()
