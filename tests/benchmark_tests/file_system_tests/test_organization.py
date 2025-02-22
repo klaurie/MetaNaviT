@@ -17,8 +17,8 @@ from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
 
 from deepeval import evaluate
-from deepeval.metrics import AnswerRelevancyMetric, FaithfulnessMetric, TaskCompletionMetric
-from deepeval.test_case import LLMTestCase, ToolCall
+from deepeval.metrics import AnswerRelevancyMetric, GEval, TaskCompletionMetric
+from deepeval.test_case import LLMTestCase, ToolCall, LLMTestCaseParams
 from deepeval.integrations import trace_llama_index
 from deepeval.auto_evaluate import auto_evaluate
 
@@ -84,8 +84,35 @@ class FileSystemTestRunner:
 
     def init_metrics(self) -> List[Any]:
         """Initialize evaluation metrics"""
+
+        structure_metric = GEval(
+            name="Structure Understanding",
+            evaluation_steps=[
+                "Is the file system generated output structured in a readable format in 'actual output'",
+                "Does the folder hierarchy look like it has excessive nesting?",
+                "Are there consistent naming conventions for files and folders?",
+                "Are duplicate or redundant files minimized?",
+            ],
+            evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
+            model=self.eval_llm,
+            verbose_mode=True
+        )
+
+        search_retrieval_metric = GEval(
+            name="Search & Retrieval Efficiency",
+            evaluation_steps=[
+                "How quickly can a user find a specific file based on its name or metadata?",
+                "Are files tagged with metadata or keywords to improve searchability?",
+                "Is there a versioning system to track file changes?"
+            ],
+            evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
+            model=self.eval_llm,
+            verbose_mode=True
+        )
+
         return [
-            AnswerRelevancyMetric(model=self.eval_llm),
+            structure_metric,
+            search_retrieval_metric,
             TaskCompletionMetric(threshold=0.7, model=self.eval_llm)
         ]
 
