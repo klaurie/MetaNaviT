@@ -135,3 +135,5 @@ websockets==14.1
 win32-setctime==1.2.0
 wrapt==1.17.0
 yarl==1.18.3
+accelerate>=0.26.0
+bitsandbytes==0.45.2
