@@ -1,0 +1,74 @@
+{
+    "test_cases": [
+      {
+        "input": "When was requirements_v1.txt created?",
+        "expected_response": "requirements_v1.txt was created on March 1st, 2024",
+        "tool_params": {
+          "file_structure": ["requirements_v1.txt", "requirements_v2.txt"],
+          "file_metadata": {
+            "requirements_v1.txt": {"created": "2024-03-01"},
+            "requirements_v2.txt": {"created": "2024-03-03"}
+          },
+          "expected_dir_format": "Files listed with timestamps",
+          "expected_linux_commands": []
+        }
+      },
+      {
+        "input": "What files were modified between March 1st and March 3rd?",
+        "expected_response": "Files modified between March 1-3: requirements_v1.txt, requirements_v2.txt",
+        "tool_params": {
+          "file_structure": ["requirements_v1.txt", "requirements_v2.txt", "design_doc.txt"],
+          "file_metadata": {
+            "requirements_v1.txt": {"modified": "2024-03-01"},
+            "requirements_v2.txt": {"modified": "2024-03-03"},
+            "design_doc.txt": {"modified": "2024-02-28"}
+          },
+          "expected_dir_format": "Filtered list of modified files",
+          "expected_linux_commands": []
+        }
+      },
+      {
+        "input": "What is the time relationship between requirements_v1.txt and requirements_v2.txt?",
+        "expected_response": "requirements_v2.txt was created 2 days after requirements_v1.txt",
+        "tool_params": {
+          "file_structure": ["requirements_v1.txt", "requirements_v2.txt"],
+          "file_metadata": {
+            "requirements_v1.txt": {"created": "2024-03-01"},
+            "requirements_v2.txt": {"created": "2024-03-03"}
+          },
+          "expected_dir_format": "Time sequence of file creation",
+          "expected_linux_commands": []
+        }
+      },
+      {
+        "input": "What is the most recent meeting notes file?",
+        "expected_response": "The most recent meeting notes are from meeting_2024Q1_02.txt",
+        "tool_params": {
+          "file_structure": ["meeting_2024Q1_01.txt", "meeting_2024Q1_02.txt"],
+          "file_metadata": {
+            "meeting_2024Q1_01.txt": {"created": "2024-01-15"},
+            "meeting_2024Q1_02.txt": {"created": "2024-02-10"}
+          },
+          "expected_dir_format": "Sorted meeting notes by date",
+          "expected_linux_commands": []
+        }
+      },
+      {
+        "input": "What is the chronological order of project files?",
+        "expected_response": "The project files were created in this order: requirements_v1.txt, requirements_v2.txt, design_doc.txt, implementation_notes.txt, review_feedback.txt",
+        "tool_params": {
+          "file_structure": ["requirements_v1.txt", "requirements_v2.txt", "design_doc.txt", "implementation_notes.txt", "review_feedback.txt"],
+          "file_metadata": {
+            "requirements_v1.txt": {"created": "2024-03-01"},
+            "requirements_v2.txt": {"created": "2024-03-03"},
+            "design_doc.txt": {"created": "2024-03-05"},
+            "implementation_notes.txt": {"created": "2024-03-07"},
+            "review_feedback.txt": {"created": "2024-03-09"}
+          },
+          "expected_dir_format": "Chronologically ordered project files",
+          "expected_linux_commands": []
+        }
+      }
+    ]
+  }
+  
