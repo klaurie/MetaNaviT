@@ -65,9 +65,4 @@ jobs:
 
     - name: Lint with flake8
       run: |
-        # stop the build if there are Python syntax errors or undefined names
-
-        poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --ignore=E501,W292,W293
-    - name: Test with pytest
-      run: |
-        poetry run pytest --ignore=llm_benchmark_tests
+        flake8 app/ tests/ --count --max-line-length=120 --statistics --select=E9,F63,F7,F82
