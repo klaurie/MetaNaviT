@@ -22,7 +22,7 @@ from deepeval.test_case import LLMTestCase, ToolCall, LLMTestCaseParams
 from deepeval.integrations import trace_llama_index
 from deepeval.auto_evaluate import auto_evaluate
 
-from tests.benchmark_tests.eval_llm import EvalLLM_4Bit
+from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
 from tests.benchmark_tests.run_eval import get_chat_response
 
 @dataclass
@@ -41,20 +41,12 @@ class FileSystemTestRunner:
         trace_llama_index(auto_eval=True)
         
     def load_test_cases(self) -> List[LLMTestCase]:
-        """Load test cases from JSON file"""
+        """Load test cases from JSON file and return raw data"""
         with open(self.test_cases_path, 'r') as f:
             data = json.load(f)
-            return [
-                LLMTestCase(
-                    input=case["input"],
-                    actual_output=None,
-                    expected_output=case["expected_output"],
-                    context=case["context"]
-                )
-                for case in data["test_cases"]
-            ]
+            return data["test_cases"]
 
-    def get_tool_calls(self, context: TestContext) -> List[ToolCall]:
+    def get_tool_calls(self, tool_params) -> List[ToolCall]:
         """
         Create tool calls for test case
         
@@ -66,19 +58,34 @@ class FileSystemTestRunner:
         """
         return [
             ToolCall(
-                name="Print File System",
-                description="Prints the file system organization in readable format",
-                input_parameters={"root_dir": context.eval_dir},
-                output=[context.expected_dir_format]
+                name="Classify Files",
+                description="Uses AI to classify files based on content, type, and metadata.",
+                input_parameters={"file_paths": tool_params["file_structure"]},
+                output=[tool_params["file_categories"]]
             ),
             ToolCall(
-                name="List Linux Commands",
-                description="Lists all Linux commands",
+                name="Generate Organization Plan",
+                description="Generates the expected folder structure and file placement.",
                 input_parameters={
-                    "current_dir": context.eval_dir,
-                    "expected_format": context.expected_dir_format
+                    "current_structure": tool_params["file_structure"],
+                    "classification": tool_params["file_categories"]
                 },
-                output=[context.expected_linux_commands]
+                output=[tool_params["expected_dir_format"]]
+            ),
+            ToolCall(
+                name="Get Linux Commands",
+                description="Generates Linux commands to move, rename, or delete files as needed.",
+                input_parameters={
+                    "current_dir": tool_params["eval_dir"],
+                    "expected_format": tool_params["expected_dir_format"]
+                },
+                output=[tool_params["expected_linux_commands"]]
+            ),
+            ToolCall(
+                name="Execute Commands",
+                description="Executes the generated Linux commands to apply the file organization.",
+                input_parameters={"commands": tool_params["expected_linux_commands"]},
+                output=[tool_params["expected_exe_log"]]
             )
         ]
 
@@ -148,26 +155,20 @@ class FileSystemTestRunner:
         # Process each test case
         for test in test_cases:
             # Get LLM response through chat API
-            response = await get_chat_response(test.input)
+            response = await get_chat_response(test["input"])
             
             # Extract response content and relevant nodes
             if response is not None:
                 actual_output = response['result']['content']
-                # Get context nodes if available
-                nodes_used = [
-                    node['text'] for node in response.get("nodes", [])
-                ] if response.get("nodes") else None
             else:
                 # Handle failed responses
                 actual_output = ""
-                nodes_used = None
+
             
-            # Create evaluation case with tools and context
             eval_case = LLMTestCase(
-                input=test.input,
+                input=test["input"],
                 actual_output=actual_output,
-                retrieval_context=nodes_used,
-                tools_called=self.get_tool_calls(context)
+                tools_called = self.get_tool_calls(test["tool_params"])
             )
             
             # Apply each metric and log results
