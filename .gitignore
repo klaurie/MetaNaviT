@@ -13,3 +13,4 @@ config/loaders.yaml
 .pytest_cache/
 time_test_data/
 .coverage
+.DS_Store
