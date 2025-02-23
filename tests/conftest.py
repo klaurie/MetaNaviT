@@ -10,6 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 mock_modules = {
     'psycopg2': MagicMock(),
     'psycopg2.sql': MagicMock(),
+    'psycopg2.pool': MagicMock(),
     'llama_index': MagicMock(),
     'llama_index.core': MagicMock(),
     'llama_index.core.readers': MagicMock(),

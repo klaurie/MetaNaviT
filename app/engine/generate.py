@@ -21,8 +21,6 @@ load_dotenv(override=True)
 
 import logging
 import os
-import psycopg2
-from psycopg2 import sql
 
 from app.engine.loaders import get_documents
 from app.database.vector_store_manager import get_vector_store
@@ -101,7 +99,7 @@ def persist_storage(docstore, vector_store):
     )
     storage_context.persist(STORAGE_DIR)
 
-    
+
 def generate_datasource():
     init_settings()
     logger.info("Generate index for the provided data")
