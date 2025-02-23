@@ -1,3 +1,28 @@
+"""
+MetaNaviT FastAPI Application Entry Point
+
+This module serves as the main entry point for the MetaNaviT application.
+It handles server configuration, middleware setup, and static file mounting
+based on the environment (development or production).
+
+Features:
+    - FastAPI application initialization
+    - Environment-based configuration
+    - Static file serving
+    - Frontend proxy middleware (dev mode)
+
+Environment Variables:
+    ENVIRONMENT: Running environment (dev/prod)
+    FRONTEND_ENDPOINT: Frontend server URL for dev proxy
+    APP_HOST: Server host address
+    APP_PORT: Server port number
+
+Dependencies:
+    - FastAPI for API framework
+    - Uvicorn for ASGI server
+    - Custom middleware for frontend proxying
+"""
+    
 # flake8: noqa: E402
 from app.config import DATA_DIR, STATIC_DIR
 from dotenv import load_dotenv
@@ -14,6 +39,7 @@ from app.settings import init_settings
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from run import dev
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -25,6 +51,14 @@ logger = logging.getLogger("uvicorn")
 
 
 def mount_static_files(directory, path, html=False):
+    """
+    Mount static file directories to serve through FastAPI.
+    
+    Args:
+        directory: Local directory path to mount
+        path: URL path to mount the directory at
+        html: Whether to serve index.html for directory roots
+    """
     if os.path.exists(directory):
         logger.info(f"Mounting static files '{directory}' at '{path}'")
         app.mount(
@@ -40,7 +74,7 @@ app.include_router(api_router, prefix="/api")
 mount_static_files(DATA_DIR, "/api/files/data")
 # Mount the output files from tools
 mount_static_files("output", "/api/files/output")
-
+ # Development mode: Use frontend proxy if configured
 if environment == "dev":
     frontend_endpoint = os.getenv("FRONTEND_ENDPOINT")
     if frontend_endpoint:
@@ -52,6 +86,7 @@ if environment == "dev":
             ),
         )
     else:
+        # No frontend in dev: redirect to API docs
         logger.warning("No frontend endpoint - starting API server only")
 
         @app.get("/")

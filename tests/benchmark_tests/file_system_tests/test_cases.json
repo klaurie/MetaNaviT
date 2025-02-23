@@ -1,0 +1,120 @@
+{
+    "test_cases": [
+        {
+        "test_case": "File System Organization",
+        "description": "Test the system's ability to classify and organize files based on their type and content.",
+        "input": "organize my file system",
+        "expected_output": "category_organization/\n├── Finance/\n│   ├── financial_report_2020.txt\n│   ├── financial_report_2021.txt\n│   ├── financial_report_2022.txt\n│   ├── financial_report_2023.pdf\n│\n├── Machine_Learning/\n│   ├── convolutional_neural_networks.txt\n│   ├── gradient_descent.docx\n│   ├── overfitting_in_ml.pdf\n│\n├── Images/\n│   ├── mood_fall_2024.jpg\n│   ├── photo-1590912710024-6d51a6771abd.jpg\n│   ├── photo-1622028715355-ec58f12a7f9c.jpg\n│\n├── Code_and_Documentation/\n│   ├── main.py\n│   ├── utils.py\n│   ├── README.md\n│   ├── requirements.txt\n│\n",
+        "tool_params": {
+        "file_structure": [
+            "financial_report_2020.txt",
+            "financial_report_2021.txt",
+            "financial_report_2022.txt",
+            "financial_report_2023.pdf",
+            "convolutional_neural_networks.txt",
+            "gradient_descent.docx",
+            "overfitting_in_ml.pdf",
+            "mood_fall_2024.jpg",
+            "photo-1590912710024-6d51a6771abd.jpg",
+            "photo-1622028715355-ec58f12a7f9c.jpg",
+            "main.py",
+            "utils.py",
+            "README.md",
+            "requirements.txt"
+        ],
+        "file_categories": {
+            "Finance": [
+            "financial_report_2020.txt",
+            "financial_report_2021.txt",
+            "financial_report_2022.txt",
+            "financial_report_2023.pdf"
+            ],
+            "Machine_Learning": [
+            "convolutional_neural_networks.txt",
+            "gradient_descent.docx",
+            "overfitting_in_ml.pdf"
+            ],
+            "Images": [
+            "mood_fall_2024.jpg",
+            "photo-1590912710024-6d51a6771abd.jpg",
+            "photo-1622028715355-ec58f12a7f9c.jpg"
+            ],
+            "Code_and_Documentation": [
+            "main.py",
+            "utils.py",
+            "README.md",
+            "requirements.txt"
+            ]
+        },
+        "expected_dir_format": {
+            "category_organization": {
+            "Finance": [
+                "financial_report_2020.txt",
+                "financial_report_2021.txt",
+                "financial_report_2022.txt",
+                "financial_report_2023.pdf"
+            ],
+            "Machine_Learning": [
+                "convolutional_neural_networks.txt",
+                "gradient_descent.docx",
+                "overfitting_in_ml.pdf"
+            ],
+            "Images": [
+                "mood_fall_2024.jpg",
+                "photo-1590912710024-6d51a6771abd.jpg",
+                "photo-1622028715355-ec58f12a7f9c.jpg"
+            ],
+            "Code_and_Documentation": [
+                "main.py",
+                "utils.py",
+                "README.md",
+                "requirements.txt"
+            ]
+            }
+        },
+        "eval_dir": "category_organization",
+        "expected_linux_commands": [
+            "mkdir -p category_organization/Finance",
+            "mkdir -p category_organization/Machine_Learning",
+            "mkdir -p category_organization/Images",
+            "mkdir -p category_organization/Code_and_Documentation",
+            "mv financial_report_2020.txt category_organization/Finance/",
+            "mv financial_report_2021.txt category_organization/Finance/",
+            "mv financial_report_2022.txt category_organization/Finance/",
+            "mv financial_report_2023.pdf category_organization/Finance/",
+            "mv convolutional_neural_networks.txt category_organization/Machine_Learning/",
+            "mv gradient_descent.docx category_organization/Machine_Learning/",
+            "mv overfitting_in_ml.pdf category_organization/Machine_Learning/",
+            "mv mood_fall_2024.jpg category_organization/Images/",
+            "mv photo-1590912710024-6d51a6771abd.jpg category_organization/Images/",
+            "mv photo-1622028715355-ec58f12a7f9c.jpg category_organization/Images/",
+            "mv main.py category_organization/Code_and_Documentation/",
+            "mv utils.py category_organization/Code_and_Documentation/",
+            "mv README.md category_organization/Code_and_Documentation/",
+            "mv requirements.txt category_organization/Code_and_Documentation/"
+        ],
+        "expected_exe_log": [
+            "Execution successful: category_organization/Finance created",
+            "Execution successful: category_organization/Machine_Learning created",
+            "Execution successful: category_organization/Images created",
+            "Execution successful: category_organization/Code_and_Documentation created",
+            "Execution successful: financial_report_2020.txt moved",
+            "Execution successful: financial_report_2021.txt moved",
+            "Execution successful: financial_report_2022.txt moved",
+            "Execution successful: financial_report_2023.pdf moved",
+            "Execution successful: convolutional_neural_networks.txt moved",
+            "Execution successful: gradient_descent.docx moved",
+            "Execution successful: overfitting_in_ml.pdf moved",
+            "Execution successful: mood_fall_2024.jpg moved",
+            "Execution successful: photo-1590912710024-6d51a6771abd.jpg moved",
+            "Execution successful: photo-1622028715355-ec58f12a7f9c.jpg moved",
+            "Execution successful: main.py moved",
+            "Execution successful: utils.py moved",
+            "Execution successful: README.md moved",
+            "Execution successful: requirements.txt moved"
+        ]
+        }
+    }
+]
+}
+  
