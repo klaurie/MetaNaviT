@@ -21,8 +21,6 @@ load_dotenv(override=True)
 
 import logging
 import os
-import psycopg2
-from psycopg2 import sql
 
 from app.engine.loaders import get_documents
 from app.database.vector_store_manager import get_vector_store

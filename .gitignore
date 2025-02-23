@@ -10,3 +10,4 @@ datasets/
 .deepeval*
 benchmark_tests/*.csv
 config/loaders.yaml
+.pytest_cache/
