@@ -1,0 +1,6 @@
+
+Summary of Sales and Customer Feedback:
+- Sales records from the past decade show transactions across four regions.
+- The average transaction amount is $278.91.
+- Customer feedback includes ratings from 1 to 5, with an average rating of 2.94.
+- Frequent keywords in feedback comments indicate positive/negative sentiments.
