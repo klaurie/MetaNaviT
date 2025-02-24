@@ -1,0 +1,6 @@
+
+Key Notes on AI in Healthcare:
+- AI is transforming healthcare through diagnostics, personalized treatment, and automation.
+- Machine learning improves early disease detection.
+- Ethical concerns include data privacy and bias in AI models.
+- Future directions involve AI-assisted robotic surgeries and predictive analytics.
