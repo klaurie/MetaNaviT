@@ -6,7 +6,7 @@ from deepeval.test_case import LLMTestCase
 from deepeval.integrations import trace_llama_index
 from deepeval.auto_evaluate import auto_evaluate
 
-from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
+from common.eval_llm import EvalLLM_4Bit
 
 """
 LLM Response Evaluation Script

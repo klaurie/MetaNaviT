@@ -114,7 +114,7 @@ def setup_conda_environment() -> None:
 
         subprocess.run("pip install -U deepeval",
         shell=True,
-        check)
+        check=True)
         
         logger.info("Conda environment setup complete")
     except subprocess.CalledProcessError as e:
