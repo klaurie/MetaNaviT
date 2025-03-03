@@ -1,6 +1,4 @@
 """
-OUTDATED NOT NEEDED (KEEPING JUST IN CASE)
-
 Time-based Test Data Generator
 
 Generates synthetic datasets with controlled timestamps for testing MetaNaviT's
@@ -8,27 +6,7 @@ temporal indexing capabilities. Creates files with known creation, modification,
 and access times to validate time-based querying and organization.
 
 Usage:
-    python -m tests.data.generate_time_data
-
-Dataset Structure:
-    /test_data/
-        /project_timeline/      # Project progression example
-            - requirements_v1.txt
-            - requirements_v2.txt
-            - design_doc.txt
-            - implementation_notes.txt
-            - review_feedback.txt
-            
-        /system_logs/          # System monitoring example
-            - system_20240301.log
-            - system_20240302.log
-            - backup_20240301.json
-            - backup_20240302.json
-            
-        /meeting_records/      # Sequential meeting documents
-            - meeting_2024Q1_01.txt
-            - meeting_2024Q1_02.txt
-            - summary_2024Q1.txt
+    python -m scripts.generate_time_data
 """
 
 import os
@@ -64,7 +42,9 @@ class TimeBasedDataGenerator:
         filepath: Path,
         content: str,
         created_delta: Optional[timedelta] = None,
-        modified_delta: Optional[timedelta] = None
+        modified_delta: Optional[timedelta] = None,
+        absolute_created_date: Optional[datetime] = None,
+        absolute_modified_date: Optional[datetime] = None
     ) -> None:
         """
         Create a file with specified content and timestamps
@@ -74,151 +54,109 @@ class TimeBasedDataGenerator:
             content: File content
             created_delta: Timedelta from start date for creation time
             modified_delta: Timedelta from start date for modification time
+            absolute_created_date: Specific datetime for creation time (overrides delta)
+            absolute_modified_date: Specific datetime for modification time (overrides delta)
         """
         filepath.parent.mkdir(parents=True, exist_ok=True)
         
         with open(filepath, 'w') as f:
             f.write(content)
             
-        # Set timestamps if specified
-        if created_delta:
+        # Set timestamps - prefer absolute dates if provided
+        created_time = None
+        modified_time = None
+        
+        if absolute_created_date:
+            created_time = absolute_created_date.timestamp()
+        elif created_delta:
             created_time = (self.start_date + created_delta).timestamp()
+            
+        if absolute_modified_date:
+            modified_time = absolute_modified_date.timestamp()
+        elif modified_delta:
+            modified_time = (self.start_date + modified_delta).timestamp()
+            
+        if created_time and modified_time:
+            os.utime(filepath, (created_time, modified_time))
+        elif created_time:
             os.utime(filepath, (created_time, created_time))
             
-        if modified_delta:
-            modified_time = (self.start_date + modified_delta).timestamp()
-            os.utime(filepath, (modified_time, modified_time))
-            
-        logger.info(f"Created {filepath}")
+        logger.info(f"Created {filepath} (created: {absolute_created_date or (self.start_date + created_delta) if created_delta else None}, " +
+                   f"modified: {absolute_modified_date or (self.start_date + modified_delta) if modified_delta else None})")
 
-    def generate_project_timeline(self) -> None:
-        """Generate project development timeline files"""
-        project_dir = self.base_dir / "project_timeline"
+    def generate_test_files(self) -> None:
+        """Generate all test files in a flat structure to match test_cases.json"""
         
-        # Requirements versions
+        # Project timeline files
         self.create_file(
-            project_dir / "requirements_v1.txt",
+            self.base_dir / "requirements_v1.txt",
             "Initial requirements draft\n- Feature A\n- Feature B",
-            created_delta=timedelta(days=0),
-            modified_delta=timedelta(days=0)
+            absolute_created_date=datetime(2024, 3, 1),
+            absolute_modified_date=datetime(2024, 3, 1)
         )
         
         self.create_file(
-            project_dir / "requirements_v2.txt",
+            self.base_dir / "requirements_v2.txt",
             "Updated requirements\n- Feature A+\n- Feature B\n- Feature C",
-            created_delta=timedelta(days=2),
-            modified_delta=timedelta(days=2)
+            absolute_created_date=datetime(2024, 3, 3),
+            absolute_modified_date=datetime(2024, 3, 3)
         )
         
-        # Design document
         self.create_file(
-            project_dir / "design_doc.txt",
+            self.base_dir / "design_doc.txt",
             "System architecture and component design...",
-            created_delta=timedelta(days=3),
-            modified_delta=timedelta(days=4)
+            absolute_created_date=datetime(2024, 3, 5),
+            absolute_modified_date=datetime(2024, 3, 5)
         )
         
-        # Implementation notes
         self.create_file(
-            project_dir / "implementation_notes.txt",
+            self.base_dir / "implementation_notes.txt",
             "Development progress and technical decisions...",
-            created_delta=timedelta(days=5),
-            modified_delta=timedelta(days=7)
+            absolute_created_date=datetime(2024, 3, 7),
+            absolute_modified_date=datetime(2024, 3, 7)
         )
         
-        # Review feedback
         self.create_file(
-            project_dir / "review_feedback.txt",
+            self.base_dir / "review_feedback.txt",
             "Code review comments and suggestions...",
-            created_delta=timedelta(days=8),
-            modified_delta=timedelta(days=8)
+            absolute_created_date=datetime(2024, 3, 9),
+            absolute_modified_date=datetime(2024, 3, 9)
         )
-
-    def generate_system_logs(self) -> None:
-        """Generate system monitoring data"""
-        logs_dir = self.base_dir / "system_logs"
         
-        # System logs
-        for day in range(2):
-            # Log file
-            log_date = self.start_date + timedelta(days=day)
-            log_content = f"[{log_date.isoformat()}] System events...\n"
-            
-            self.create_file(
-                logs_dir / f"system_{log_date.strftime('%Y%m%d')}.log",
-                log_content,
-                created_delta=timedelta(days=day),
-                modified_delta=timedelta(days=day)
-            )
-            
-            # Backup data
-            backup_data = {
-                "timestamp": log_date.isoformat(),
-                "system_state": "healthy",
-                "metrics": {"cpu": 45, "memory": 60}
-            }
-            
-            self.create_file(
-                logs_dir / f"backup_{log_date.strftime('%Y%m%d')}.json",
-                json.dumps(backup_data, indent=2),
-                created_delta=timedelta(days=day),
-                modified_delta=timedelta(days=day)
-            )
-
-    def generate_meeting_records(self) -> None:
-        """Generate meeting documentation"""
-        meetings_dir = self.base_dir / "meeting_records"
-        
-        # Individual meeting notes
-        for meeting_num in range(1, 3):
-            meeting_date = self.start_date + timedelta(days=meeting_num * 7)
-            
-            self.create_file(
-                meetings_dir / f"meeting_2024Q1_{meeting_num:02d}.txt",
-                f"Meeting notes from {meeting_date.strftime('%Y-%m-%d')}\n",
-                created_delta=timedelta(days=meeting_num * 7),
-                modified_delta=timedelta(days=meeting_num * 7)
-            )
-        
-        # Quarterly summary
+        # Meeting record files
         self.create_file(
-            meetings_dir / "summary_2024Q1.txt",
-            "Q1 2024 Meeting Summaries and Action Items\n",
-            created_delta=timedelta(days=14),
-            modified_delta=timedelta(days=14)
+            self.base_dir / "meeting_2024Q1_01.txt",
+            "Meeting notes from 2024-01-15\n",
+            absolute_created_date=datetime(2024, 1, 15),
+            absolute_modified_date=datetime(2024, 1, 15)
+        )
+        
+        self.create_file(
+            self.base_dir / "meeting_2024Q1_02.txt",
+            "Meeting notes from 2024-02-10\n",
+            absolute_created_date=datetime(2024, 2, 10),
+            absolute_modified_date=datetime(2024, 2, 10)
         )
 
     def generate_all(self) -> None:
         """Generate complete test dataset"""
         self.setup_directory()
-        self.generate_project_timeline()
-        self.generate_system_logs()
-        self.generate_meeting_records()
+        self.generate_test_files()
         
         # Create README
         readme_content = """# Time-Based Test Dataset
 
 This dataset is designed to test MetaNaviT's temporal indexing capabilities.
 
-## Directory Structure
-
-### /project_timeline/
-Sequential project documentation showing development progression.
-Files are timestamped to reflect the natural evolution of a project.
-
-### /system_logs/
-System monitoring data with daily logs and backups.
-Demonstrates handling of regularly generated technical data.
-
-### /meeting_records/
-Meeting documentation organized by date.
-Shows relationships between periodic meetings and summary documents.
-
 ## Timestamp Patterns
 
 - Creation times reflect when documents were initially created
 - Modification times show updates and revisions
-- Files within each category have meaningful temporal relationships
+- Files have meaningful temporal relationships
+
+## File Organization
+
+All files are placed in a flat structure to match the test_cases.json expectations.
 """
 
         self.create_file(
@@ -233,4 +171,4 @@ def main():
     logger.info(f"Test data generated in {TEST_DATA_DIR}")
 
 if __name__ == "__main__":
-    main() 
+    main()
