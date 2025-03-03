@@ -12,7 +12,7 @@ import json
 import asyncio
 from pathlib import Path
 from dataclasses import dataclass
-from typing import List, Dict, Any
+from typing import List, Optional, Dict, Any
 
 from deepeval import evaluate
 from deepeval.metrics import AnswerRelevancyMetric, GEval, TaskCompletionMetric
@@ -45,62 +45,88 @@ class TimeQueryTestRunner:
     def get_tool_calls(self, tool_params) -> List[ToolCall]:
         """
         Define tool calls for evaluating time-based reasoning.
+        
+        These tools measure key aspects:
+        1. Time Understanding: Can the LLM correctly interpret file timestamps
+        2. Chronological Relationship: Can the LLM determine temporal relationships
+        3. File Filtering: Can the LLM filter files based on time constraints
         """
-        return [
+        tool_calls = [
             ToolCall(
-                name="Time-Based Query",
-                description="Evaluates the model's ability to answer time-based queries from documents.",
-                input_parameters={"query": tool_params["query"]},
-                output=[tool_params["expected_response"]]
+                name="Time-Based File Query",
+                description="Evaluates the model's ability to answer time-based queries about files.",
+                input_parameters={
+                    "file_structure": tool_params.get("file_structure", []),
+                    "file_metadata": tool_params.get("file_metadata", {})
+                },
+                output=[tool_params["expected_dir_format"]]
+            ),
+            ToolCall(
+                name="Chronological Analysis",
+                description="Evaluates the model's understanding of file timestamp relationships.",
+                input_parameters={
+                    "file_structure": tool_params.get("file_structure", []),
+                    "file_metadata": tool_params.get("file_metadata", {})
+                },
+                output=["Correct chronological ordering and time relationships"]
             )
         ]
+        
+        # Only add command evaluation if there are expected Linux commands
+        if "expected_linux_commands" in tool_params and tool_params["expected_linux_commands"]:
+            tool_calls.append(
+                ToolCall(
+                    name="Time-Based Command Generation",
+                    description="Evaluates the model's ability to generate timestamp-oriented commands.",
+                    input_parameters={"query": "Generate commands for time-based operations"},
+                    output=[tool_params["expected_linux_commands"]]
+                )
+            )
+            
+        return tool_calls
     
     def init_metrics(self) -> List[Any]:
         """Initialize evaluation metrics"""
-        
         relevancy_metric = AnswerRelevancyMetric()
-        
-        temporal_accuracy_metric = GEval(
-            name="Temporal Accuracy",
-            evaluation_steps=[
-                "Does the response correctly reflect the actual creation or modification times?",
-                "Is the time-based reasoning logical and coherent?",
-                "Are the relations between different timestamps correctly inferred?"
-            ],
-            evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
-            model=self.eval_llm,
-            verbose_mode=True
+        completion_metric = TaskCompletionMetric(threshold=0.7)
+        time_understanding_metric = GEval(
+            criteria="The response correctly interprets file timestamps and temporal relationships",
+            evaluation_params={
+                "criteria_description": "Measures accuracy in understanding file creation/modification times"
+            }
         )
         
-        return [
-            relevancy_metric,
-            temporal_accuracy_metric,
-            TaskCompletionMetric(threshold=0.7, model=self.eval_llm)
-        ]
-
+        return [relevancy_metric, completion_metric, time_understanding_metric]
+    
     async def evaluate_response(self, context: TestContext) -> None:
-        """Run evaluation for time-based query test cases."""
-        metrics = self.init_metrics()
+        """Evaluate test cases for time-based queries"""
         test_cases = self.load_test_cases()
+        metrics = self.init_metrics()
         
-        for test in test_cases:
-            response = await get_chat_response(test["query"])
-            actual_output = response['result']['content'] if response else ""
+        for test_case in test_cases:
+            input_query = test_case["input"]
+            expected_output = test_case["expected_response"]
+            tool_params = test_case.get("tool_params", {})
             
-            eval_case = LLMTestCase(
-                input=test["query"],
-                actual_output=actual_output,
-                tools_called=self.get_tool_calls(test)
+            # Get response from the chat API
+            response = await get_chat_response(input_query)
+            
+            # Create test case for evaluation
+            llm_test_case = LLMTestCase(
+                input=input_query,
+                actual_output=response,
+                expected_output=expected_output,
+                tool_calls=self.get_tool_calls(tool_params)
             )
             
-            for metric in metrics:
-                metric.measure(eval_case)
-                print(f"{metric.__class__.__name__} Score: {metric.score}")
-                print(f"Reason: {metric.reason}")
+            # Run evaluation with metrics
+            evaluate(llm_test_case, metrics=metrics)
 
 async def main():
     """Main entry point for test execution"""
-    test_context = TestContext(dataset_path="test_data/time_queries.json")
+    test_context = TestContext(
+        dataset_path=""
+    )
     
     runner = TimeQueryTestRunner(
         Path(__file__).parent / "test_cases.json"
