@@ -15,3 +15,4 @@ time_test_data/
 
 config/loaders.yaml
 .pytest_cache/
+idea/
