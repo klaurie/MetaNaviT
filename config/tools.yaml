@@ -1,1 +1,5 @@
-local: {}
+local:
+  artifact: {}
+  python_exec: {}
+  index_file_access: {}
+
