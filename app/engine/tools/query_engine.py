@@ -16,6 +16,7 @@ Main components:
 
 import os
 from typing import Any, Dict, List, Optional, Sequence
+import logging
 
 from llama_index.core import get_response_synthesizer
 from llama_index.core.base.base_query_engine import BaseQueryEngine
@@ -36,6 +37,7 @@ from llama_index.core.types import RESPONSE_TEXT_TYPE
 
 from app.settings import get_multi_modal_llm
 
+logger = logging.getLogger(__name__)
 
 def create_query_engine(index, **kwargs) -> BaseQueryEngine:
     """
@@ -87,12 +89,33 @@ def get_query_engine_tool(
             "Use this tool to retrieve information about the text corpus from an index."
         )
     query_engine = create_query_engine(index, **kwargs)
-    return QueryEngineTool.from_defaults(
+    query_engine_tool = QueryEngineTool.from_defaults(
         query_engine=query_engine,
         name=name,
         description=description,
         return_direct=True,
     )
+    
+    # Wrap the original __call__ method with logging
+    original_call = query_engine_tool.__call__
+    
+    def logged_call(*args, **kwargs):
+        logger.info(f"🔍 Query Engine being used with query: {args[0] if args else kwargs.get('query', 'No query found')}")
+        return original_call(*args, **kwargs)
+    
+    query_engine_tool.__call__ = logged_call
+    
+    # Also wrap async calls if they exist
+    if hasattr(query_engine_tool, "acall"):
+        original_acall = query_engine_tool.acall
+        
+        async def logged_acall(*args, **kwargs):
+            logger.info(f"🔍 Query Engine being used async with query: {args[0] if args else kwargs.get('query', 'No query found')}")
+            return await original_acall(*args, **kwargs)
+        
+        query_engine_tool.acall = logged_acall
+    
+    return query_engine_tool
 
 
 class MultiModalSynthesizer(BaseSynthesizer):
@@ -245,4 +268,3 @@ class MultiModalSynthesizer(BaseSynthesizer):
             source_nodes=nodes,
             metadata={"text_nodes": text_nodes, "image_nodes": image_nodes},
         )
-    

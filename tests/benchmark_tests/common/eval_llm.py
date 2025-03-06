@@ -44,7 +44,7 @@ class EvalLLM_4Bit(DeepEvalBaseLLM):
             tokenizer=self.tokenizer,
             use_cache=True,
             device_map="auto",
-            max_length=2500,
+            max_new_tokens=5000,
             do_sample=True,
             top_k=5,
             num_return_sequences=1,

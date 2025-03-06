@@ -104,7 +104,7 @@ class CodeGeneratorTool:
         Returns:
             Dict: A dictionary containing information about the generated artifact.
         """
-
+        logger.info("Generating code artifact...")
         # Construct user message with existing code if provided
         if old_code:
             user_message = f"{query}\n\nThe existing code is: \n```\n{old_code}\n```"

@@ -57,7 +57,7 @@ class VectorStoreManager(DatabaseManager):
             with conn.cursor() as cur:
                 try:
                     cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
-                    logger.info("Vector extension created or already exists.")
+
                 except Exception as e:
                     logger.error(f"Error creating vector extension: {e}")
                     raise
@@ -87,7 +87,6 @@ class VectorStoreManager(DatabaseManager):
                 table_name=self.table_name,
                 embed_dim=self.embed_dim,
             )
-            logger.info(f"Vector store initialized: {vars(self.vector_store)}")
 
         return self.vector_store
 

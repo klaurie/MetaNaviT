@@ -45,6 +45,7 @@ async def query_request(
     Returns:
         Relevant text from knowledge base
     """
+    logging.info(f"Querying knowledge base with: {query}")
     query_engine = get_query_engine()
     response = await query_engine.aquery(query)
     return response.response

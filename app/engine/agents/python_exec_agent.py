@@ -13,8 +13,8 @@ from llama_index.core.agent import AgentRunner
 from llama_index.core.tools import BaseTool
 from llama_index.core.callbacks import CallbackManager
 from llama_index.core.agent.workflow import FunctionAgent, AgentWorkflow
+from llama_index.core.settings import Settings
 
-from app.config.settings import Settings
 from app.engine.tools.python_exec import get_tools as get_python_tools
 
 logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ collections, json, re, random, csv, itertools
 """
 )
 
-def create_python_code_agent(
+def create_python_exec_agent(
     callback_manager=None
 ) -> FunctionAgent:
     """
