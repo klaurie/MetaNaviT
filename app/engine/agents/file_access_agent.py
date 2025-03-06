@@ -5,14 +5,17 @@ A specialized agent that provides access to files from the document index
 and can perform all operations except code execution.
 """
 
-import os
+import os  # Add the missing import
 import logging
+from typing import List, Optional, Dict, Any
 
 from llama_index.core.agent.workflow import FunctionAgent
+from llama_index.core.tools import BaseTool
+from llama_index.core.settings import Settings
 
-from app.config.settings import Settings
-from app.engine.tools.tool_manager import ToolFactory
-from app.engine.tools.index_file_access import get_tools as get_file_tools
+from app.engine.tools import ToolFactory
+from app.engine.tools.query_engine import get_query_engine_tool
+from app.engine.index import IndexConfig, get_index
 
 logger = logging.getLogger(__name__)
 
@@ -39,32 +42,46 @@ Remember that you CANNOT execute Python code directly - this is reserved for the
 
 
 def create_file_access_agent(
-    callback_manager=None
+        callback_manager=None,
+        params: Optional[Dict[str, Any]] = None,
+        **kwargs
 ) -> FunctionAgent:
     """
     Create a file access agent with all tools except Python execution.
     
     Args:
-        llm_interface: Language model interface to use
         callback_manager: Callback manager for events
+        params: Optional parameters for index configuration
+        **kwargs: Additional keyword arguments
         
     Returns:
         FunctionAgent configured with all tools except Python execution
     """
-    # Get all tools from the tool factory
+    # Get all tools from the tool factory - just once
     all_tools = ToolFactory.from_env()
     
-    # Get file access tools
-    file_tools = get_file_tools()
+    # Configure and add query tool if index exists
+    index_config = IndexConfig(
+        callback_manager=callback_manager,
+        **(params or {})
+    )
+    index = get_index(index_config)
+    if index is not None:
+        query_engine_tool = get_query_engine_tool(
+            index=index,
+            **kwargs
+        )
+        all_tools.append(query_engine_tool)
     
-    # Combine tools, filtering out python_exec tool
+    # Filter out python_exec tool and handle duplicates
     combined_tools = []
-    combined_tools.extend(file_tools)
+    seen_tool_names = set()
     
-    # Add all other tools except python_exec
     for tool in all_tools:
-        if tool.metadata.get("name") != "python_exec" and not any(t.metadata.get("name") == tool.metadata.get("name") for t in combined_tools):
+        tool_name = tool.metadata.get("name")
+        if tool_name != "python_exec" and tool_name not in seen_tool_names:
             combined_tools.append(tool)
+            seen_tool_names.add(tool_name)
     
     # Create file access agent with all non-python-exec tools
     file_agent = FunctionAgent(

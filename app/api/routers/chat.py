@@ -9,7 +9,7 @@ Features:
 - Event handling
 - Error tracking
 """
-
+import os
 import logging
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, status
 from llama_index.core.llms import MessageRole
@@ -58,19 +58,28 @@ async def chat(
         filters = generate_filters(doc_ids)
         params = data.data or {}
         
-        logger.info(f"Creating chat engine with filters: {str(filters)}")
-        
         # Initialize chat engine with:
         # - filters: Control document visibility (public/private)
         # - params: Custom configuration like temperature/tokens
         # - event_handlers: Track operations and stream chunks
         event_handler = EventCallbackHandler()
-        chat_engine = get_chat_engine(
-            filters=filters,
-            params=params,
-            event_handlers=[event_handler]
-        )
-        
+
+        # Use the same API for both
+        if os.getenv('USE_MULTI_AGENT', False):
+            chat_engine = get_chat_engine(
+                filters=filters,
+                params=params,
+                event_handlers=[event_handler],
+                use_multi_agent=True
+            )
+            
+        else:
+            chat_engine = get_chat_engine(
+                filters=filters,
+                params=params,
+                event_handlers=[event_handler]
+            )
+            
         # Stream response using Vercel's streaming response
         # (Returns response chunks incrementally)
         response = chat_engine.astream_chat(last_message_content, messages)

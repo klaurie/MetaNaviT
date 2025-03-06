@@ -67,6 +67,7 @@ class PythonExecTool:
             - result: Value of 'result' variable if defined in the code
             - figure_path: Path to saved matplotlib figure if created
         """
+        logger.info('Executing Python code')
         # Set up workspace directory to store files
         workspace_dir_path = cls.setup_workspace(workspace_dir)
         

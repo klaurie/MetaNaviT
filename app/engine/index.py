@@ -46,7 +46,6 @@ def get_index(config: IndexConfig = None):
     """
     if config is None:
         config = IndexConfig()
-    logger.info("Connecting vector store...")
     store = get_vector_store()
     index = VectorStoreIndex.from_vector_store(
         store, callback_manager=config.callback_manager
