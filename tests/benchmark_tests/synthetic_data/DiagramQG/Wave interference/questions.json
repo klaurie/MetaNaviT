@@ -1,0 +1,1072 @@
+[
+    {
+        "choices": {
+            "a": "waves become flat",
+            "b": "waves become higher",
+            "c": "stay the same",
+            "d": "waves become smaller"
+        },
+        "question": "what happens to the wave during destructive interference?",
+        "answer_id": "a",
+        "answer": "waves become flat",
+        "image_name": "waves_interactions_interference_9301.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "destructive interference",
+        "diagram list": [
+            "interference",
+            "Destructive",
+            "Constructive",
+            "www.explainthatstuff.com"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "B gets higher and A lower",
+            "b": "The both are flat and cancel each other out",
+            "c": "A and B both get higher",
+            "d": "A gets higher and B lower"
+        },
+        "question": "During interference, what happens to A and B?",
+        "answer_id": "b",
+        "answer": "The both are flat and cancel each other out",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "A",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "4",
+            "b": "5",
+            "c": "3",
+            "d": "2"
+        },
+        "question": "How many waves occur at the top left diagram?",
+        "answer_id": "b",
+        "answer": "5",
+        "image_name": "waves_interactions_interference_7682.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "top left diagram",
+        "diagram list": [
+            "Image",
+            "white background",
+            "red sine waves",
+            "straightedge",
+            "graph",
+            "graph paper",
+            "textual information",
+            "black background",
+            "ruler",
+            "horizontal red line",
+            "sine wave patterns"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "1",
+            "c": "4",
+            "d": "2"
+        },
+        "question": "How many types of interference is shown in the illustration below?",
+        "answer_id": "b",
+        "answer": "1",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "interference",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Destructive interference",
+            "b": "I don't know",
+            "c": "Constructive interference",
+            "d": "Nothing"
+        },
+        "question": "What happens when two in phase waves combine?",
+        "answer_id": "c",
+        "answer": "Constructive interference",
+        "image_name": "waves_interactions_interference_9299.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "combine",
+        "diagram list": [
+            "+",
+            "Destructive",
+            "180° out",
+            "of phase",
+            "In phase",
+            "interference",
+            "Constructive"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Destructive interference",
+            "b": "I don't know",
+            "c": "Constructive interference",
+            "d": "Nothing"
+        },
+        "question": "What happens when two in phase waves combine?",
+        "answer_id": "c",
+        "answer": "Constructive interference",
+        "image_name": "waves_interactions_interference_9299.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "in phase waves",
+        "diagram list": [
+            "+",
+            "Destructive",
+            "180° out",
+            "of phase",
+            "In phase",
+            "interference",
+            "Constructive"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "sophisticated interference",
+            "b": "constructive interference",
+            "c": "destructive interference",
+            "d": "complimentary interference"
+        },
+        "question": "Which inference results in resulting wave having increased amplitude?",
+        "answer_id": "b",
+        "answer": "constructive interference",
+        "image_name": "waves_interactions_interference_9302.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "inference",
+        "diagram list": [
+            "Constructive Interference",
+            "MV",
+            "MW",
+            "WW",
+            "Destructive Interference"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "B gets higher and A lower",
+            "b": "The both are flat and cancel each other out",
+            "c": "A and B both get higher",
+            "d": "A gets higher and B lower"
+        },
+        "question": "During interference, what happens to A and B?",
+        "answer_id": "b",
+        "answer": "The both are flat and cancel each other out",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "B",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Constructive Interference",
+            "b": "In phase wave",
+            "c": "Out of phase wave",
+            "d": "Destructive Interference"
+        },
+        "question": "What kind of interference decreases wave amplitude?",
+        "answer_id": "d",
+        "answer": "Destructive Interference",
+        "image_name": "waves_interactions_interference_9299.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "interference",
+        "diagram list": [
+            "+",
+            "Destructive",
+            "180° out",
+            "of phase",
+            "In phase",
+            "interference",
+            "Constructive"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Destructive Interference",
+            "b": "Constructive interference",
+            "c": "Wave Interference",
+            "d": "Wave Interaction"
+        },
+        "question": "What's the result of one wave's crest overlapping the crests of the other wave?",
+        "answer_id": "b",
+        "answer": "Constructive interference",
+        "image_name": "waves_interactions_interference_9301.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave",
+        "diagram list": [
+            "interference",
+            "Destructive",
+            "Constructive",
+            "www.explainthatstuff.com"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "180 degree",
+            "b": "180 degrees",
+            "c": "100 degree",
+            "d": "18 degree"
+        },
+        "question": "What degree out of phase causes a destructive interference?",
+        "answer_id": "a",
+        "answer": "180 degrees",
+        "image_name": "waves_interactions_interference_9300.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "degree",
+        "diagram list": [
+            "Destructive",
+            "180° out",
+            "of phase",
+            "In phase",
+            "interference",
+            "Constructive"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "No amplitude",
+            "b": "No change in amplitude",
+            "c": "Less amplitude",
+            "d": "Greater amplitude"
+        },
+        "question": "What is the resulting amplitude of the wave produced by destructive interference?",
+        "answer_id": "c",
+        "answer": "Less amplitude",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "destructive interference",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "out of phase",
+            "b": "different ",
+            "c": "similar",
+            "d": "in phase"
+        },
+        "question": "constructive interference occurs because the waves are?",
+        "answer_id": "d",
+        "answer": "in phase",
+        "image_name": "waves_interactions_interference_9301.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "constructive interference",
+        "diagram list": [
+            "interference",
+            "Destructive",
+            "Constructive",
+            "www.explainthatstuff.com"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "sophisticated interference",
+            "b": "constructive interference",
+            "c": "destructive interference",
+            "d": "complimentary interference"
+        },
+        "question": "Which inference results in resulting wave having increased amplitude?",
+        "answer_id": "b",
+        "answer": "constructive interference",
+        "image_name": "waves_interactions_interference_9302.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "increased amplitude",
+        "diagram list": [
+            "Constructive Interference",
+            "MV",
+            "MW",
+            "WW",
+            "Destructive Interference"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "1",
+            "c": "4",
+            "d": "2"
+        },
+        "question": "How many types of interference is shown in the illustration below?",
+        "answer_id": "b",
+        "answer": "1",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "illustration",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "The waves have the same frequency",
+            "b": "The waves are in phase",
+            "c": "The waves have the same amplitude",
+            "d": "The waves have the same wavelength"
+        },
+        "question": "What distinguish a constructive interference?",
+        "answer_id": "b",
+        "answer": "The waves are in phase",
+        "image_name": "waves_interactions_interference_8232.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "constructive interference",
+        "diagram list": [
+            "Destructive",
+            "W",
+            "Constructive"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "B gets higher and A lower",
+            "b": "The both are flat and cancel each other out",
+            "c": "A and B both get higher",
+            "d": "A gets higher and B lower"
+        },
+        "question": "During interference, what happens to A and B?",
+        "answer_id": "b",
+        "answer": "The both are flat and cancel each other out",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "interference",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "After Interference",
+            "b": "During Interference",
+            "c": "Before Interference",
+            "d": "Destructive Interferene"
+        },
+        "question": "What occurs when waves come together in such a way that they completely cancel each other out?",
+        "answer_id": "d",
+        "answer": "Destructive Interferene",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "cancel each other out",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "180 degree",
+            "b": "180 degrees",
+            "c": "100 degree",
+            "d": "18 degree"
+        },
+        "question": "What degree out of phase causes a destructive interference?",
+        "answer_id": "a",
+        "answer": "180 degrees",
+        "image_name": "waves_interactions_interference_9300.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "phase",
+        "diagram list": [
+            "Destructive",
+            "180° out",
+            "of phase",
+            "In phase",
+            "interference",
+            "Constructive"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "The waves have the same frequency",
+            "b": "The waves are in phase",
+            "c": "The waves have the same amplitude",
+            "d": "The waves have the same wavelength"
+        },
+        "question": "What distinguish a constructive interference?",
+        "answer_id": "b",
+        "answer": "The waves are in phase",
+        "image_name": "waves_interactions_interference_8232.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "distinguish",
+        "diagram list": [
+            "Destructive",
+            "W",
+            "Constructive"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "180 degree",
+            "b": "180 degrees",
+            "c": "100 degree",
+            "d": "18 degree"
+        },
+        "question": "What degree out of phase causes a destructive interference?",
+        "answer_id": "a",
+        "answer": "180 degrees",
+        "image_name": "waves_interactions_interference_9300.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "destructive interference",
+        "diagram list": [
+            "Destructive",
+            "180° out",
+            "of phase",
+            "In phase",
+            "interference",
+            "Constructive"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "comparative",
+            "b": "constructive",
+            "c": "destructive",
+            "d": "instructive"
+        },
+        "question": "Which interference cancels out two waves?",
+        "answer_id": "c",
+        "answer": "destructive",
+        "image_name": "waves_interactions_interference_8232.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "interference",
+        "diagram list": [
+            "Destructive",
+            "W",
+            "Constructive"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "After Interference",
+            "b": "During Interference",
+            "c": "Before Interference",
+            "d": "Destructive Interferene"
+        },
+        "question": "What occurs when waves come together in such a way that they completely cancel each other out?",
+        "answer_id": "d",
+        "answer": "Destructive Interferene",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "4",
+            "b": "5",
+            "c": "3",
+            "d": "2"
+        },
+        "question": "How many waves occur at the top left diagram?",
+        "answer_id": "b",
+        "answer": "5",
+        "image_name": "waves_interactions_interference_7682.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave",
+        "diagram list": [
+            "Image",
+            "white background",
+            "red sine waves",
+            "straightedge",
+            "graph",
+            "graph paper",
+            "textual information",
+            "black background",
+            "ruler",
+            "horizontal red line",
+            "sine wave patterns"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "4",
+            "c": "2",
+            "d": "1"
+        },
+        "question": "how many waves are there before interference?",
+        "answer_id": "d",
+        "answer": "1",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "interference",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "By amplitude",
+            "b": "By type",
+            "c": "By direction",
+            "d": "By frequency"
+        },
+        "question": "How are waves added?",
+        "answer_id": "a",
+        "answer": "By amplitude",
+        "image_name": "waves_interactions_interference_9297.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "added",
+        "diagram list": [
+            "Wave",
+            "Inc.",
+            "add",
+            "zero",
+            "Amplitude",
+            "cancel",
+            "Copyright 1998",
+            "amplitude",
+            "Waveamplitudes",
+            "All rights reserved",
+            "John Wiley and Sons"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Destructive Interference",
+            "b": "Constructive interference",
+            "c": "Wave Interference",
+            "d": "Wave Interaction"
+        },
+        "question": "What's the result of one wave's crest overlapping the crests of the other wave?",
+        "answer_id": "b",
+        "answer": "Constructive interference",
+        "image_name": "waves_interactions_interference_9301.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave's crest",
+        "diagram list": [
+            "interference",
+            "Destructive",
+            "Constructive",
+            "www.explainthatstuff.com"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "comparative",
+            "b": "constructive",
+            "c": "destructive",
+            "d": "instructive"
+        },
+        "question": "Which interference cancels out two waves?",
+        "answer_id": "c",
+        "answer": "destructive",
+        "image_name": "waves_interactions_interference_8232.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave",
+        "diagram list": [
+            "Destructive",
+            "W",
+            "Constructive"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Constructive",
+            "b": "Destructive",
+            "c": "Positive",
+            "d": "Negative"
+        },
+        "question": "What is the type of interference represented in figure a?",
+        "answer_id": "a",
+        "answer": "Constructive",
+        "image_name": "waves_interactions_interference_9297.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "interference",
+        "diagram list": [
+            "Wave",
+            "Inc.",
+            "add",
+            "zero",
+            "Amplitude",
+            "cancel",
+            "Copyright 1998",
+            "amplitude",
+            "Waveamplitudes",
+            "All rights reserved",
+            "John Wiley and Sons"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Constructive",
+            "b": "Destructive",
+            "c": "Positive",
+            "d": "Negative"
+        },
+        "question": "What is the type of interference represented in figure a?",
+        "answer_id": "a",
+        "answer": "Constructive",
+        "image_name": "waves_interactions_interference_9297.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "figure a",
+        "diagram list": [
+            "Wave",
+            "Inc.",
+            "add",
+            "zero",
+            "Amplitude",
+            "cancel",
+            "Copyright 1998",
+            "amplitude",
+            "Waveamplitudes",
+            "All rights reserved",
+            "John Wiley and Sons"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "1",
+            "c": "4",
+            "d": "2"
+        },
+        "question": "How many types of interference is shown in the illustration below?",
+        "answer_id": "b",
+        "answer": "1",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "type",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "sophisticated interference",
+            "b": "constructive interference",
+            "c": "destructive interference",
+            "d": "complimentary interference"
+        },
+        "question": "Which inference results in resulting wave having increased amplitude?",
+        "answer_id": "b",
+        "answer": "constructive interference",
+        "image_name": "waves_interactions_interference_9302.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave",
+        "diagram list": [
+            "Constructive Interference",
+            "MV",
+            "MW",
+            "WW",
+            "Destructive Interference"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "The result is a lower trough",
+            "b": "The result is a longitudinal wave",
+            "c": "The result is higher amplitude",
+            "d": "The result is a lower total amplitude"
+        },
+        "question": "When the crest of one wave meets the trough of another, what happens?",
+        "answer_id": "d",
+        "answer": "The result is a lower total amplitude",
+        "image_name": "waves_interactions_interference_9301.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave",
+        "diagram list": [
+            "interference",
+            "Destructive",
+            "Constructive",
+            "www.explainthatstuff.com"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Destructive Interference",
+            "b": "Constructive interference",
+            "c": "Wave Interference",
+            "d": "Wave Interaction"
+        },
+        "question": "What's the result of one wave's crest overlapping the crests of the other wave?",
+        "answer_id": "b",
+        "answer": "Constructive interference",
+        "image_name": "waves_interactions_interference_9301.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "overlap",
+        "diagram list": [
+            "interference",
+            "Destructive",
+            "Constructive",
+            "www.explainthatstuff.com"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Constructive Interference",
+            "b": "In phase wave",
+            "c": "Out of phase wave",
+            "d": "Destructive Interference"
+        },
+        "question": "What kind of interference decreases wave amplitude?",
+        "answer_id": "d",
+        "answer": "Destructive Interference",
+        "image_name": "waves_interactions_interference_9299.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave amplitude",
+        "diagram list": [
+            "+",
+            "Destructive",
+            "180° out",
+            "of phase",
+            "In phase",
+            "interference",
+            "Constructive"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "The result is a lower trough",
+            "b": "The result is a longitudinal wave",
+            "c": "The result is higher amplitude",
+            "d": "The result is a lower total amplitude"
+        },
+        "question": "When the crest of one wave meets the trough of another, what happens?",
+        "answer_id": "d",
+        "answer": "The result is a lower total amplitude",
+        "image_name": "waves_interactions_interference_9301.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "trough",
+        "diagram list": [
+            "interference",
+            "Destructive",
+            "Constructive",
+            "www.explainthatstuff.com"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Non-Harmonic",
+            "b": "Harmonic",
+            "c": "Destructive",
+            "d": "Constructive"
+        },
+        "question": "What kind of waves cancel each other?",
+        "answer_id": "c",
+        "answer": "Destructive",
+        "image_name": "waves_interactions_interference_8232.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave",
+        "diagram list": [
+            "Destructive",
+            "W",
+            "Constructive"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "The result is a lower trough",
+            "b": "The result is a longitudinal wave",
+            "c": "The result is higher amplitude",
+            "d": "The result is a lower total amplitude"
+        },
+        "question": "When the crest of one wave meets the trough of another, what happens?",
+        "answer_id": "d",
+        "answer": "The result is a lower total amplitude",
+        "image_name": "waves_interactions_interference_9301.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "crest",
+        "diagram list": [
+            "interference",
+            "Destructive",
+            "Constructive",
+            "www.explainthatstuff.com"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "No amplitude",
+            "b": "No change in amplitude",
+            "c": "Less amplitude",
+            "d": "Greater amplitude"
+        },
+        "question": "What is the resulting amplitude of the wave produced by destructive interference?",
+        "answer_id": "c",
+        "answer": "Less amplitude",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "resulting amplitude",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "zero",
+            "b": "amplitude",
+            "c": "wave amplitude",
+            "d": "zero amplitude"
+        },
+        "question": "What do you have when wave amplitudes are canceled?",
+        "answer_id": "a",
+        "answer": "zero amplitude",
+        "image_name": "waves_interactions_interference_9297.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave amplitudes",
+        "diagram list": [
+            "Wave",
+            "Inc.",
+            "add",
+            "zero",
+            "Amplitude",
+            "cancel",
+            "Copyright 1998",
+            "amplitude",
+            "Waveamplitudes",
+            "All rights reserved",
+            "John Wiley and Sons"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "No amplitude",
+            "b": "No change in amplitude",
+            "c": "Less amplitude",
+            "d": "Greater amplitude"
+        },
+        "question": "What is the resulting amplitude of the wave produced by destructive interference?",
+        "answer_id": "c",
+        "answer": "Less amplitude",
+        "image_name": "waves_interactions_interference_8230.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "wave",
+        "diagram list": [
+            "Before",
+            "B",
+            "During",
+            "DestructiveInterference",
+            "A+B",
+            "After"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "1",
+            "b": "3",
+            "c": "4",
+            "d": "2"
+        },
+        "question": "How many different kinds of waves are shown?",
+        "answer_id": "d",
+        "answer": "2",
+        "image_name": "waves_interactions_interference_8229.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "different kinds",
+        "diagram list": [
+            "Interference",
+            "Destructive",
+            "Constructive",
+            "Superposition of waves"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Really Curvy Line",
+            "b": "Wavy Line",
+            "c": "Straight Line",
+            "d": "Curvy Line"
+        },
+        "question": "What does 1 + 2 produce?",
+        "answer_id": "c",
+        "answer": "Straight Line",
+        "image_name": "waves_interactions_interference_8231.png",
+        "topic": "Physics",
+        "knowledge": "Wave interference",
+        "context": "Wave interference refers to the interaction between multiple waves, which can result in various outcomes. There are two main types of waves: sinusoidal or progressive waves. Sinusoidal waves can be either longitudinal (like sound) or transverse (like light). In the context of wave interference, there are two important phenomena: constructive interference and destructive interference.\n\nConstructive interference occurs when the crest of one wave aligns with the crest of another wave, leading to an amplification of the wave's amplitude. This happens because the waves add positively or are in-phase. On the other hand, destructive interference occurs when a crest of one wave meets a trough of another wave, causing a cancellation of amplitude. In this case, the waves subtract destructively or are out of phase by half a wavelength.\n\nThe degree of phase difference determines the nature of interference. In the illustration, two types of interference are depicted: constructive and destructive. In the top left diagram, two waves interfere constructively, resulting in a higher amplitude. In another part of the illustration, the waves cancel each other out, leading to zero amplitude or complete destructive interference. If the waves are out of phase by a full wavelength, destructive interference occurs.\n\nIn summary, wave interference demonstrates how waves can either amplify or diminish each other's strength depending on their phase relationship. This interaction ultimately affects the overall amplitude of the resulting wave pattern.",
+        "input": "2",
+        "diagram list": [
+            "Biome",
+            "dry",
+            "cold"
+        ],
+        "split": "val"
+    }
+]

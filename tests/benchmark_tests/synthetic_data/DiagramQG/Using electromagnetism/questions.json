@@ -1,0 +1,1712 @@
+[
+    {
+        "choices": {
+            "a": "circuit",
+            "b": "wire",
+            "c": "electron",
+            "d": "magnet"
+        },
+        "question": "What connects the iron nail and battery to make the simple electromagnet?",
+        "answer_id": "b",
+        "answer": "wire",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "simple electromagnet",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "4",
+            "c": "2",
+            "d": "1"
+        },
+        "question": "how many types of magnetic poles are shown?",
+        "answer_id": "c",
+        "answer": "2",
+        "image_name": "electromagnetism_8062.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "magnetic poles",
+        "diagram list": [
+            "S",
+            "magnetic field",
+            "N"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Toggle Switch (negative side)",
+            "b": "Nail",
+            "c": "The Battery's Positive Pole",
+            "d": "Toggle Switch (positive side)"
+        },
+        "question": "In the circuit, what is directly connected to the battery's negative pole through the copper wire?",
+        "answer_id": "b",
+        "answer": "Nail",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "circuit",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Battery",
+            "b": "Iron nail",
+            "c": "Light",
+            "d": "Coiled wire"
+        },
+        "question": "In this diagram of using electromagnetism, what sends magnetism through the wire to the iron nail?",
+        "answer_id": "a",
+        "answer": "Battery",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "electromagnetism",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Doorbell",
+            "b": "Electromagnet",
+            "c": "Motor",
+            "d": "Solenoid"
+        },
+        "question": "This is a coil of wire with an electric current flowing through it.",
+        "answer_id": "d",
+        "answer": "Solenoid",
+        "image_name": "electromagnetism_6791.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "wire",
+        "diagram list": [
+            "Nail",
+            "Pins",
+            "Battery cell",
+            "Electromagnet",
+            "Switch"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "battery",
+            "b": "electromagnet",
+            "c": "solenoid",
+            "d": "wire coil"
+        },
+        "question": "It is the coil of wire with electric current flowing through it, giving it a magnetic field.",
+        "answer_id": "c",
+        "answer": "solenoid",
+        "image_name": "electromagnetism_9088.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "coil",
+        "diagram list": [
+            "Nail",
+            "Wire",
+            "Battery"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "It serves no purpose",
+            "b": "To reduce the resistance",
+            "c": "To form an electromagnet",
+            "d": "To increase the resistance"
+        },
+        "question": "What is the purpose of the copper wire coiling around the nail?",
+        "answer_id": "c",
+        "answer": "To form an electromagnet",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "purpose",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "battery",
+            "b": "electromagnet",
+            "c": "solenoid",
+            "d": "wire coil"
+        },
+        "question": "It is the coil of wire with electric current flowing through it, giving it a magnetic field.",
+        "answer_id": "c",
+        "answer": "solenoid",
+        "image_name": "electromagnetism_9088.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "magnetic field",
+        "diagram list": [
+            "Nail",
+            "Wire",
+            "Battery"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "circuit",
+            "b": "wire",
+            "c": "electron",
+            "d": "magnet"
+        },
+        "question": "What connects the iron nail and battery to make the simple electromagnet?",
+        "answer_id": "b",
+        "answer": "wire",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "iron nail",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Socket",
+            "b": "Switch",
+            "c": "Battery",
+            "d": "Iron Nail"
+        },
+        "question": "What is the coil of insulated wire connected to at the bottom of the iron nail?",
+        "answer_id": "b",
+        "answer": "Switch",
+        "image_name": "electromagnetism_9089.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "insulated wire",
+        "diagram list": [
+            "A Simple Electromagnet",
+            "battery",
+            "switch",
+            "coil of insulated wire",
+            "iron nail"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "insulated wire",
+            "b": "switch",
+            "c": "Battery",
+            "d": "Iron nail"
+        },
+        "question": "What connects the iron nail to the battery?",
+        "answer_id": "a",
+        "answer": "insulated wire",
+        "image_name": "electromagnetism_9089.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "iron nail",
+        "diagram list": [
+            "A Simple Electromagnet",
+            "battery",
+            "switch",
+            "coil of insulated wire",
+            "iron nail"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Toggle Switch (negative side)",
+            "b": "Nail",
+            "c": "The Battery's Positive Pole",
+            "d": "Toggle Switch (positive side)"
+        },
+        "question": "In the circuit, what is directly connected to the battery's negative pole through the copper wire?",
+        "answer_id": "b",
+        "answer": "Nail",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "copper wire",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Coil of insulated wire",
+            "b": "Switch",
+            "c": "Battery",
+            "d": "Bulb"
+        },
+        "question": "What connects the iron nail with the cell?",
+        "answer_id": "a",
+        "answer": "Coil of insulated wire",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "iron nail",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Socket",
+            "b": "Switch",
+            "c": "Battery",
+            "d": "Iron Nail"
+        },
+        "question": "What is the coil of insulated wire connected to at the bottom of the iron nail?",
+        "answer_id": "b",
+        "answer": "Switch",
+        "image_name": "electromagnetism_9089.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "bottom",
+        "diagram list": [
+            "A Simple Electromagnet",
+            "battery",
+            "switch",
+            "coil of insulated wire",
+            "iron nail"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Nail",
+            "b": "Toggle Switch",
+            "c": "12 V Lantern Battery",
+            "d": "Copper Wire"
+        },
+        "question": "Which term in the image is pointing to the electromagnet?",
+        "answer_id": "a",
+        "answer": "Nail",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "image",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Battery",
+            "b": "Wire",
+            "c": "Rod",
+            "d": "Device"
+        },
+        "question": "What consists one or more electrochemical cells with external connections provided to power electrical devices?",
+        "answer_id": "a",
+        "answer": "Battery",
+        "image_name": "electromagnetism_9092.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "electrochemical cells",
+        "diagram list": [
+            "wire",
+            "battery",
+            "rod"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Nail",
+            "b": "Toggle Switch",
+            "c": "12 V Lantern Battery",
+            "d": "Copper Wire"
+        },
+        "question": "Which term in the image is pointing to the electromagnet?",
+        "answer_id": "a",
+        "answer": "Nail",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "term",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Coil of insulated metal substance",
+            "b": "Coil of iron",
+            "c": "Coil of string",
+            "d": "Coil of insulated wire"
+        },
+        "question": "What is wrapped around an iron nail to power a cell circuit?",
+        "answer_id": "d",
+        "answer": "Coil of insulated wire",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "iron nail",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "nothing",
+            "b": "pins would fall back down",
+            "c": "a fire would start",
+            "d": "more pins would be picked up"
+        },
+        "question": "what would happen if the wire was uncoiled from the nail?",
+        "answer_id": "b",
+        "answer": "pins would fall back down",
+        "image_name": "electromagnetism_6791.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "uncoiled",
+        "diagram list": [
+            "Nail",
+            "Pins",
+            "Battery cell",
+            "Electromagnet",
+            "Switch"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Smaller e.m.f",
+            "b": "Nothing",
+            "c": "Bigger e.m.f.",
+            "d": "Same e.m.f"
+        },
+        "question": "What happens when a stronger magnet is put?",
+        "answer_id": "c",
+        "answer": "Bigger e.m.f.",
+        "image_name": "electromagnetism_6801.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "stronger magnet",
+        "diagram list": [
+            "faster movement",
+            "small e.m.f.",
+            "slow movement",
+            "bigger e.m.f."
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Coil of insulated wire",
+            "b": "Cell",
+            "c": "Nail",
+            "d": "Switch"
+        },
+        "question": "In this diagram about using electromagnetism, what surrounds itself around the Iron Nail?",
+        "answer_id": "a",
+        "answer": "Coil of insulated wire",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "Iron Nail",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "It would cause a fire",
+            "b": "it would create a stronger magnet",
+            "c": "There would be no magnet",
+            "d": "It would light up"
+        },
+        "question": "What would happen if the wire was uncoiled from the iron nail?",
+        "answer_id": "c",
+        "answer": "There would be no magnet",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "uncoiled",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "It would cause a fire",
+            "b": "it would create a stronger magnet",
+            "c": "There would be no magnet",
+            "d": "It would light up"
+        },
+        "question": "What would happen if the wire was uncoiled from the iron nail?",
+        "answer_id": "c",
+        "answer": "There would be no magnet",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "wire",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "battery",
+            "b": "electromagnet",
+            "c": "solenoid",
+            "d": "wire coil"
+        },
+        "question": "It is the coil of wire with electric current flowing through it, giving it a magnetic field.",
+        "answer_id": "c",
+        "answer": "solenoid",
+        "image_name": "electromagnetism_9088.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "electric current",
+        "diagram list": [
+            "Nail",
+            "Wire",
+            "Battery"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Battery",
+            "b": "Iron nail",
+            "c": "Light",
+            "d": "Coiled wire"
+        },
+        "question": "In this diagram of using electromagnetism, what sends magnetism through the wire to the iron nail?",
+        "answer_id": "a",
+        "answer": "Battery",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "iron nail",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Toggle Switch (negative side)",
+            "b": "Nail",
+            "c": "The Battery's Positive Pole",
+            "d": "Toggle Switch (positive side)"
+        },
+        "question": "In the circuit, what is directly connected to the battery's negative pole through the copper wire?",
+        "answer_id": "b",
+        "answer": "Nail",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "battery's negative pole",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "It would cause a fire",
+            "b": "it would create a stronger magnet",
+            "c": "There would be no magnet",
+            "d": "It would light up"
+        },
+        "question": "What would happen if the wire was uncoiled from the iron nail?",
+        "answer_id": "c",
+        "answer": "There would be no magnet",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "iron nail",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "4",
+            "c": "2",
+            "d": "1"
+        },
+        "question": "how many types of magnetic poles are shown?",
+        "answer_id": "c",
+        "answer": "2",
+        "image_name": "electromagnetism_8062.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "type",
+        "diagram list": [
+            "S",
+            "magnetic field",
+            "N"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "insulated wire",
+            "b": "switch",
+            "c": "Battery",
+            "d": "Iron nail"
+        },
+        "question": "What connects the iron nail to the battery?",
+        "answer_id": "a",
+        "answer": "insulated wire",
+        "image_name": "electromagnetism_9089.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "battery",
+        "diagram list": [
+            "A Simple Electromagnet",
+            "battery",
+            "switch",
+            "coil of insulated wire",
+            "iron nail"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Coiled Wire",
+            "b": "Negative Pole",
+            "c": "Positive Pole",
+            "d": "Line"
+        },
+        "question": "Which structure connects the iron nail to the battery in the diagram shown?",
+        "answer_id": "a",
+        "answer": "Coiled Wire",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "structure",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Doorbell",
+            "b": "Electromagnet",
+            "c": "Motor",
+            "d": "Solenoid"
+        },
+        "question": "This is a coil of wire with an electric current flowing through it.",
+        "answer_id": "d",
+        "answer": "Solenoid",
+        "image_name": "electromagnetism_6791.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "electric current",
+        "diagram list": [
+            "Nail",
+            "Pins",
+            "Battery cell",
+            "Electromagnet",
+            "Switch"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "battery",
+            "b": "electromagnet",
+            "c": "solenoid",
+            "d": "wire coil"
+        },
+        "question": "It is the coil of wire with electric current flowing through it, giving it a magnetic field.",
+        "answer_id": "c",
+        "answer": "solenoid",
+        "image_name": "electromagnetism_9088.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "wire",
+        "diagram list": [
+            "Nail",
+            "Wire",
+            "Battery"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "switch",
+            "b": "cotton",
+            "c": "plastic",
+            "d": "insulated wire"
+        },
+        "question": "what is wrapped around the iron nail?",
+        "answer_id": "d",
+        "answer": "insulated wire",
+        "image_name": "electromagnetism_9089.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "wrapped around",
+        "diagram list": [
+            "A Simple Electromagnet",
+            "battery",
+            "switch",
+            "coil of insulated wire",
+            "iron nail"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Coil of insulated wire",
+            "b": "Cell",
+            "c": "Nail",
+            "d": "Switch"
+        },
+        "question": "In this diagram about using electromagnetism, what surrounds itself around the Iron Nail?",
+        "answer_id": "a",
+        "answer": "Coil of insulated wire",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "electromagnetism",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "6",
+            "c": "5",
+            "d": "4"
+        },
+        "question": "How many objects are used in this circuit?",
+        "answer_id": "d",
+        "answer": "4",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "circuit",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "A wire",
+            "b": "Water",
+            "c": "Coal",
+            "d": "Fire"
+        },
+        "question": "What connects the battery with the nail?",
+        "answer_id": "a",
+        "answer": "A wire",
+        "image_name": "electromagnetism_9086.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "battery",
+        "diagram list": [
+            "BATTERY",
+            "田",
+            "N"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "2",
+            "c": "5",
+            "d": "4"
+        },
+        "question": "How many components make up the electromagnet?",
+        "answer_id": "a",
+        "answer": "3",
+        "image_name": "electromagnetism_6791.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "electromagnet",
+        "diagram list": [
+            "Nail",
+            "Pins",
+            "Battery cell",
+            "Electromagnet",
+            "Switch"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "6",
+            "c": "5",
+            "d": "4"
+        },
+        "question": "How many objects are used in this circuit?",
+        "answer_id": "d",
+        "answer": "4",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "object",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "A wire",
+            "b": "Water",
+            "c": "Coal",
+            "d": "Fire"
+        },
+        "question": "What connects the battery with the nail?",
+        "answer_id": "a",
+        "answer": "A wire",
+        "image_name": "electromagnetism_9086.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "connects",
+        "diagram list": [
+            "BATTERY",
+            "田",
+            "N"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Socket",
+            "b": "Switch",
+            "c": "Battery",
+            "d": "Iron Nail"
+        },
+        "question": "What is the coil of insulated wire connected to at the bottom of the iron nail?",
+        "answer_id": "b",
+        "answer": "Switch",
+        "image_name": "electromagnetism_9089.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "coil",
+        "diagram list": [
+            "A Simple Electromagnet",
+            "battery",
+            "switch",
+            "coil of insulated wire",
+            "iron nail"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "copper wire",
+            "b": "toggle switch",
+            "c": "lantern battery",
+            "d": "transistor"
+        },
+        "question": "What is wrapped around the nail?",
+        "answer_id": "a",
+        "answer": "copper wire",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "wrapped around",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Battery",
+            "b": "Iron nail",
+            "c": "Light",
+            "d": "Coiled wire"
+        },
+        "question": "In this diagram of using electromagnetism, what sends magnetism through the wire to the iron nail?",
+        "answer_id": "a",
+        "answer": "Battery",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "wire",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Battery",
+            "b": "Iron nail",
+            "c": "Light",
+            "d": "Coiled wire"
+        },
+        "question": "In this diagram of using electromagnetism, what sends magnetism through the wire to the iron nail?",
+        "answer_id": "a",
+        "answer": "Battery",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "magnetism",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Swithc",
+            "b": "Gong",
+            "c": "Cable",
+            "d": "Battery"
+        },
+        "question": "Which part is labeled as S?",
+        "answer_id": "a",
+        "answer": "Swithc",
+        "image_name": "electromagnetism_6797.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "S",
+        "diagram list": [
+            "adjusting screw",
+            "soft iron armature",
+            "contact",
+            "electromagnet",
+            "striker",
+            "6uo6",
+            "spring"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "4",
+            "b": "1",
+            "c": "3",
+            "d": "2"
+        },
+        "question": "How many poles do batteries have?",
+        "answer_id": "d",
+        "answer": "2",
+        "image_name": "electromagnetism_9086.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "pole",
+        "diagram list": [
+            "BATTERY",
+            "田",
+            "N"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "nothing",
+            "b": "pins would fall back down",
+            "c": "a fire would start",
+            "d": "more pins would be picked up"
+        },
+        "question": "what would happen if the wire was uncoiled from the nail?",
+        "answer_id": "b",
+        "answer": "pins would fall back down",
+        "image_name": "electromagnetism_6791.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "wire",
+        "diagram list": [
+            "Nail",
+            "Pins",
+            "Battery cell",
+            "Electromagnet",
+            "Switch"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Iron Nail",
+            "b": "Plaster Board Nail",
+            "c": "Roofing Nail",
+            "d": "Casing Nail"
+        },
+        "question": "What type of nail is used in this example?",
+        "answer_id": "a",
+        "answer": "Iron Nail",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "example",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Swithc",
+            "b": "Gong",
+            "c": "Cable",
+            "d": "Battery"
+        },
+        "question": "Which part is labeled as S?",
+        "answer_id": "a",
+        "answer": "Swithc",
+        "image_name": "electromagnetism_6797.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "labeled",
+        "diagram list": [
+            "adjusting screw",
+            "soft iron armature",
+            "contact",
+            "electromagnet",
+            "striker",
+            "6uo6",
+            "spring"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Lantern Battery",
+            "b": "Toggle Switch",
+            "c": "Nail",
+            "d": "Copper Wire"
+        },
+        "question": "What connects the objects in the diagram?",
+        "answer_id": "d",
+        "answer": "Copper Wire",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "connects",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "It serves no purpose",
+            "b": "To reduce the resistance",
+            "c": "To form an electromagnet",
+            "d": "To increase the resistance"
+        },
+        "question": "What is the purpose of the copper wire coiling around the nail?",
+        "answer_id": "c",
+        "answer": "To form an electromagnet",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "copper wire",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Lantern Battery",
+            "b": "Toggle Switch",
+            "c": "Nail",
+            "d": "Copper Wire"
+        },
+        "question": "What connects the objects in the diagram?",
+        "answer_id": "d",
+        "answer": "Copper Wire",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "object",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Iron Nail",
+            "b": "Plaster Board Nail",
+            "c": "Roofing Nail",
+            "d": "Casing Nail"
+        },
+        "question": "What type of nail is used in this example?",
+        "answer_id": "a",
+        "answer": "Iron Nail",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "type",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Socket",
+            "b": "Switch",
+            "c": "Battery",
+            "d": "Iron Nail"
+        },
+        "question": "What is the coil of insulated wire connected to at the bottom of the iron nail?",
+        "answer_id": "b",
+        "answer": "Switch",
+        "image_name": "electromagnetism_9089.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "iron nail",
+        "diagram list": [
+            "A Simple Electromagnet",
+            "battery",
+            "switch",
+            "coil of insulated wire",
+            "iron nail"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "It serves no purpose",
+            "b": "To reduce the resistance",
+            "c": "To form an electromagnet",
+            "d": "To increase the resistance"
+        },
+        "question": "What is the purpose of the copper wire coiling around the nail?",
+        "answer_id": "c",
+        "answer": "To form an electromagnet",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "coiling",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Coal",
+            "b": "Wire",
+            "c": "Water",
+            "d": "Sun"
+        },
+        "question": "What connects the battery with the rod?",
+        "answer_id": "b",
+        "answer": "Wire",
+        "image_name": "electromagnetism_9092.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "battery",
+        "diagram list": [
+            "wire",
+            "battery",
+            "rod"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Coiled Wire",
+            "b": "Negative Pole",
+            "c": "Positive Pole",
+            "d": "Line"
+        },
+        "question": "Which structure connects the iron nail to the battery in the diagram shown?",
+        "answer_id": "a",
+        "answer": "Coiled Wire",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "iron nail",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Switch",
+            "b": "Pins",
+            "c": "Battery cell",
+            "d": "Nail"
+        },
+        "question": "Which of the following supplies energy?",
+        "answer_id": "c",
+        "answer": "Battery cell",
+        "image_name": "electromagnetism_6791.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "following",
+        "diagram list": [
+            "Nail",
+            "Pins",
+            "Battery cell",
+            "Electromagnet",
+            "Switch"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "striker",
+            "b": "contacts",
+            "c": "spring",
+            "d": "soft iron armature"
+        },
+        "question": "What will hit the gong if the switch is closed?",
+        "answer_id": "a",
+        "answer": "striker",
+        "image_name": "electromagnetism_6797.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "switch",
+        "diagram list": [
+            "adjusting screw",
+            "soft iron armature",
+            "contact",
+            "electromagnet",
+            "striker",
+            "6uo6",
+            "spring"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Coiled Wire",
+            "b": "Negative Pole",
+            "c": "Positive Pole",
+            "d": "Line"
+        },
+        "question": "Which structure connects the iron nail to the battery in the diagram shown?",
+        "answer_id": "a",
+        "answer": "Coiled Wire",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "battery",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Coil of insulated metal substance",
+            "b": "Coil of iron",
+            "c": "Coil of string",
+            "d": "Coil of insulated wire"
+        },
+        "question": "What is wrapped around an iron nail to power a cell circuit?",
+        "answer_id": "d",
+        "answer": "Coil of insulated wire",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "cell circuit",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Battery",
+            "b": "Wire",
+            "c": "Rod",
+            "d": "Device"
+        },
+        "question": "What consists one or more electrochemical cells with external connections provided to power electrical devices?",
+        "answer_id": "a",
+        "answer": "Battery",
+        "image_name": "electromagnetism_9092.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "external connections",
+        "diagram list": [
+            "wire",
+            "battery",
+            "rod"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "switch",
+            "b": "cotton",
+            "c": "plastic",
+            "d": "insulated wire"
+        },
+        "question": "what is wrapped around the iron nail?",
+        "answer_id": "d",
+        "answer": "insulated wire",
+        "image_name": "electromagnetism_9089.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "iron nail",
+        "diagram list": [
+            "A Simple Electromagnet",
+            "battery",
+            "switch",
+            "coil of insulated wire",
+            "iron nail"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Doorbell",
+            "b": "Electromagnet",
+            "c": "Motor",
+            "d": "Solenoid"
+        },
+        "question": "This is a coil of wire with an electric current flowing through it.",
+        "answer_id": "d",
+        "answer": "Solenoid",
+        "image_name": "electromagnetism_6791.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "coil",
+        "diagram list": [
+            "Nail",
+            "Pins",
+            "Battery cell",
+            "Electromagnet",
+            "Switch"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "It would be a stronger magnet.",
+            "b": "it would catch fire.",
+            "c": "It would demagnetize.",
+            "d": "nothing would change"
+        },
+        "question": "What would happen if the nail was replaced with a wooden rod?",
+        "answer_id": "c",
+        "answer": "It would demagnetize.",
+        "image_name": "electromagnetism_9089.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "nail",
+        "diagram list": [
+            "A Simple Electromagnet",
+            "battery",
+            "switch",
+            "coil of insulated wire",
+            "iron nail"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "The nail",
+            "b": "The positive side",
+            "c": "The negative side",
+            "d": "The wire"
+        },
+        "question": "Where does electricity come out from?",
+        "answer_id": "b",
+        "answer": "The positive side",
+        "image_name": "electromagnetism_9088.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "electricity",
+        "diagram list": [
+            "Nail",
+            "Wire",
+            "Battery"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "striker",
+            "b": "contacts",
+            "c": "spring",
+            "d": "soft iron armature"
+        },
+        "question": "What will hit the gong if the switch is closed?",
+        "answer_id": "a",
+        "answer": "striker",
+        "image_name": "electromagnetism_6797.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "gong",
+        "diagram list": [
+            "adjusting screw",
+            "soft iron armature",
+            "contact",
+            "electromagnet",
+            "striker",
+            "6uo6",
+            "spring"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "2",
+            "b": "1",
+            "c": "3",
+            "d": "4"
+        },
+        "question": "How many poles are there responsible for creating the magnetic field?",
+        "answer_id": "a",
+        "answer": "2",
+        "image_name": "electromagnetism_6793.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "magnetic field",
+        "diagram list": [
+            "Electromagnet",
+            "steel bar",
+            "compass",
+            "wire coil"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Swithc",
+            "b": "Gong",
+            "c": "Cable",
+            "d": "Battery"
+        },
+        "question": "Which part is labeled as S?",
+        "answer_id": "a",
+        "answer": "Swithc",
+        "image_name": "electromagnetism_6797.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "part",
+        "diagram list": [
+            "adjusting screw",
+            "soft iron armature",
+            "contact",
+            "electromagnet",
+            "striker",
+            "6uo6",
+            "spring"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "2",
+            "b": "1",
+            "c": "3",
+            "d": "4"
+        },
+        "question": "How many poles are there responsible for creating the magnetic field?",
+        "answer_id": "a",
+        "answer": "2",
+        "image_name": "electromagnetism_6793.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "pole",
+        "diagram list": [
+            "Electromagnet",
+            "steel bar",
+            "compass",
+            "wire coil"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Coil of insulated wire",
+            "b": "Switch",
+            "c": "Battery",
+            "d": "Bulb"
+        },
+        "question": "What connects the iron nail with the cell?",
+        "answer_id": "a",
+        "answer": "Coil of insulated wire",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "cell",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Nail",
+            "b": "Toggle Switch",
+            "c": "12 V Lantern Battery",
+            "d": "Copper Wire"
+        },
+        "question": "Which term in the image is pointing to the electromagnet?",
+        "answer_id": "a",
+        "answer": "Nail",
+        "image_name": "electromagnetism_6796.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "electromagnet",
+        "diagram list": [
+            "Nail",
+            "Toggle Switch",
+            "Copper Wire",
+            "12V Lantern Battery"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "circuit",
+            "b": "wire",
+            "c": "electron",
+            "d": "magnet"
+        },
+        "question": "What connects the iron nail and battery to make the simple electromagnet?",
+        "answer_id": "b",
+        "answer": "wire",
+        "image_name": "electromagnetism_9093.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "battery",
+        "diagram list": [
+            "Battery",
+            "wire",
+            "iron nail",
+            "Simple Electromagnet",
+            "coiled wire"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Iron Nail",
+            "b": "Plaster Board Nail",
+            "c": "Roofing Nail",
+            "d": "Casing Nail"
+        },
+        "question": "What type of nail is used in this example?",
+        "answer_id": "a",
+        "answer": "Iron Nail",
+        "image_name": "electromagnetism_9091.png",
+        "topic": "Electrical Engineering",
+        "knowledge": "Using electromagnetism",
+        "context": "In an experiment involving electromagnetism, a coiled copper wire is wrapped around an iron nail, creating a basic circuit with the nail acting as a core. The wire carries an electric current provided by a battery, with the negative terminal directly connected to the coil. When the current interacts with the magnetic field, it generates two magnetic poles, namely north and south, on the nail. Closing a switch activates a magnetic force, which can interact with other magnets or cause movement in nearby objects like a metal rod or gong. The iron nail is important because of its ferromagnetic properties, which enhance the magnetic field. The circuit includes the battery, the copper wire, the iron nail, and potentially a switch. The energy from the battery flows through the wire, generating a magnetic field around the nail. By adjusting the strength of the magnet or adding more components, the electromagnetic effect can be controlled. This setup illustrates the fundamental principles of electromagnetism, where electric current transforms into a magnetic field. It showcases the essential components involved in generating and manipulating a magnetic field using a simple electrical circuit.",
+        "input": "nail",
+        "diagram list": [
+            "Switch",
+            "Coil of insulated wire",
+            "Ironnail",
+            "Cell"
+        ],
+        "split": "train"
+    }
+]
