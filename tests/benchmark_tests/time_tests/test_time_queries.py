@@ -125,7 +125,7 @@ class TimeQueryTestRunner:
 async def main():
     """Main entry point for test execution"""
     test_context = TestContext(
-        dataset_path=""
+        dataset_path="/datasets/time_test_data"
     )
     
     runner = TimeQueryTestRunner(

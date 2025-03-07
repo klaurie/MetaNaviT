@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Base directory for test data
-TEST_DATA_DIR = Path("data/time_test_data")
+TEST_DATA_DIR = Path("datasets/time_test_data")
 
 class TimeBasedDataGenerator:
     """Generates test data with controlled timestamps"""
