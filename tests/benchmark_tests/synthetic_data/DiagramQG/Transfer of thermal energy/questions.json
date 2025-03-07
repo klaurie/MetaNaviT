@@ -1,0 +1,1661 @@
+[
+    {
+        "choices": {
+            "a": "Cool air rises",
+            "b": "The convection cycle ends",
+            "c": "Heat falls",
+            "d": "Cool air falls"
+        },
+        "question": "After heat rises in a convection cycle:",
+        "answer_id": "d",
+        "answer": "Cool air falls",
+        "image_name": "convection_of_air_8048.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "convection cycle",
+        "diagram list": [
+            "COOL AIR",
+            "CONVECTION",
+            "HEAT",
+            "RISES",
+            "FALLS"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "It doesn't",
+            "b": "The cool air is less dense",
+            "c": "It started there",
+            "d": "It's less dense than cool air"
+        },
+        "question": "Why is the warm air rising in the room?",
+        "answer_id": "d",
+        "answer": "It's less dense than cool air",
+        "image_name": "convection_of_air_6660.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "rising",
+        "diagram list": [
+            "Hot",
+            "Cell",
+            "Convection",
+            "Cold",
+            "Coolairfalling",
+            "Warm airrising",
+            "radiator"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "It sinks",
+            "b": "It rises",
+            "c": "It stays the same",
+            "d": "It both rises and sinks"
+        },
+        "question": "In a convection current how does cool air react?",
+        "answer_id": "a",
+        "answer": "It sinks",
+        "image_name": "convection_of_air_6663.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "react",
+        "diagram list": [
+            "sink",
+            "air warms",
+            "Convection",
+            "Current",
+            "Ground",
+            "rise",
+            "air cools"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "insulation",
+            "b": "radiation",
+            "c": "conduction",
+            "d": "convection"
+        },
+        "question": "When the transfer of thermal energy occurs between particles that are touching each other, it exhibits...",
+        "answer_id": "c",
+        "answer": "conduction",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "touching",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Encounter cool molecules",
+            "b": "Stay in place",
+            "c": "Rise to the surface of the liquid",
+            "d": "Fall to the bottom of the kettle"
+        },
+        "question": "Heat is lost when warm molecules:",
+        "answer_id": "c",
+        "answer": "Rise to the surface of the liquid",
+        "image_name": "convection_of_air_8045.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "warm molecules",
+        "diagram list": [
+            "Inc.",
+            "Convection",
+            "2013 Encyclopedia Britannica",
+            "heat",
+            "1000",
+            "molecule",
+            "warm"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "convection",
+            "b": "precipitation",
+            "c": "radiation",
+            "d": "conduction"
+        },
+        "question": "Which process emits heat, causing the pot and water to warm?",
+        "answer_id": "c",
+        "answer": "radiation",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "process",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "On the ground",
+            "b": "Higher in the atmosphere",
+            "c": "Low in the atmosphere",
+            "d": "Closest to the sun"
+        },
+        "question": "Where is the air the coolest?",
+        "answer_id": "b",
+        "answer": "Higher in the atmosphere",
+        "image_name": "convection_of_air_6659.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "air",
+        "diagram list": [
+            "land",
+            "sink",
+            "The sun",
+            "atmosphere",
+            "less dense",
+            "warms",
+            "higher",
+            "wind",
+            "colder",
+            "The air",
+            "dense air",
+            "air",
+            "warm air",
+            "cold air warms",
+            "rise",
+            "air cools"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "4",
+            "c": "1",
+            "d": "2"
+        },
+        "question": "How many forms of the transfer of energy are shown in the diagram?",
+        "answer_id": "a",
+        "answer": "3",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "form",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Radiation",
+            "b": "Conduction",
+            "c": "Release",
+            "d": "Convection"
+        },
+        "question": "Which form of thermal energy transfer does NOT require physical contact?",
+        "answer_id": "a",
+        "answer": "Radiation",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "form",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Radiation",
+            "b": "Radiation and Conduction",
+            "c": "Conduction",
+            "d": "Convection"
+        },
+        "question": "What type of heat transfer happens in the water?",
+        "answer_id": "d",
+        "answer": "Convection",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "type",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "It moves laterally.",
+            "b": "It sinks.",
+            "c": "It stays dormant.",
+            "d": "It rises."
+        },
+        "question": "In a convection current, what does warm air do?",
+        "answer_id": "d",
+        "answer": "It rises.",
+        "image_name": "convection_of_air_6663.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "convection current",
+        "diagram list": [
+            "sink",
+            "air warms",
+            "Convection",
+            "Current",
+            "Ground",
+            "rise",
+            "air cools"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Near the floor",
+            "b": "Near the ceiling",
+            "c": "On the ceiling facing down the room",
+            "d": "It does not matter"
+        },
+        "question": "Where is the best place to put a convection heater to warm up a room?",
+        "answer_id": "a",
+        "answer": "Near the floor",
+        "image_name": "convection_of_air_8048.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "convection heater",
+        "diagram list": [
+            "COOL AIR",
+            "CONVECTION",
+            "HEAT",
+            "RISES",
+            "FALLS"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "4",
+            "c": "1",
+            "d": "2"
+        },
+        "question": "How many forms of the transfer of energy are shown in the diagram?",
+        "answer_id": "a",
+        "answer": "3",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "transfer",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "high pressure area",
+            "b": "into the earth",
+            "c": "low pressure area",
+            "d": "towards the sun"
+        },
+        "question": "To where does the wind blow?",
+        "answer_id": "c",
+        "answer": "low pressure area",
+        "image_name": "convection_of_air_6662.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "wind",
+        "diagram list": [
+            "Wind direction",
+            "SUN",
+            "High pressure",
+            "Cool air over land",
+            "eschooltoday.com",
+            "Low pressure",
+            "Warm air over land"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Warm air rises",
+            "b": "Cool air falls",
+            "c": "Warm air falls",
+            "d": "Cool air rises"
+        },
+        "question": "What happens to cool air when it reaches a hot radiator?",
+        "answer_id": "a",
+        "answer": "Warm air rises",
+        "image_name": "convection_of_air_6660.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "hot radiator",
+        "diagram list": [
+            "Hot",
+            "Cell",
+            "Convection",
+            "Cold",
+            "Coolairfalling",
+            "Warm airrising",
+            "radiator"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Near the floor",
+            "b": "Near the ceiling",
+            "c": "On the ceiling facing down the room",
+            "d": "It does not matter"
+        },
+        "question": "Where is the best place to put a convection heater to warm up a room?",
+        "answer_id": "a",
+        "answer": "Near the floor",
+        "image_name": "convection_of_air_8048.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "place",
+        "diagram list": [
+            "COOL AIR",
+            "CONVECTION",
+            "HEAT",
+            "RISES",
+            "FALLS"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Radiation",
+            "b": "Conduction",
+            "c": "Release",
+            "d": "Convection"
+        },
+        "question": "Which form of thermal energy transfer does NOT require physical contact?",
+        "answer_id": "a",
+        "answer": "Radiation",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "thermal energy transfer",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Steaming",
+            "b": "Radiation",
+            "c": "Convection",
+            "d": "Conduction"
+        },
+        "question": "What is the transfer of thermal energy between particles of matter that are touching?",
+        "answer_id": "d",
+        "answer": "Conduction",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "touching",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "wind",
+            "b": "Air warms",
+            "c": "Air cools",
+            "d": "Cold dense air sinks"
+        },
+        "question": "What happens after less dense warm air rises?",
+        "answer_id": "c",
+        "answer": "Air cools",
+        "image_name": "convection_of_air_6659.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "rise",
+        "diagram list": [
+            "land",
+            "sink",
+            "The sun",
+            "atmosphere",
+            "less dense",
+            "warms",
+            "higher",
+            "wind",
+            "colder",
+            "The air",
+            "dense air",
+            "air",
+            "warm air",
+            "cold air warms",
+            "rise",
+            "air cools"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Encounter cool molecules",
+            "b": "Stay in place",
+            "c": "Rise to the surface of the liquid",
+            "d": "Fall to the bottom of the kettle"
+        },
+        "question": "Heat is lost when warm molecules:",
+        "answer_id": "c",
+        "answer": "Rise to the surface of the liquid",
+        "image_name": "convection_of_air_8045.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "Heat",
+        "diagram list": [
+            "Inc.",
+            "Convection",
+            "2013 Encyclopedia Britannica",
+            "heat",
+            "1000",
+            "molecule",
+            "warm"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "It sinks",
+            "b": "It rises",
+            "c": "It stays the same",
+            "d": "It both rises and sinks"
+        },
+        "question": "In a convection current how does cool air react?",
+        "answer_id": "a",
+        "answer": "It sinks",
+        "image_name": "convection_of_air_6663.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "convection current",
+        "diagram list": [
+            "sink",
+            "air warms",
+            "Convection",
+            "Current",
+            "Ground",
+            "rise",
+            "air cools"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "wind",
+            "b": "Air warms",
+            "c": "Air cools",
+            "d": "Cold dense air sinks"
+        },
+        "question": "What happens after less dense warm air rises?",
+        "answer_id": "c",
+        "answer": "Air cools",
+        "image_name": "convection_of_air_6659.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "warm air",
+        "diagram list": [
+            "land",
+            "sink",
+            "The sun",
+            "atmosphere",
+            "less dense",
+            "warms",
+            "higher",
+            "wind",
+            "colder",
+            "The air",
+            "dense air",
+            "air",
+            "warm air",
+            "cold air warms",
+            "rise",
+            "air cools"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Radiation",
+            "b": "Radiation and Conduction",
+            "c": "Conduction",
+            "d": "Convection"
+        },
+        "question": "What type of heat transfer happens in the water?",
+        "answer_id": "d",
+        "answer": "Convection",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "heat transfer",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "insulation",
+            "b": "radiation",
+            "c": "conduction",
+            "d": "convection"
+        },
+        "question": "When the transfer of thermal energy occurs between particles that are touching each other, it exhibits...",
+        "answer_id": "c",
+        "answer": "conduction",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "transfer of thermal energy",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Steaming",
+            "b": "Radiation",
+            "c": "Convection",
+            "d": "Conduction"
+        },
+        "question": "What is the transfer of thermal energy between particles of matter that are touching?",
+        "answer_id": "d",
+        "answer": "Conduction",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "thermal energy",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "insulation",
+            "b": "radiation",
+            "c": "conduction",
+            "d": "convection"
+        },
+        "question": "When the transfer of thermal energy occurs between particles that are touching each other, it exhibits...",
+        "answer_id": "c",
+        "answer": "conduction",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "exhibit",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "does not change the air",
+            "b": "charges the air with elctricity",
+            "c": "cools air",
+            "d": "warms air"
+        },
+        "question": "What does the convection current do to air?",
+        "answer_id": "c",
+        "answer": "cools air",
+        "image_name": "convection_of_air_6663.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "convection current",
+        "diagram list": [
+            "sink",
+            "air warms",
+            "Convection",
+            "Current",
+            "Ground",
+            "rise",
+            "air cools"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "4",
+            "c": "1",
+            "d": "2"
+        },
+        "question": "How many forms of the transfer of energy are shown in the diagram?",
+        "answer_id": "a",
+        "answer": "3",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "energy",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "From warm air over land to cool air over land",
+            "b": "Towards the sun",
+            "c": "From low pressure to high pressure",
+            "d": "From high pressure to low pressure"
+        },
+        "question": "Wind direction flows:",
+        "answer_id": "d",
+        "answer": "From high pressure to low pressure",
+        "image_name": "convection_of_air_6662.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "Wind direction",
+        "diagram list": [
+            "Wind direction",
+            "SUN",
+            "High pressure",
+            "Cool air over land",
+            "eschooltoday.com",
+            "Low pressure",
+            "Warm air over land"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "It doesn't",
+            "b": "The cool air is less dense",
+            "c": "It started there",
+            "d": "It's less dense than cool air"
+        },
+        "question": "Why is the warm air rising in the room?",
+        "answer_id": "d",
+        "answer": "It's less dense than cool air",
+        "image_name": "convection_of_air_6660.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "warm air",
+        "diagram list": [
+            "Hot",
+            "Cell",
+            "Convection",
+            "Cold",
+            "Coolairfalling",
+            "Warm airrising",
+            "radiator"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "It moves laterally.",
+            "b": "It sinks.",
+            "c": "It stays dormant.",
+            "d": "It rises."
+        },
+        "question": "In a convection current, what does warm air do?",
+        "answer_id": "d",
+        "answer": "It rises.",
+        "image_name": "convection_of_air_6663.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "warm air",
+        "diagram list": [
+            "sink",
+            "air warms",
+            "Convection",
+            "Current",
+            "Ground",
+            "rise",
+            "air cools"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Cool air rises",
+            "b": "The convection cycle ends",
+            "c": "Heat falls",
+            "d": "Cool air falls"
+        },
+        "question": "After heat rises in a convection cycle:",
+        "answer_id": "d",
+        "answer": "Cool air falls",
+        "image_name": "convection_of_air_8048.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "heat",
+        "diagram list": [
+            "COOL AIR",
+            "CONVECTION",
+            "HEAT",
+            "RISES",
+            "FALLS"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "Near the floor",
+            "b": "All parts of the room will have same temperature",
+            "c": "On the wall near the furnace",
+            "d": "Near the ceiling and above the furnace"
+        },
+        "question": "Which part of the room will have higher temperature?",
+        "answer_id": "d",
+        "answer": "Near the ceiling and above the furnace",
+        "image_name": "convection_of_air_8047.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "part",
+        "diagram list": [
+            "sink",
+            "air cooled",
+            "by room",
+            "gravity",
+            "furnace",
+            "Hot air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Radiation",
+            "b": "Radiation and Conduction",
+            "c": "Conduction",
+            "d": "Convection"
+        },
+        "question": "What type of heat transfer happens in the water?",
+        "answer_id": "d",
+        "answer": "Convection",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "water",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Near the floor",
+            "b": "All parts of the room will have same temperature",
+            "c": "On the wall near the furnace",
+            "d": "Near the ceiling and above the furnace"
+        },
+        "question": "Which part of the room will have higher temperature?",
+        "answer_id": "d",
+        "answer": "Near the ceiling and above the furnace",
+        "image_name": "convection_of_air_8047.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "room",
+        "diagram list": [
+            "sink",
+            "air cooled",
+            "by room",
+            "gravity",
+            "furnace",
+            "Hot air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Steaming",
+            "b": "Radiation",
+            "c": "Convection",
+            "d": "Conduction"
+        },
+        "question": "What is the transfer of thermal energy between particles of matter that are touching?",
+        "answer_id": "d",
+        "answer": "Conduction",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "transfer",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Near the floor",
+            "b": "All parts of the room will have same temperature",
+            "c": "On the wall near the furnace",
+            "d": "Near the ceiling and above the furnace"
+        },
+        "question": "Which part of the room will have higher temperature?",
+        "answer_id": "d",
+        "answer": "Near the ceiling and above the furnace",
+        "image_name": "convection_of_air_8047.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "higher temperature",
+        "diagram list": [
+            "sink",
+            "air cooled",
+            "by room",
+            "gravity",
+            "furnace",
+            "Hot air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "convection",
+            "b": "precipitation",
+            "c": "radiation",
+            "d": "conduction"
+        },
+        "question": "Which process emits heat, causing the pot and water to warm?",
+        "answer_id": "c",
+        "answer": "radiation",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "heat",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "After hot air rises",
+            "b": "After hot air sinks",
+            "c": "After cold air sinks",
+            "d": "After cold air replaces hot air"
+        },
+        "question": "At what point does air cool?",
+        "answer_id": "a",
+        "answer": "After hot air rises",
+        "image_name": "convection_of_air_8046.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "air",
+        "diagram list": [
+            "label Y",
+            "sink",
+            "Aircools",
+            "gas R",
+            "replaces",
+            "label X",
+            "Hot air",
+            "Cool air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "2",
+            "c": "1",
+            "d": "4"
+        },
+        "question": "how many processes are there in the convection current?",
+        "answer_id": "b",
+        "answer": "2",
+        "image_name": "convection_of_air_6663.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "convection current",
+        "diagram list": [
+            "sink",
+            "air warms",
+            "Convection",
+            "Current",
+            "Ground",
+            "rise",
+            "air cools"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "It sinks",
+            "b": "It rises",
+            "c": "It stays the same",
+            "d": "It both rises and sinks"
+        },
+        "question": "In a convection current how does cool air react?",
+        "answer_id": "a",
+        "answer": "It sinks",
+        "image_name": "convection_of_air_6663.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "cool air",
+        "diagram list": [
+            "sink",
+            "air warms",
+            "Convection",
+            "Current",
+            "Ground",
+            "rise",
+            "air cools"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "Steaming",
+            "b": "Radiation",
+            "c": "Convection",
+            "d": "Conduction"
+        },
+        "question": "What is the transfer of thermal energy between particles of matter that are touching?",
+        "answer_id": "d",
+        "answer": "Conduction",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "matter",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "warm air stays in the atmosphere",
+            "b": "air keeps warming up",
+            "c": "warm air doesn't rise",
+            "d": "air cools and sinks"
+        },
+        "question": "What happens when warm air rises?",
+        "answer_id": "d",
+        "answer": "air cools and sinks",
+        "image_name": "convection_of_air_6663.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "warm air",
+        "diagram list": [
+            "sink",
+            "air warms",
+            "Convection",
+            "Current",
+            "Ground",
+            "rise",
+            "air cools"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "It stays dormant.",
+            "b": "It sinks.",
+            "c": "It moves laterally.",
+            "d": "It rises."
+        },
+        "question": "What does hot air do?",
+        "answer_id": "d",
+        "answer": "It rises.",
+        "image_name": "convection_of_air_8047.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "hot air",
+        "diagram list": [
+            "sink",
+            "air cooled",
+            "by room",
+            "gravity",
+            "furnace",
+            "Hot air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "2",
+            "c": "4",
+            "d": "5"
+        },
+        "question": "How many processes are there after hot air rises?",
+        "answer_id": "a",
+        "answer": "3",
+        "image_name": "convection_of_air_8046.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "process",
+        "diagram list": [
+            "label Y",
+            "sink",
+            "Aircools",
+            "gas R",
+            "replaces",
+            "label X",
+            "Hot air",
+            "Cool air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "molecular contact",
+            "b": "movement through a vacuum",
+            "c": "density differences",
+            "d": "electromagnetic waves"
+        },
+        "question": "Conduction is the transfer of heat energy by",
+        "answer_id": "a",
+        "answer": "molecular contact",
+        "image_name": "convection_of_air_8048.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "transfer",
+        "diagram list": [
+            "COOL AIR",
+            "CONVECTION",
+            "HEAT",
+            "RISES",
+            "FALLS"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "molecular contact",
+            "b": "movement through a vacuum",
+            "c": "density differences",
+            "d": "electromagnetic waves"
+        },
+        "question": "Conduction is the transfer of heat energy by",
+        "answer_id": "a",
+        "answer": "molecular contact",
+        "image_name": "convection_of_air_8048.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "heat energy",
+        "diagram list": [
+            "COOL AIR",
+            "CONVECTION",
+            "HEAT",
+            "RISES",
+            "FALLS"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "It doesn't",
+            "b": "The cool air is less dense",
+            "c": "It started there",
+            "d": "It's less dense than cool air"
+        },
+        "question": "Why is the warm air rising in the room?",
+        "answer_id": "d",
+        "answer": "It's less dense than cool air",
+        "image_name": "convection_of_air_6660.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "room",
+        "diagram list": [
+            "Hot",
+            "Cell",
+            "Convection",
+            "Cold",
+            "Coolairfalling",
+            "Warm airrising",
+            "radiator"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Warm air rises",
+            "b": "Cool air falls",
+            "c": "Warm air falls",
+            "d": "Cool air rises"
+        },
+        "question": "What happens to cool air when it reaches a hot radiator?",
+        "answer_id": "a",
+        "answer": "Warm air rises",
+        "image_name": "convection_of_air_6660.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "cool air",
+        "diagram list": [
+            "Hot",
+            "Cell",
+            "Convection",
+            "Cold",
+            "Coolairfalling",
+            "Warm airrising",
+            "radiator"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "After hot air rises",
+            "b": "After hot air sinks",
+            "c": "After cold air sinks",
+            "d": "After cold air replaces hot air"
+        },
+        "question": "At what point does air cool?",
+        "answer_id": "a",
+        "answer": "After hot air rises",
+        "image_name": "convection_of_air_8046.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "point",
+        "diagram list": [
+            "label Y",
+            "sink",
+            "Aircools",
+            "gas R",
+            "replaces",
+            "label X",
+            "Hot air",
+            "Cool air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "2",
+            "c": "1",
+            "d": "4"
+        },
+        "question": "how many processes are there in the convection current?",
+        "answer_id": "b",
+        "answer": "2",
+        "image_name": "convection_of_air_6663.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "process",
+        "diagram list": [
+            "sink",
+            "air warms",
+            "Convection",
+            "Current",
+            "Ground",
+            "rise",
+            "air cools"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "From warm air over land to cool air over land",
+            "b": "Towards the sun",
+            "c": "From low pressure to high pressure",
+            "d": "From high pressure to low pressure"
+        },
+        "question": "Wind direction flows:",
+        "answer_id": "d",
+        "answer": "From high pressure to low pressure",
+        "image_name": "convection_of_air_6662.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "flow",
+        "diagram list": [
+            "Wind direction",
+            "SUN",
+            "High pressure",
+            "Cool air over land",
+            "eschooltoday.com",
+            "Low pressure",
+            "Warm air over land"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "This cold dense air sinks",
+            "b": "Nothing happens",
+            "c": "Less dense warm air rises",
+            "d": "The air is cooled off by the land"
+        },
+        "question": "What happens after the sun warms the land, which warms the air?",
+        "answer_id": "c",
+        "answer": "Less dense warm air rises",
+        "image_name": "convection_of_air_6659.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "warms",
+        "diagram list": [
+            "land",
+            "sink",
+            "The sun",
+            "atmosphere",
+            "less dense",
+            "warms",
+            "higher",
+            "wind",
+            "colder",
+            "The air",
+            "dense air",
+            "air",
+            "warm air",
+            "cold air warms",
+            "rise",
+            "air cools"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Near the floor",
+            "b": "Near the ceiling",
+            "c": "On the ceiling facing down the room",
+            "d": "It does not matter"
+        },
+        "question": "Where is the best place to put a convection heater to warm up a room?",
+        "answer_id": "a",
+        "answer": "Near the floor",
+        "image_name": "convection_of_air_8048.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "warm up",
+        "diagram list": [
+            "COOL AIR",
+            "CONVECTION",
+            "HEAT",
+            "RISES",
+            "FALLS"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "When it cools.",
+            "b": "When it rises.",
+            "c": "When it sinks.",
+            "d": "When cool air replaces hot air."
+        },
+        "question": "When does air start getting hot?",
+        "answer_id": "b",
+        "answer": "When it rises.",
+        "image_name": "convection_of_air_8046.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "air",
+        "diagram list": [
+            "label Y",
+            "sink",
+            "Aircools",
+            "gas R",
+            "replaces",
+            "label X",
+            "Hot air",
+            "Cool air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "2",
+            "b": "4",
+            "c": "3",
+            "d": "5"
+        },
+        "question": "How many processes are shown in the diagram?",
+        "answer_id": "b",
+        "answer": "4",
+        "image_name": "convection_of_air_8046.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "process",
+        "diagram list": [
+            "label Y",
+            "sink",
+            "Aircools",
+            "gas R",
+            "replaces",
+            "label X",
+            "Hot air",
+            "Cool air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "3",
+            "b": "2",
+            "c": "4",
+            "d": "5"
+        },
+        "question": "How many processes are there after hot air rises?",
+        "answer_id": "a",
+        "answer": "3",
+        "image_name": "convection_of_air_8046.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "rise",
+        "diagram list": [
+            "label Y",
+            "sink",
+            "Aircools",
+            "gas R",
+            "replaces",
+            "label X",
+            "Hot air",
+            "Cool air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "This cold dense air sinks",
+            "b": "Nothing happens",
+            "c": "Less dense warm air rises",
+            "d": "The air is cooled off by the land"
+        },
+        "question": "What happens after the sun warms the land, which warms the air?",
+        "answer_id": "c",
+        "answer": "Less dense warm air rises",
+        "image_name": "convection_of_air_6659.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "sun",
+        "diagram list": [
+            "land",
+            "sink",
+            "The sun",
+            "atmosphere",
+            "less dense",
+            "warms",
+            "higher",
+            "wind",
+            "colder",
+            "The air",
+            "dense air",
+            "air",
+            "warm air",
+            "cold air warms",
+            "rise",
+            "air cools"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Cool Molecules",
+            "b": "Heat",
+            "c": "Convection",
+            "d": "Warm Molecules"
+        },
+        "question": "The red arrows in the diagram refer to:",
+        "answer_id": "d",
+        "answer": "Warm Molecules",
+        "image_name": "convection_of_air_8045.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "red arrows",
+        "diagram list": [
+            "Inc.",
+            "Convection",
+            "2013 Encyclopedia Britannica",
+            "heat",
+            "1000",
+            "molecule",
+            "warm"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "4",
+            "b": "2",
+            "c": "3",
+            "d": "1"
+        },
+        "question": "how many type of molecules are involved in the convection process?",
+        "answer_id": "b",
+        "answer": "2",
+        "image_name": "convection_of_air_8045.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "type of molecules",
+        "diagram list": [
+            "Inc.",
+            "Convection",
+            "2013 Encyclopedia Britannica",
+            "heat",
+            "1000",
+            "molecule",
+            "warm"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "After hot air rises",
+            "b": "After hot air sinks",
+            "c": "After cold air sinks",
+            "d": "After cold air replaces hot air"
+        },
+        "question": "At what point does air cool?",
+        "answer_id": "a",
+        "answer": "After hot air rises",
+        "image_name": "convection_of_air_8046.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "cool",
+        "diagram list": [
+            "label Y",
+            "sink",
+            "Aircools",
+            "gas R",
+            "replaces",
+            "label X",
+            "Hot air",
+            "Cool air",
+            "rise"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "convection",
+            "b": "precipitation",
+            "c": "radiation",
+            "d": "conduction"
+        },
+        "question": "Which process emits heat, causing the pot and water to warm?",
+        "answer_id": "c",
+        "answer": "radiation",
+        "image_name": "convection_of_air_8049.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "warm",
+        "diagram list": [
+            "Radiation",
+            "Conduction",
+            "Convection"
+        ],
+        "split": "train"
+    },
+    {
+        "choices": {
+            "a": "Near the floor",
+            "b": "Near the ceiling",
+            "c": "On the ceiling facing down the room",
+            "d": "It does not matter"
+        },
+        "question": "Where is the best place to put a convection heater to warm up a room?",
+        "answer_id": "a",
+        "answer": "Near the floor",
+        "image_name": "convection_of_air_8048.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "room",
+        "diagram list": [
+            "COOL AIR",
+            "CONVECTION",
+            "HEAT",
+            "RISES",
+            "FALLS"
+        ],
+        "split": "val"
+    },
+    {
+        "choices": {
+            "a": "4",
+            "b": "2",
+            "c": "3",
+            "d": "1"
+        },
+        "question": "how many type of molecules are involved in the convection process?",
+        "answer_id": "b",
+        "answer": "2",
+        "image_name": "convection_of_air_8045.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "convection process",
+        "diagram list": [
+            "Inc.",
+            "Convection",
+            "2013 Encyclopedia Britannica",
+            "heat",
+            "1000",
+            "molecule",
+            "warm"
+        ],
+        "split": "test"
+    },
+    {
+        "choices": {
+            "a": "molecular contact",
+            "b": "movement through a vacuum",
+            "c": "density differences",
+            "d": "electromagnetic waves"
+        },
+        "question": "Conduction is the transfer of heat energy by",
+        "answer_id": "a",
+        "answer": "molecular contact",
+        "image_name": "convection_of_air_8048.png",
+        "topic": "Physics",
+        "knowledge": "Transfer of thermal energy",
+        "context": "Convection currents involve the movement of air and other fluids due to temperature differences. They create a circulation pattern in a room, with hot air rising and cooler air descending in a continuous cycle. The primary molecules involved in this process are nitrogen, oxygen, and water vapor. The coolest air is typically found near the ground, while the warmest air accumulates at the ceiling. \n\nBoiling water undergoes three stages: pre-boiling, boiling, and vaporization. Heat rises in a convection cycle, creating a current that circulates air within a space. As hot air rises, cooler air descends and replaces it, forming a continuous cycle. The air gets heated as it absorbs thermal energy from a heat source. Placing a convection heater near the coldest part of a room, such as a corner, can efficiently warm it up.\n\nThermal energy transfer occurs through multiple stages, including conduction (direct contact), convection (fluid movement), and radiation (through electromagnetic waves). Warm air rises due to its lower density when heated, creating buoyancy forces. When the sun warms the land, the increased temperature causes the air above to rise, initiating convection.\n\nCool air reaching a hot radiator loses heat, causing it to cool down. The direction of the wind depends on factors like atmospheric pressure and temperature differences. In convection, cool air sinks and is replaced by warmer air. Conduction, which is one of the transfer mechanisms, occurs without physical contact between particles. Overall, convection currents involve a complex interplay of thermal energy transfer in various processes.",
+        "input": "Conduction",
+        "diagram list": [
+            "COOL AIR",
+            "CONVECTION",
+            "HEAT",
+            "RISES",
+            "FALLS"
+        ],
+        "split": "val"
+    }
+]

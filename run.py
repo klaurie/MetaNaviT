@@ -126,7 +126,7 @@ async def start_development_servers():
 
 async def _run_frontend(
     port: int = DEFAULT_FRONTEND_PORT,
-    timeout: int = 5,
+    timeout: int = 30,
 ) -> tuple[Process, int]:
     """
     Start the frontend development server and return its process and port.

@@ -1,0 +1,62 @@
+[
+    {
+        "question": "Which of the following is on the map?",
+        "choices": {
+            "a": "water frozen in glaciers",
+            "b": "water in clouds"
+        },
+        "answer": "water frozen in glaciers",
+        "answer_id": "a",
+        "image_name": "7375.png",
+        "knowledge": "Water cycle",
+        "topic": "earth",
+        "context": "The water cycle is a fundamental natural process that encompasses the constant circulation of water between the Earth's surface and its atmosphere. It comprises several stages, including evaporation, condensation, precipitation, and infiltration. When rainwater descends onto the land, it has the potential to be absorbed by plants or flow into bodies of water such as rivers and lakes. As water evaporates from these surfaces, it transforms into clouds, which eventually release precipitation through condensation. This continuous cycle replenishes our freshwater resources and plays a crucial role in sustaining life on Earth.",
+        "input": "following",
+        "diagram list": [
+            "liquid water",
+            "land",
+            "glacier"
+        ],
+        "split": "test"
+    },
+    {
+        "question": "Which of the following is on the map?",
+        "choices": {
+            "a": "water in clouds",
+            "b": "water in oceans"
+        },
+        "answer": "water in oceans",
+        "answer_id": "b",
+        "image_name": "7375.png",
+        "knowledge": "Water cycle",
+        "topic": "earth",
+        "context": "The water cycle is a fundamental natural process that encompasses the constant circulation of water between the Earth's surface and its atmosphere. It comprises several stages, including evaporation, condensation, precipitation, and infiltration. When rainwater descends onto the land, it has the potential to be absorbed by plants or flow into bodies of water such as rivers and lakes. As water evaporates from these surfaces, it transforms into clouds, which eventually release precipitation through condensation. This continuous cycle replenishes our freshwater resources and plays a crucial role in sustaining life on Earth.",
+        "input": "following",
+        "diagram list": [
+            "liquid water",
+            "land",
+            "glacier"
+        ],
+        "split": "test"
+    },
+    {
+        "question": "Which of the following is on the map?",
+        "choices": {
+            "a": "water in clouds",
+            "b": "water in rivers and lakes"
+        },
+        "answer": "water in rivers and lakes",
+        "answer_id": "b",
+        "image_name": "7375.png",
+        "knowledge": "Water cycle",
+        "topic": "earth",
+        "context": "The water cycle is a fundamental natural process that encompasses the constant circulation of water between the Earth's surface and its atmosphere. It comprises several stages, including evaporation, condensation, precipitation, and infiltration. When rainwater descends onto the land, it has the potential to be absorbed by plants or flow into bodies of water such as rivers and lakes. As water evaporates from these surfaces, it transforms into clouds, which eventually release precipitation through condensation. This continuous cycle replenishes our freshwater resources and plays a crucial role in sustaining life on Earth.",
+        "input": "following",
+        "diagram list": [
+            "liquid water",
+            "land",
+            "glacier"
+        ],
+        "split": "test"
+    }
+]
