@@ -176,6 +176,23 @@ class EventCallbackHandler(BaseCallbackHandler):
         ]
         super().__init__(ignored_events, ignored_events)
         self._aqueue = asyncio.Queue()
+        self.logs = []
+        self.tool_usage_count = {}
+
+    def get_logs(self):
+        return self.logs
+
+    def on_tool_start(self, tool_name: str, tool_input: str, **kwargs: Any) -> None:
+        """Log when a tool starts execution"""
+        log_msg = f"🔧 Tool started: {tool_name} with input: {tool_input}"
+        logger.info(log_msg)
+        self.logs.append(log_msg)
+        
+        # Track usage count
+        if tool_name not in self.tool_usage_count:
+            self.tool_usage_count[tool_name] = 1
+        else:
+            self.tool_usage_count[tool_name] += 1
 
     def on_event_start(
         self,
