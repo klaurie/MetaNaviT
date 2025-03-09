@@ -18,8 +18,7 @@ import subprocess
 import shutil
 from pathlib import Path
 import logging
-import psycopg2
-from typing import List, Dict
+from typing import List
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
