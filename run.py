@@ -1,3 +1,35 @@
+"""
+Backend & Frontend Development Server Manager
+
+This script automates the setup and management of a full-stack
+development environment. It provides functionality to:
+
+- Build the frontend and copy static files to the backend
+- Start development servers for both frontend and backend
+- Detect and use the appropriate Node.js package manager (npm or pnpm)
+- Handle dependency installation for the frontend
+- Ensure ports are available before starting servers
+- Terminates processes upon shutdown
+
+Key Components:
+- `build()`: Compiles frontend assets and moves them to the backend
+- `dev()`: Launches both frontend and backend servers in development mode
+- `_run_frontend()`: Starts the frontend development server with hot reloading
+- `_run_backend()`: Launches the FastAPI backend using Uvicorn
+- Helper functions to check available ports, detect package managers, etc.
+
+Environment Variables:
+- `FRONTEND_DIR`: Directory containing frontend code (default: `.frontend`)
+- `APP_HOST`: Backend server hostname (default: `localhost`)
+- `APP_PORT`: Backend server port (default: `8000`)
+- `STATIC_DIR`: Directory for static assets (default: `static`)
+
+Usage:
+Run the script directly to start development servers:
+    python script.py
+"""
+
+
 import asyncio
 import os
 import shutil
