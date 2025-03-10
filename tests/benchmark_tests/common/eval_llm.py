@@ -1,3 +1,26 @@
+"""
+Quantized LLM Inference with DeepEval & Transformers
+
+This script defines a 4-bit quantized language model class (`EvalLLM_4Bit`)
+for efficient inference using the `Mistral-7B-Instruct-v0.3` model.
+It integrates with DeepEval and leverages `lmformatenforcer` to enforce 
+JSON output formatting according to a given schema.
+
+Key Features:
+- Uses 4-bit quantization (via BitsAndBytesConfig) for reduced memory usage
+- Loads a pre-trained causal language model (`Mistral-7B-Instruct-v0.3`)
+- Tokenizes and processes input prompts for inference
+- Enforces JSON schema compliance for structured output
+- Provides synchronous and asynchronous inference methods
+- Supports integration with Hugging Face's Transformers pipelin
+
+Usage:
+To use this model for structured inference:
+    llm = EvalLLM_4Bit()
+    output = llm.generate(prompt="Your prompt here", schema=YourSchema)
+
+"""
+
 import json
 from pydantic import BaseModel
 import torch
