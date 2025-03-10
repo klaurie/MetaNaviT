@@ -1,3 +1,23 @@
+"""
+Multi-Modal LLM Initialization & Configuration
+
+This script initializes various Large Language Models (LLMs) 
+and embedding models from different providers based on environment 
+variables. It supports multiple backends, including OpenAI, Azure, 
+Hugging Face, Mistral, Groq, Anthropic, and Gemini.
+
+Key Features:
+- Retrieves the selected model provider from environment variables
+- Configures and initializes the corresponding LLM and embedding model
+- Supports multiple model backends, including quantized and multi-modal models
+- Handles necessary imports dynamically, prompting installation if missing
+- Stores multi-modal LLM configurations globally for accessibility
+
+Usage:
+Ensure the appropriate model provider is set in environment variables, then:
+    init_settings()
+"""
+
 import os
 from typing import Dict, Optional
 
