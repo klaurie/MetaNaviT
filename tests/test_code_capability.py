@@ -13,7 +13,7 @@ from deepeval.test_case import LLMTestCase
 
 @pytest.fixture(scope="module")
 def dataset():
-    """Generate and return the dataset before running tests."""
+    """Generate and return the dataset before running testsd."""
     return main()
 
 
