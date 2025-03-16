@@ -73,10 +73,14 @@ The easiest way to get started is using the dev container, which handles all dep
 
 If you prefer not to use the dev container, you'll need to additionally:
 
-1. Setup the environment with poetry:
+1. Install [Miniconda] (https://www.anaconda.com/docs/getting-started/miniconda/install) 
+
+2. Setup the environment with Miniconda:
+
 ```bash
-poetry install
-poetry env use python3.11  # Create and activate a new virtual environment
+conda create --name metanavit python=3.11 #create env
+conda activate metanavit #use env
+pip install -r requirements.txt #install dependencies
 ```
 
 ## Configuration
@@ -94,12 +98,12 @@ If you are using any tools or data sources, you can update their config files in
 
 1. Generate the embeddings of the documents in the `./data` directory:
 ```bash
-poetry run generate
+./scripts/run.sh generate
 ```
 
 2. Run the app:
 ```bash
-poetry run dev
+./scripts/run.sh dev
 ```
 
 Open [http://localhost:8000](http://localhost:8000) with your browser to start the app.
@@ -126,12 +130,6 @@ curl --location 'localhost:8000/api/chat/request' \
 ```
 
 You can start editing the API endpoints by modifying `app/api/routers/chat.py`. The endpoints auto-update as you save the file. You can delete the endpoint you're not using.
-
-To start the app optimized for **production**, run:
-
-```bash
-poetry run prod
-```
 
 ## Deployments
 
