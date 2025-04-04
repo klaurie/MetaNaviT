@@ -87,13 +87,15 @@ class TimeQueryTestRunner:
     
     def init_metrics(self) -> List[Any]:
         """Initialize evaluation metrics"""
-        relevancy_metric = AnswerRelevancyMetric()
-        completion_metric = TaskCompletionMetric(threshold=0.7)
+        relevancy_metric = AnswerRelevancyMetric(model=self.eval_llm)
+        completion_metric = TaskCompletionMetric(threshold=0.7, model=self.eval_llm)
         time_understanding_metric = GEval(
+            name="Time Understanding",
             criteria="The response correctly interprets file timestamps and temporal relationships",
             evaluation_params={
                 "criteria_description": "Measures accuracy in understanding file creation/modification times"
-            }
+            },
+            model=self.eval_llm
         )
         
         return [relevancy_metric, completion_metric, time_understanding_metric]
@@ -104,6 +106,7 @@ class TimeQueryTestRunner:
         metrics = self.init_metrics()
         
         for test_case in test_cases:
+            print(f"Test Case: {test_case['input']}")
             input_query = test_case["input"]
             expected_output = test_case["expected_response"]
             tool_params = test_case.get("tool_params", {})
@@ -116,11 +119,16 @@ class TimeQueryTestRunner:
                 input=input_query,
                 actual_output=response,
                 expected_output=expected_output,
-                tool_calls=self.get_tool_calls(tool_params)
+                tools_called=self.get_tool_calls(tool_params)
             )
             
+            # TODO: John let me know if these changes are ok, it had an error at runtime
             # Run evaluation with metrics
-            evaluate(llm_test_case, metrics=metrics)
+            for metric in metrics:
+                metric.measure(llm_test_case)
+                print(f"{metric.__class__.__name__} Score: {metric.score}")
+                print(f"Reason: {metric.reason}")
+
 
 async def main():
     """Main entry point for test execution"""

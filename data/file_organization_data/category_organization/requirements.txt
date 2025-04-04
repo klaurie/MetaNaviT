@@ -1,0 +1,22 @@
+# TaskFlow requirements file
+flask==4.5.0             # Flask web framework, used for creating APIs
+flask-login==3.2.1        # For managing user sessions and authentication
+taskflow==1.0.0           # The core TaskFlow package for task and workflow management
+pyautogui==1.0.4          # For automating GUI tasks and controlling the mouse/keyboard
+web3==5.2.3               # For integrating with Ethereum smart contracts
+flask-cors==2.3.0         # Handles Cross-Origin Resource Sharing (CORS) in Flask
+requests==3.0.0           # HTTP library for making requests to external APIs
+pandas==2.0.1             # Data analysis and manipulation library
+numpy==1.25.0             # Library for numerical computations
+redis==5.0.1              # Redis client for caching and background task queuing
+nltk==3.7.1               # Natural Language Toolkit for text processing
+matplotlib==3.8.2         # Library for creating static, animated, and interactive visualizations
+psycopg2==2.9.0           # PostgreSQL adapter for Python
+openai==3.1.2             # OpenAI API client for integrating language models
+flask-restful==1.0.0      # Flask extension for quickly building REST APIs
+pytest==7.0.2             # Testing framework for Python applications
+gunicorn==20.1.1          # WSGI HTTP Server for serving the Flask app in production
+pydantic==1.10.0          # Data validation and settings management using Python type annotations
+pytest-mock==3.6.0        # Pytest plugin for mocking objects in tests
+sqlalchemy==2.1.0         # SQL toolkit and ORM for Python
+celery==6.0.3             # Distributed task queue

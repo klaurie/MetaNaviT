@@ -1,6 +1,6 @@
 file_system:
   # Base directory to start crawling from
-  path: "datasets/file_organization/Easy/category_organization"
+  path: "data/"
   # Optional crawler settings
   max_workers: 4
   batch_size: 1000

@@ -4,7 +4,6 @@ from typing import Dict, Optional
 
 from llama_index.core.multi_modal_llms import MultiModalLLM
 from llama_index.core.settings import Settings
-import nomic
 
 
 # `Settings` does not support setting `MultiModalLLM`

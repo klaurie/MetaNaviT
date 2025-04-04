@@ -7,13 +7,24 @@ rather than directly from the file system.
 
 import logging
 from typing import List, Optional, Dict, Any
-from pydantic import Field
+from pydantic import BaseModel, Field
 from llama_index.core.tools import FunctionTool, BaseTool
 
 from app.engine.index import get_index
 from app.database.index_manager import IndexManager
 
 logger = logging.getLogger(__name__)
+
+class ListFileSchema(BaseModel):
+    pattern: str = Field(
+        default="*",
+        description="Filter pattern to match file paths (e.g., *.py for Python files)"
+    )
+
+class GetFileSchema(BaseModel):
+    file_path: str = Field(
+        description="Path to the file that should be retrieved from the index"
+    )
 
 def get_file_by_path(
     file_path: str = Field(
@@ -107,13 +118,15 @@ def get_tools() -> List[BaseTool]:
     file_get_tool = FunctionTool.from_defaults(
         fn=get_file_by_path,
         name="get_file_content",
-        description="Get file content from the index based on file path"
+        description="Get file content from the index based on file path",
+        fn_schema=GetFileSchema
     )
     
     file_list_tool = FunctionTool.from_defaults(
         fn=list_available_files,
         name="list_available_files",
-        description="List available files in the index with optional pattern matching"
+        description="List available files in the index with optional pattern matching",
+        fn_schema=ListFileSchema
     )
     
     return [file_get_tool, file_list_tool]
