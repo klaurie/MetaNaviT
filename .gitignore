@@ -14,3 +14,5 @@ time_test_data/
 .coverage
 .DS_Store
 models/id_ed25519
+models/
+tests/benchmark_tests/synthetic_data/results/
