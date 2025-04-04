@@ -13,3 +13,4 @@ config/loaders.yaml
 time_test_data/
 .coverage
 .DS_Store
+models/id_ed25519

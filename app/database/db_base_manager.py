@@ -80,17 +80,19 @@ class DatabaseManager:
     def _ensure_database_exists(self) -> None:
         """Create database if it doesn't exist."""
         parsed = urlparse(self._get_admin_conn_string())
-        
-        # Connect to default 'postgres' database to create our database
-        with psycopg2.connect(
-            database="postgres",   # Default PostgreSQL database
-            user=parsed.username,
-            password=parsed.password,
-            host=parsed.hostname,
-            port=parsed.port
-        ) as conn:
-            # autocommit required for database creation
+        conn = None  # Initialize conn to None
+        try:
+            # Connect to default 'postgres' database without using 'with' for the connection
+            conn = psycopg2.connect(
+                database="postgres",   # Default PostgreSQL database
+                user=parsed.username,
+                password=parsed.password,
+                host=parsed.hostname,
+                port=parsed.port
+            )
+            # Set autocommit immediately after connecting
             conn.autocommit = True
+
             with conn.cursor() as cur:
                 # Check if database already exists
                 cur.execute(
@@ -105,6 +107,17 @@ class DatabaseManager:
                         )
                     )
                     logger.info(f"Database '{self.DATABASE_NAME}' created")
+                else:
+                    logger.debug(f"Database '{self.DATABASE_NAME}' already exists.")
+
+        except psycopg2.Error as e:
+            logger.error(f"Database check/creation failed: {e}")
+            # Decide if you want to raise the error or just log it
+            # raise  # Uncomment if you want the application to stop on failure
+        finally:
+            # Ensure the connection is closed
+            if conn:
+                conn.close()
 
     def _initialize_connection_pool(self, minconn: int = 1, maxconn: int = 10) -> None:
         """Initialize the connection pool."""
