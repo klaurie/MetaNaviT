@@ -107,3 +107,51 @@ def get_vector_store():
     if _vector_store_manager is None:
         _vector_store_manager = VectorStoreManager()
     return _vector_store_manager.get_vector_store()
+
+class HybridSearch(DatabaseManager):
+    ''' 
+    Hybrid search class for managing vector store operations.
+    Reference: 
+    https://docs.llamaindex.ai/en/stable/examples/retrievers/bm25_retriever/ 
+    https://jkatz05.com/post/postgres/hybrid-search-postgres-pgvector/ 
+    '''
+    def __init__(self, conn_string=None):
+        super().__init__(conn_string)
+        self.table_name = os.getenv("PGVECTOR_TABLE", "llamaindex_embedding")
+        self.embedding_dim = int(os.getenv("EMBEDDING_DIM", 1024))
+    
+    def create_hybrid_index(self):
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f"""
+                    CREATE TABLE IF NOT EXISTS {self.table_name} (
+                        id SERIAL PRIMARY KEY,
+                        content TEXT,
+                        metadata JSONB,
+                        embedding VECTOR({self.embedding_dim}),
+                        tsv TSVECTOR
+                    );
+                    CREATE INDEX IF NOT EXISTS idx_tsv ON {self.table_name} USING GIN(tsv);
+                """)
+    
+    def insert_document(self, content: str, embedding: list, metadata: dict):
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f"""
+                    INSERT INTO {self.table_name} (content, metadata, embedding, tsv)
+                    VALUES (%s, %s, %s, to_tsvector('english', %s))
+                """, (content, json.dumps(metadata), embedding, content))
+
+    def hybrid_search(self, query_text: str, embedding: list, top_k=5):
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(f"""
+                    SELECT id, content, metadata,
+                        (embedding <-> %s) AS vector_score,
+                        ts_rank(tsv, plainto_tsquery('english', %s)) AS text_score
+                    FROM {self.table_name}
+                    WHERE tsv @@ plainto_tsquery('english', %s)
+                    ORDER BY vector_score ASC, text_score DESC
+                    LIMIT %s;
+                """, (embedding, query_text, query_text, top_k))
+                return cur.fetchall()
