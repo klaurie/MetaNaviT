@@ -22,6 +22,7 @@ from app.api.routers.models import (
     SourceNodes,
 )
 from app.api.routers.vercel_response import VercelStreamResponse
+from fastapi.responses import StreamingResponse
 from app.engine.engine import get_chat_engine
 from app.engine.query_filter import generate_filters
 
@@ -64,27 +65,34 @@ async def chat(
         # - event_handlers: Track operations and stream chunks
         event_handler = EventCallbackHandler()
 
-        # Use the same API for both
-        if os.getenv('USE_MULTI_AGENT', False):
-            chat_engine = get_chat_engine(
-                filters=filters,
-                params=params,
-                event_handlers=[event_handler],
-                use_multi_agent=True
-            )
+        chat_engine = get_chat_engine(
+            event_handlers=[event_handler]
+        )
+        
+        async def simple_stream_generator(response_stream):
+            """
+            Simple generator that yields text chunks directly.
             
-        else:
-            chat_engine = get_chat_engine(
-                filters=filters,
-                params=params,
-                event_handlers=[event_handler]
-            )
-            
+            Args:
+                response_stream: Async generator yielding text chunks
+                
+            Yields:
+                Plain text chunks
+            """
+            try:
+                async for chunk in response_stream:
+                    if chunk:  # Skip empty chunks
+                        yield chunk
+            except Exception as e:
+                logger.exception("Error in stream generator")
+                yield f"Error: {str(e)}"
+
         # Stream response using Vercel's streaming response
         # (Returns response chunks incrementally)
         response = chat_engine.astream_chat(last_message_content, messages)
-        return VercelStreamResponse(
-            request, event_handler, response, data, background_tasks
+        return StreamingResponse(
+            simple_stream_generator(response),
+            media_type="text/plain"
         )
         
     except Exception as e:
@@ -110,7 +118,7 @@ async def chat_request(
         f"Creating chat engine with filters: {str(filters)}",
     )
 
-    chat_engine = get_chat_engine(filters=filters, params=params)
+    chat_engine = get_chat_engine()
 
     response = await chat_engine.achat(last_message_content, messages)
     return Result(
