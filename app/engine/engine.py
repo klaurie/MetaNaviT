@@ -26,7 +26,11 @@ from app.engine.agents.multi_agent_runner import MultiAgentRunner
 logger = logging.getLogger(__name__)
 
 def get_chat_engine(
-    event_handlers: Optional[List[Any]] = None
+    filters: Optional[Dict[str, Any]] = None,
+    params: Optional[Dict[str, Any]] = None,
+    event_handlers: Optional[List[Any]] = None,
+    use_multi_agent: bool = False,
+    **kwargs
 ):
     """
     Create and configure a chat engine with tools and settings.
@@ -48,9 +52,41 @@ def get_chat_engine(
     # Initialize callback manager
     callback_manager = CallbackManager(handlers=event_handlers or [])
 
-    # Create multi-agent runner that supports both workflow handoffs
-    return MultiAgentRunner.create_default_workflow(
+    # If using multi-agent workflow
+    if use_multi_agent:
+        # Create multi-agent runner that supports both workflow handoffs
+        # and the familiar AgentRunner interface
+        multi_agent = MultiAgentRunner.create_default_workflow(
+            callback_manager=callback_manager,
+            verbose=True
+        )
+        return multi_agent
+    
+    # Otherwise, create the regular agent(s)
+    # Configure and add query tool if index exists
+    index_config = IndexConfig(
         callback_manager=callback_manager,
-        verbose=True
+        **(params or {})
     )
+    index = get_index(index_config)
 
+    if index is not None:
+        # logger.info(f"Adding query engine tool to chat engine with filters: {filters}")
+        query_engine_tool = get_query_engine_tool(
+            index=index,
+            **kwargs
+        )
+        tools.append(query_engine_tool)
+
+    # Add tools configured in environment
+    configured_tools: List[BaseTool] = ToolFactory.from_env()
+    tools.extend(configured_tools)
+       
+    return AgentRunner.from_llm(
+        llm=Settings.llm,
+        tools=tools,
+        system_prompt=system_prompt,
+        callback_manager=callback_manager,
+        verbose=True,
+        max_iterations=15,
+    )

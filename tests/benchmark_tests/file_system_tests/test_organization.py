@@ -23,6 +23,7 @@ from deepeval.integrations import trace_llama_index
 from deepeval.auto_evaluate import auto_evaluate
 
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
+from tests.benchmark_tests.common.utils import get_tool_calls, load_test_cases
 from tests.benchmark_tests.run_eval import get_chat_response
 
 @dataclass
@@ -45,49 +46,6 @@ class FileSystemTestRunner:
         with open(self.test_cases_path, 'r') as f:
             data = json.load(f)
             return data["test_cases"]
-
-    def get_tool_calls(self, tool_params) -> List[ToolCall]:
-        """
-        Create tool calls for test case
-        
-        These tools measure two key aspects:
-        1. Structure Understanding: Can the LLM correctly interpret and represent
-        hierarchical file organization
-        2. Command Generation: Can the LLM generate correct Linux commands to
-        achieve the desired organization
-        """
-        return [
-            ToolCall(
-                name="Classify Files",
-                description="Uses AI to classify files based on content, type, and metadata.",
-                input_parameters={"file_paths": tool_params["file_structure"]},
-                output=[tool_params["file_categories"]]
-            ),
-            ToolCall(
-                name="Generate Organization Plan",
-                description="Generates the expected folder structure and file placement.",
-                input_parameters={
-                    "current_structure": tool_params["file_structure"],
-                    "classification": tool_params["file_categories"]
-                },
-                output=[tool_params["expected_dir_format"]]
-            ),
-            ToolCall(
-                name="Get Linux Commands",
-                description="Generates Linux commands to move, rename, or delete files as needed.",
-                input_parameters={
-                    "current_dir": tool_params["eval_dir"],
-                    "expected_format": tool_params["expected_dir_format"]
-                },
-                output=[tool_params["expected_linux_commands"]]
-            ),
-            ToolCall(
-                name="Execute Commands",
-                description="Executes the generated Linux commands to apply the file organization.",
-                input_parameters={"commands": tool_params["expected_linux_commands"]},
-                output=[tool_params["expected_exe_log"]]
-            )
-        ]
 
     def init_metrics(self) -> List[Any]:
         """Initialize evaluation metrics"""
