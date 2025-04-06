@@ -17,13 +17,13 @@ from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
 
 from deepeval import evaluate
-from deepeval.metrics import AnswerRelevancyMetric, GEval, TaskCompletionMetric
+from deepeval.metrics import AnswerRelevancyMetric, GEval, TaskCompletionMetric, ToolCorrectnessMetric
 from deepeval.test_case import LLMTestCase, ToolCall, LLMTestCaseParams
 from deepeval.integrations import trace_llama_index
 from deepeval.auto_evaluate import auto_evaluate
 
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
-from tests.benchmark_tests.common.utils import get_tool_calls, load_test_cases
+from tests.benchmark_tests.common.utils import load_test_cases, convert_registry_to_tool_call, convert_test_case_tool_calls
 from tests.benchmark_tests.run_eval import get_chat_response
 
 @dataclass
@@ -53,6 +53,7 @@ class FileSystemTestRunner:
         structure_metric = GEval(
             name="Structure Understanding",
             evaluation_steps=[
+                "Does the output use the actual user's files from? If it's just an example of potential organization styles that is not a good output."
                 "Is the file system generated output structured in a readable format in 'actual output'",
                 "Does the folder hierarchy look like it has excessive nesting?",
                 "Are there consistent naming conventions for files and folders?",
@@ -78,7 +79,8 @@ class FileSystemTestRunner:
         return [
             structure_metric,
             search_retrieval_metric,
-            TaskCompletionMetric(threshold=0.7, model=self.eval_llm)
+            TaskCompletionMetric(threshold=0.7, model=self.eval_llm),
+            ToolCorrectnessMetric(verbose_mode=True, should_consider_ordering=True)
         ]
 
     async def evaluate_response(self, context: TestContext) -> None:
@@ -108,7 +110,7 @@ class FileSystemTestRunner:
         """
         # Initialize metrics and load test cases
         metrics = self.init_metrics()
-        test_cases = self.load_test_cases()
+        test_cases = load_test_cases(self.test_cases_path)
         
         # Process each test case
         for test in test_cases:
@@ -126,7 +128,8 @@ class FileSystemTestRunner:
             eval_case = LLMTestCase(
                 input=test["input"],
                 actual_output=actual_output,
-                tools_called = self.get_tool_calls(test["tool_params"])
+                tools_called = convert_registry_to_tool_call(),
+                expected_tools=convert_test_case_tool_calls(test["tool_params"])
             )
             
             # Apply each metric and log results

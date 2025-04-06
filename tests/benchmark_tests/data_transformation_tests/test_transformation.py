@@ -15,12 +15,13 @@ from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
 
 from deepeval import evaluate
-from deepeval.metrics import AnswerRelevancyMetric, GEval, TaskCompletionMetric
+from deepeval.metrics import AnswerRelevancyMetric, GEval, TaskCompletionMetric, ToolCorrectnessMetric
 from deepeval.test_case import LLMTestCase, ToolCall, LLMTestCaseParams
 from deepeval.integrations import trace_llama_index
 from deepeval.auto_evaluate import auto_evaluate
 
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
+from tests.benchmark_tests.common.utils import load_test_cases, convert_registry_to_tool_call, convert_test_case_tool_calls
 from tests.benchmark_tests.run_eval import get_chat_response
 
 
@@ -40,34 +41,6 @@ class DataTransformationTestRunner:
         self.eval_llm = EvalLLM_4Bit()
         trace_llama_index(auto_eval=True)
         
-    def load_test_cases(self) -> Dict[str, Any]:
-        """Load test cases from JSON file and return raw data"""
-        with open(self.test_cases_path, 'r') as f:
-            data = json.load(f)
-            return data
-    
-    def get_tool_calls(self, tool_params: List[Dict]) -> List[ToolCall]:
-        """
-        Create tool calls for test case
-        
-        These tools measure these key aspects:
-        1. Data Extraction: Can the LLM correctly extract structured data from unstructured text
-        2. Schema Understanding: Can the LLM correctly apply the provided schema
-        3. Format Transformation: Can the LLM transform the data into the required format (CSV)
-        """
-        tool_calls = []
-        
-        for tool_param in tool_params:
-            tool_calls.append(
-                ToolCall(
-                    name=tool_param.get("name", ""),
-                    description=tool_param.get("description", ""),
-                    input_parameters=tool_param.get("input_parameters", {}),
-                    output=tool_param.get("output", [])
-                )
-            )
-            
-        return tool_calls
     
     def init_metrics(self) -> List[Any]:
         """Initialize evaluation metrics"""
@@ -101,10 +74,11 @@ class DataTransformationTestRunner:
         return [
             extraction_quality_metric,
             format_quality_metric,
-            TaskCompletionMetric(threshold=0.7, model=self.eval_llm)
+            TaskCompletionMetric(threshold=0.7, model=self.eval_llm),
+            ToolCorrectnessMetric(verbose_mode=True, should_consider_ordering=True)
         ]
     
-    async def evaluate_response(self, context: TestContext) -> None:
+    async def evaluate_response(self) -> None:
         """
         Run evaluation for data transformation test cases.
 
@@ -124,62 +98,47 @@ class DataTransformationTestRunner:
         """
         # Initialize metrics and load test cases
         metrics = self.init_metrics()
-        test_case_data = self.load_test_cases()
+        test_case_data = load_test_cases(self.test_cases_path)
         
         # Process the test case
         # Get LLM response through chat API
-        response = await get_chat_response(test_case_data["input"])
-        
-        # Extract response content
-        if response is not None:
-            actual_output = response['result']['content']
-        else:
-            # Handle failed responses
-            actual_output = ""
-        
-        # Create evaluation case
-        eval_case = LLMTestCase(
-            input=test_case_data["input"],
-            actual_output=actual_output,
-            expected_output=test_case_data.get("expected_output", ""),
-            tools_called=self.get_tool_calls(test_case_data["tool_params"])
-        )
-        
-        # Apply each metric and log results
-        for metric in metrics:
-            metric.measure(eval_case)
-            # Log metric results for analysis
-            print(f"{metric.__class__.__name__} Score: {metric.score}")
-            print(f"Reason: {metric.reason}")
+        for test_case in test_case_data:
+            response = await get_chat_response(test_case["input"])
             
-        # Perform auto-evaluation if enabled
-        auto_evaluate(eval_case)
+            # Extract response content
+            if response is not None:
+                actual_output = response['result']['content']
+            else:
+                # Handle failed responses
+                actual_output = ""
+            
+            tools_called = convert_registry_to_tool_call()
+
+            # Create evaluation case
+            eval_case = LLMTestCase(
+                input=test_case["input"],
+                actual_output=actual_output,
+                tools_called=tools_called,
+                expected_tools=convert_test_case_tool_calls(test_case["tool_params"])
+            )
+            
+            # Apply each metric and log results
+            for metric in metrics:
+                metric.measure(eval_case)
+                # Log metric results for analysis
+                print(f"{metric.__class__.__name__} Score: {metric.score}")
+                print(f"Reason: {metric.reason}")
+            
 
 
 async def main():
     """Main entry point for test execution"""
     # Get the schema from the test case
-    test_case_path = Path(__file__).parent / "test_cases.json"
-    with open(test_case_path, 'r') as f:
-        test_data = json.load(f)
-        
-    # Extract schema from test case
-    schema = {}
-    for tool_param in test_data["tool_params"]:
-        if tool_param["name"] == "Extract Bird Observations" and "schema" in tool_param["input_parameters"]:
-            schema = tool_param["input_parameters"]["schema"]
-            break
-    
-    # Create test context
-    test_context = TestContext(
-        extraction_schema=schema,
-        expected_format="CSV",
-        expected_fields=list(schema.keys()) if schema else []
-    )
+    test_case_path = Path(__file__).parent / "test_cases.json" 
     
     # Run tests
     runner = DataTransformationTestRunner(test_case_path)
-    await runner.evaluate_response(test_context)
+    await runner.evaluate_response()
 
 
 if __name__ == "__main__":

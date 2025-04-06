@@ -14,6 +14,7 @@ import contextlib
 from pathlib import Path  
 from typing import Dict, Any, List, Optional  
 from llama_index.core.tools import FunctionTool
+from app.engine.tools import create_tool_callback
 
 # Initialize logger to record errors and information
 logger = logging.getLogger(__name__)
@@ -134,4 +135,4 @@ def get_tools(**kwargs):
     """
 
     # Return the tool in a list, as required by the tool factory system
-    return [FunctionTool.from_defaults(PythonExecTool.execute_code)]
+    return [FunctionTool.from_defaults(PythonExecTool.execute_code, callback=create_tool_callback("execute_code", "Execute Python code safely and return results."))]

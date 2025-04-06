@@ -22,6 +22,8 @@ from llama_index.core.settings import Settings
 from llama_index.core.tools import FunctionTool
 from pydantic import BaseModel, Field
 
+from app.engine.tools import create_tool_callback
+
 logger = logging.getLogger(__name__)
 # Template-based code generation prompt
 # Adapted from e2b-dev/ai-artifacts for structured code generation on https://github.com/e2b-dev/ai-artifacts
@@ -138,4 +140,4 @@ class CodeGeneratorTool:
 
 def get_tools(**kwargs):
     """Register CodeGeneratorTool as a LlamaIndex function tool"""
-    return [FunctionTool.from_defaults(fn=CodeGeneratorTool().artifact)]
+    return [FunctionTool.from_defaults(fn=CodeGeneratorTool().artifact, callback=create_tool_callback("artifact", "Generate a code artifact based on the provided input"))]
