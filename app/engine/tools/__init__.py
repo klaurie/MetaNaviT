@@ -9,12 +9,58 @@ Configuration (tools.yaml)
 """
 
 import importlib
+import logging
 import os
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Any, Optional
 
 import yaml
 from llama_index.core.tools.function_tool import FunctionTool
 from llama_index.core.tools.tool_spec.base import BaseToolSpec
+from llama_index.core.tools import BaseTool
+
+logger = logging.getLogger(__name__)
+
+# Global registry to store tool calls
+tool_call_registry = []
+
+def get_tool_call_registry():
+    """Get the recorded tool calls"""
+    return tool_call_registry
+
+
+def clear_tool_calls():
+    """Clear the tool call registry"""
+    global tool_call_registry
+    tool_call_registry = []
+
+
+def create_tool_callback(tool_name: str, tool_description: str):
+    """
+    Create a callback function specific to a tool that records both inputs and outputs.
+    
+    Args:
+        tool_name: Name of the tool
+        tool_description: Description of the tool
+        
+    Returns:
+        A callback function that records tool execution details
+
+    Note: Unable to access inputs from the callback unless its part of the output
+    """
+    def _callback(result: Any) -> Any:
+        """Callback that records tool execution results"""
+        # Record the output with tool metadata
+        call_info = {
+            "name": tool_name,
+            "description": tool_description,
+            "output": result,
+        }
+        tool_call_registry.append(call_info)
+        
+        # Return the original result (required by FunctionTool)
+        return result
+    
+    return _callback
 
 
 class ToolType:

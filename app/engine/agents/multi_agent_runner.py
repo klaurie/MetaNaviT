@@ -25,7 +25,8 @@ from llama_index.core.agent.workflow import (
     AgentStream,
 )
 from llama_index.core.memory import ChatMemoryBuffer
-
+from llama_index.core.chat_engine.types import AgentChatResponse
+from llama_index.core.chat_engine.types import StreamingAgentChatResponse
 
 from app.engine.agents.file_access_agent import create_file_access_agent, FILE_ACCESS_PROMPT
 from app.engine.agents.python_exec_agent import create_python_exec_agent, PYTHON_CODE_PROMPT
@@ -77,6 +78,8 @@ class MultiAgentRunner:
     ) -> "MultiAgentRunner":
         """
         Create a MultiAgentRunner from a dictionary of agents.
+
+        Note: I'm including this as an option because in the future we could initialize the workflow from functions
         
         Args:
             agents_dict: Dictionary mapping agent names to agent objects
@@ -125,7 +128,7 @@ class MultiAgentRunner:
             MultiAgentRunner with default file and Python agents
         """
         file_agent = create_file_access_agent(callback_manager=callback_manager)
-        python_agent = create_python_code_agent(callback_manager=callback_manager)
+        python_agent = create_python_exec_agent(callback_manager=callback_manager)
         
         agents = {
             "FileAccessAgent": file_agent,
@@ -170,138 +173,94 @@ class MultiAgentRunner:
         chat_history: Optional[List[ChatMessage]] = None
     ) -> Any:
         """
-        Run an async non-streaming chat conversation.
+        Run a non-streaming chat conversation asynchronously.
         
         Args:
             message: User message
             chat_history: Optional conversation history
-            
-        Returns:
-            Agent response
         """
-        # Create context for this run
-        ctx = Context(self.workflow)
-        
-        # Run workflow
-        handler = self.workflow.run(
-            user_msg=message,
-            chat_history=chat_history,
-            ctx=ctx
-        )
-        
-        # Await final response
-        response = await handler
-        return response
-    
+        pass
+
     def stream_chat(
         self,
         message: str,
         chat_history: Optional[List[ChatMessage]] = None
-    ) -> Any:
+    ) -> AsyncGenerator[StreamingAgentChatResponse, None]:
         """
-        Run a streaming chat conversation.
+        Stream chat responses.
         
         Args:
             message: User message
             chat_history: Optional conversation history
             
         Returns:
-            Streaming agent response
+            Asynchronous generator of streaming responses
         """
         # Use async function with sync wrapper
-        async def run_stream():
-            async for response in self.astream_chat(message, chat_history):
-                yield response
-                
-        return run_stream()
+        return asyncio.run(self.astream_chat(message, chat_history))
     
     async def astream_chat(
         self,
         message: str,
-        chat_history: Optional[List[Dict[str, str]] | List[ChatMessage]] = None
-    ) -> AsyncGenerator[Dict[str, Any], None]:
+        chat_history: Optional[List[ChatMessage]] = None
+    ) -> AsyncGenerator[str, None]:
         """
-        Run an async streaming chat conversation compatible with AgentRunner.
+        Stream chat responses asynchronously as plain text.
         
         Args:
             message: User message
             chat_history: Optional conversation history
             
-        Yields:
-            Streaming chunks of agent response
+        Returns:
+            Asynchronous generator of plain text chunks
         """
-        # Reset source nodes
-        self.source_nodes = []
-        
-        # Convert chat history if it's in dict format
-        if chat_history and isinstance(chat_history[0], dict):
-            converted_history = []
-            for msg in chat_history:
-                role = msg.get("role", "user")
-                content = msg.get("content", "")
-                converted_history.append(ChatMessage(role=role, content=content))
-            chat_history = converted_history
-        
-        # Create context for this run
-        ctx = Context(self.workflow)
-        
-        # Run workflow and stream events
+        # Start the workflow
         handler = self.workflow.run(
             user_msg=message,
-            chat_history=chat_history,
-            ctx=ctx
+            chat_history=chat_history or []
         )
-        
-        # Stream events like AgentRunner's streaming
-        current_response = ""
-        
-        # Track which agent is currently active
-        self.current_agent_name = None
-        
-        # Create response object compatible with AgentRunner
+
+        current_agent = None
+        handoff_detected = False
+
         async for event in handler.stream_events():
-            # Handle agent switch
-            if hasattr(event, "current_agent_name") and event.current_agent_name:
-                self.current_agent_name = event.current_agent_name
-                if self.verbose:
-                    logger.info(f"Agent switched to: {self.current_agent_name}")
+            # Log events for debugging
+            logger.debug(f"Event type: {type(event).__name__}")
             
-            # Handle streaming text generation
-            if isinstance(event, AgentStream):
-                if event.delta:
-                    current_response += event.delta
-                    yield {
-                        "delta": event.delta,
-                        "response": current_response,
-                        "sources": self.source_nodes
-                    }
-                    
-            # Handle tool call results
+            # Agent switch detection
+            if (
+                hasattr(event, "current_agent_name") 
+                and event.current_agent_name != current_agent
+            ):
+                current_agent = event.current_agent_name
+                logger.info(f"Switching to agent: {current_agent}")
+                handoff_detected = True
+                
+                # Optionally yield agent switch information to frontend
+                # yield f"\n[Agent switch to {current_agent}]\n"
+                
+            # Handle text streaming
+            elif isinstance(event, AgentStream) and event.delta:
+                logger.debug(f"Streaming delta: {event.delta}")
+                yield event.delta
+                
+            # Handle agent outputs
+            elif isinstance(event, AgentOutput) and event.response and hasattr(event.response, 'content'):
+                logger.info(f"Agent output: {event.response.content}")
+                # Only yield content if not already streamed by AgentStream
+                if not handoff_detected and event.response.content:
+                    yield event.response.content
+                
+            # Handle tool calls (no direct yield to frontend)
+            elif isinstance(event, ToolCall):
+                logger.info(f"Tool call: {event.tool_name}")
+                
+            # Handle tool results (no direct yield to frontend)
             elif isinstance(event, ToolCallResult):
-                # Check for source nodes in tool output
-                if hasattr(event.tool_output, "source_nodes") and event.tool_output.source_nodes:
-                    self.source_nodes.extend(event.tool_output.source_nodes)
-            
-            # Handle agent output containing full response
-            elif isinstance(event, AgentOutput):
-                if event.response and event.response.content:
-                    current_response = event.response.content
-                    yield {
-                        "delta": current_response,
-                        "response": current_response,
-                        "sources": self.source_nodes
-                    }
-        
-        # Final response with complete output
-        if current_response:
-            yield {
-                "delta": "",  # Empty delta for final chunk
-                "response": current_response,
-                "sources": self.source_nodes,
-                "is_completion": True
-            }
-    
-    def reset(self) -> None:
-        """Reset the runner state."""
-        self.memory.reset()
-        self.source_nodes = []
+                logger.info(f"Tool result: {event.tool_name}")
+                
+        # Get final response if nothing substantial was yielded
+        # This is often needed after handoffs
+        final_response = await handler
+        if final_response and hasattr(final_response, 'content') and final_response.content:
+            yield final_response.content

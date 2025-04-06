@@ -78,7 +78,7 @@ def create_file_access_agent(
     seen_tool_names = set()
     
     for tool in all_tools:
-        tool_name = tool.metadata.get("name")
+        tool_name = tool.metadata.name
         if tool_name != "python_exec" and tool_name not in seen_tool_names:
             combined_tools.append(tool)
             seen_tool_names.add(tool_name)

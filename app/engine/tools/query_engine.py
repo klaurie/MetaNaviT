@@ -94,26 +94,8 @@ def get_query_engine_tool(
         name=name,
         description=description,
         return_direct=True,
+        
     )
-    
-    # Wrap the original __call__ method with logging
-    original_call = query_engine_tool.__call__
-    
-    def logged_call(*args, **kwargs):
-        logger.info(f"🔍 Query Engine being used with query: {args[0] if args else kwargs.get('query', 'No query found')}")
-        return original_call(*args, **kwargs)
-    
-    query_engine_tool.__call__ = logged_call
-    
-    # Also wrap async calls if they exist
-    if hasattr(query_engine_tool, "acall"):
-        original_acall = query_engine_tool.acall
-        
-        async def logged_acall(*args, **kwargs):
-            logger.info(f"🔍 Query Engine being used async with query: {args[0] if args else kwargs.get('query', 'No query found')}")
-            return await original_acall(*args, **kwargs)
-        
-        query_engine_tool.acall = logged_acall
     
     return query_engine_tool
 

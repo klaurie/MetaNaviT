@@ -1,16 +1,14 @@
 """
-File System Organization Test Module
+Data Transformation Test Module
 
-Evaluates LLM's ability to organize file systems by:
+Evaluates LLM's ability to extract and transform unstructured data by:
 1. Loading test cases from JSON
 2. Running test cases through chat API
 3. Evaluating responses using metrics
-4. Tracking tool usage and commands
+4. Tracking tool usage and data quality
 """
 
-import os
 import json
-import aiohttp
 import asyncio
 from pathlib import Path
 from dataclasses import dataclass
@@ -26,50 +24,47 @@ from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
 from tests.benchmark_tests.common.utils import load_test_cases, convert_registry_to_tool_call, convert_test_case_tool_calls
 from tests.benchmark_tests.run_eval import get_chat_response
 
+
 @dataclass
 class TestContext:
     """Test execution context and configuration"""
-    eval_dir: str
-    expected_dir_format: str
-    expected_linux_commands: List[str]
+    extraction_schema: Dict
+    expected_format: str
+    expected_fields: List[str]
 
-class FileSystemTestRunner:
-    """Handles file system organization test execution"""
+
+class DataTransformationTestRunner:
+    """Handles data transformation test execution"""
     
     def __init__(self, test_cases_path: Path):
         self.test_cases_path = test_cases_path
         self.eval_llm = EvalLLM_4Bit()
         trace_llama_index(auto_eval=True)
         
-    def load_test_cases(self) -> List[LLMTestCase]:
-        """Load test cases from JSON file and return raw data"""
-        with open(self.test_cases_path, 'r') as f:
-            data = json.load(f)
-            return data["test_cases"]
-
+    
     def init_metrics(self) -> List[Any]:
         """Initialize evaluation metrics"""
-
-        structure_metric = GEval(
-            name="Structure Understanding",
+        
+        extraction_quality_metric = GEval(
+            name="Extraction Quality",
             evaluation_steps=[
-                "Does the output use the actual user's files from? If it's just an example of potential organization styles that is not a good output."
-                "Is the file system generated output structured in a readable format in 'actual output'",
-                "Does the folder hierarchy look like it has excessive nesting?",
-                "Are there consistent naming conventions for files and folders?",
-                "Are duplicate or redundant files minimized?",
+                "Does the extraction correctly identify all bird observations in the text?",
+                "Are all required fields (Date, Location, Species, Count, Behavior) extracted for each observation?",
+                "Are the values correctly extracted based on the context?",
+                "Is there any hallucination or invented data not present in the source?"
             ],
             evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
             model=self.eval_llm,
             verbose_mode=True
         )
-
-        search_retrieval_metric = GEval(
-            name="Search & Retrieval Efficiency",
+        
+        format_quality_metric = GEval(
+            name="Format Quality",
             evaluation_steps=[
-                "How quickly can a user find a specific file based on its name or metadata?",
-                "Are files tagged with metadata or keywords to improve searchability?",
-                "Is there a versioning system to track file changes?"
+                "Is the CSV format valid and well-structured?",
+                "Are the column headers properly named according to the schema?",
+                "Are field values properly formatted (dates, numbers, text)?",
+                "Would the CSV be machine-readable by a standard CSV parser?"
             ],
             evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
             model=self.eval_llm,
@@ -77,18 +72,18 @@ class FileSystemTestRunner:
         )
 
         return [
-            structure_metric,
-            search_retrieval_metric,
+            extraction_quality_metric,
+            format_quality_metric,
             TaskCompletionMetric(threshold=0.7, model=self.eval_llm),
             ToolCorrectnessMetric(verbose_mode=True, should_consider_ordering=True)
         ]
-
-    async def evaluate_response(self, context: TestContext) -> None:
+    
+    async def evaluate_response(self) -> None:
         """
-        Run evaluation for all file system organization test cases.
+        Run evaluation for data transformation test cases.
 
         This method:
-        1. Initializes evaluation metrics (relevancy, task completion)
+        1. Initializes evaluation metrics (extraction quality, format quality, task completion)
         2. Loads test cases from JSON configuration
         3. Makes async requests to chat API for each test
         4. Processes responses and extracts relevant information
@@ -97,39 +92,34 @@ class FileSystemTestRunner:
         
         Args:
             context (TestContext): Test execution context containing:
-                - eval_dir: Directory to evaluate
-                - expected_dir_format: Expected directory structure
-                - expected_linux_commands: Expected shell commands
-        
-        Flow:
-            1. Initialize metrics → Load cases → For each case:
-                a. Get LLM response
-                b. Extract content and context
-                c. Create evaluation case
-                d. Apply metrics and log results
+                - extraction_schema: Schema for data extraction
+                - expected_format: Expected output format (CSV)
+                - expected_fields: Required fields in the output
         """
         # Initialize metrics and load test cases
         metrics = self.init_metrics()
-        test_cases = load_test_cases(self.test_cases_path)
+        test_case_data = load_test_cases(self.test_cases_path)
         
-        # Process each test case
-        for test in test_cases:
-            # Get LLM response through chat API
-            response = await get_chat_response(test["input"])
+        # Process the test case
+        # Get LLM response through chat API
+        for test_case in test_case_data:
+            response = await get_chat_response(test_case["input"])
             
-            # Extract response content and relevant nodes
+            # Extract response content
             if response is not None:
                 actual_output = response['result']['content']
             else:
                 # Handle failed responses
                 actual_output = ""
-
             
+            tools_called = convert_registry_to_tool_call()
+
+            # Create evaluation case
             eval_case = LLMTestCase(
-                input=test["input"],
+                input=test_case["input"],
                 actual_output=actual_output,
-                tools_called = convert_registry_to_tool_call(),
-                expected_tools=convert_test_case_tool_calls(test["tool_params"])
+                tools_called=tools_called,
+                expected_tools=convert_test_case_tool_calls(test_case["tool_params"])
             )
             
             # Apply each metric and log results
@@ -138,19 +128,18 @@ class FileSystemTestRunner:
                 # Log metric results for analysis
                 print(f"{metric.__class__.__name__} Score: {metric.score}")
                 print(f"Reason: {metric.reason}")
+            
+
 
 async def main():
     """Main entry point for test execution"""
-    test_context = TestContext(
-        eval_dir="",
-        expected_dir_format="",
-        expected_linux_commands=[""]
-    )
+    # Get the schema from the test case
+    test_case_path = Path(__file__).parent / "test_cases.json" 
     
-    runner = FileSystemTestRunner(
-        Path(__file__).parent / "test_cases.json"
-    )
-    await runner.evaluate_response(test_context)
+    # Run tests
+    runner = DataTransformationTestRunner(test_case_path)
+    await runner.evaluate_response()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

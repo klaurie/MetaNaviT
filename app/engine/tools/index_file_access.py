@@ -12,6 +12,7 @@ from llama_index.core.tools import FunctionTool, BaseTool
 
 from app.engine.index import get_index
 from app.database.index_manager import IndexManager
+from app.engine.tools import create_tool_callback
 
 logger = logging.getLogger(__name__)
 
@@ -115,18 +116,24 @@ def get_tools() -> List[BaseTool]:
     Returns:
         List of file access function tools
     """
+    file_tool_name = "get_file_content"
+    file_tool_description = "Get file content from the index based on file path"
     file_get_tool = FunctionTool.from_defaults(
         fn=get_file_by_path,
-        name="get_file_content",
-        description="Get file content from the index based on file path",
-        fn_schema=GetFileSchema
+        name=file_tool_name,
+        description=file_tool_description,
+        fn_schema=GetFileSchema,
+        callback=create_tool_callback(file_tool_name, file_tool_description)
     )
     
+    file_list_tool_name ="list_available_files"
+    file_list_tool_description = "List available files in the index with optional pattern matching"
     file_list_tool = FunctionTool.from_defaults(
         fn=list_available_files,
-        name="list_available_files",
-        description="List available files in the index with optional pattern matching",
-        fn_schema=ListFileSchema
+        name=file_list_tool_name,
+        description=file_list_tool_description,
+        fn_schema=ListFileSchema,
+        callback=create_tool_callback(file_list_tool_name, file_list_tool_description)
     )
     
     return [file_get_tool, file_list_tool]
