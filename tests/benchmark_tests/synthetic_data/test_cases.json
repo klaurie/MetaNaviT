@@ -1,0 +1,27 @@
+{
+  "test_cases": [
+    {
+      "file_type": "json",
+      "input": "{ \"title\": \"Annual Report\", \"body\": \"The company reported a 20% increase in revenue and a 15% decrease in expenses for the fiscal year. The report also highlights expansions in international markets and new product launches.\" }",
+      "expected_output": "The report shows a revenue increase of 20% and expenses down by 15%, highlighting international expansion and new products."
+    },
+    {
+      "file_type": "docx",
+      "input": "This is sample text extracted from a DOCX file. The document describes the company's mission, values, and strategic plans for the next five years. It includes multiple sections, such as market analysis, product development, and risk management strategies.",
+      "expected_output": "The DOCX file summarizes the company's mission, values, and five-year strategic plans including market analysis and risk management."
+    },
+    {
+      "file_type": "pdf",
+      "input": "This text comes from a PDF file that details research on renewable energy. It provides statistical evidence on solar power adoption, energy savings, and the environmental benefits of reducing fossil fuels. The study recommends increased government investment in renewable projects.",
+      "expected_output": "The PDF document concludes that increased investment in renewable energy, particularly solar power, can reduce fossil fuel consumption and improve environmental outcomes."
+    },
+    {
+      "file_type": "txt",
+      "input": "This is a plain text file that provides a brief note on upcoming events. It lists dates, event names, and locations for a series of workshops and seminars. The note is informal and meant to be a reminder for staff meetings.",
+      "expected_output": "The TXT file is a reminder listing dates, events, and locations for upcoming workshops and seminars."
+    }
+  ]
+}
+
+  
+  
