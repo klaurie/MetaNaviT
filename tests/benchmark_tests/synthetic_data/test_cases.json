@@ -1,8 +1,9 @@
+
 {
   "test_cases": [
     {
       "file_type": "json",
-      "input": "{ \"title\": \"Annual Report\", \"body\": \"The company reported a 20% increase in revenue and a 15% decrease in expenses for the fiscal year. The report also highlights expansions in international markets and new product launches.\" }",
+      "input": "{ \"title\": \"Annual Report\", \"body\": \"The company reported a 20% increase in revenue and a 15% decrease in expenses for the fiscal year. The report is also  highlighting expansions in international markets and new product launches.\" }",
       "expected_output": "The report shows a revenue increase of 20% and expenses down by 15%, highlighting international expansion and new products."
     },
     {
