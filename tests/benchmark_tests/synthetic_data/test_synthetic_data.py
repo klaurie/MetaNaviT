@@ -36,8 +36,9 @@ class TestContext:
 class SummarizationOutput(BaseModel):
     summary: str
 
+"""Handles summarization test execution"""
 class SummarizationTestRunner:
-    """Handles summarization test execution"""
+   
 
     def __init__(self, test_cases_path: Path):
         self.test_cases_path = test_cases_path
