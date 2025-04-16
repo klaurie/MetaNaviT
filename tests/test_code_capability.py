@@ -9,6 +9,7 @@ from scripts.generate_code_data import main, TEST_DATA_DIR
 from deepeval import assert_test
 from deepeval.metrics import AnswerRelevancyMetric
 from deepeval.test_case import LLMTestCase
+from deepeval.metrics import FaithfulnessMetric
 
 
 @pytest.fixture(scope="module")
@@ -90,5 +91,70 @@ def test_code_summary_relevance(dataset):
         assert_test(expected_response, test_case, metric=metric)
 
 
+def test_no_duplicate_filenames(dataset):
+    """Ensure all filenames are unique."""
+    filenames = [entry["filename"] for entry in dataset]
+    assert len(filenames) == len(set(filenames)), "Duplicate filenames found in dataset"
+    
+
+
+def test_cross_language_consistency(dataset):
+    """Ensure summaries are consistent across languages for similar functionality."""
+    # Group entries by summary content (approximate matching)
+    summary_to_entries: Dict[str, List[dict]] = {}
+    for entry in dataset:
+        summary = entry["summary"].strip()
+        if summary:
+            summary_to_entries.setdefault(summary, []).append(entry)
+
+    for summary, entries in summary_to_entries.items():
+        if len(entries) > 1:
+            extensions = {Path(entry["filename"]).suffix for entry in entries}
+            assert len(extensions) > 1, (
+                f"Summary '{summary}' used for multiple files but only in one language: {extensions}"
+            )
+            
+            
+def test_code_length_bounds(dataset, min_lines=3, max_lines=300):
+    """Ensure code samples aren't too short or too long."""
+    for entry in dataset:
+        line_count = len(entry["code"].splitlines())
+        assert min_lines <= line_count <= max_lines, f"Code length out of bounds: {entry['filename']}"
+
+
+
+def test_summary_faithfulness(dataset):
+    """Test that summaries are faithful to code logic."""
+    metric = FaithfulnessMetric(threshold=0.7)
+
+    for entry in dataset:
+        query = f"Does the following summary correctly describe the code?\n\nCode:\n{entry['code']}\n\nSummary:\n{entry['summary']}"
+        test_case = LLMTestCase(query=query, expected_response="Yes")  # expecting LLM to confirm the correctness
+
+        assert_test("Yes", test_case, metric=metric)
+
+
+def test_code_contains_comments(dataset):
+    """Check that some code files contain comments to ensure realistic code samples."""
+    comment_patterns = {
+        ".py": r"#.*?$|('''.*?'''|\"\"\".*?\"\"\")",
+        ".java": r"//.*?$|/\*.*?\*/",
+        ".js": r"//.*?$|/\*.*?\*/"
+    }
+    has_comments = False
+
+    for entry in dataset:
+        file_path = Path(entry["filename"])
+        pattern = comment_patterns.get(file_path.suffix)
+        if pattern:
+            with open(file_path, 'r') as f:
+                code = f.read()
+                if re.search(pattern, code, re.MULTILINE | re.DOTALL):
+                    has_comments = True
+                    break
+
+    assert has_comments, "No code files contain comments, which is unrealistic"
+    
+    
 if __name__ == "__main__":
     pytest.main()
