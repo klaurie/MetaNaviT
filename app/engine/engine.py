@@ -21,7 +21,7 @@ from llama_index.core.tools import BaseTool
 from app.engine.index import IndexConfig, get_index
 from app.engine.tools import ToolFactory
 from app.engine.tools.query_engine import get_query_engine_tool
-from app.engine.agents.multi_agent_runner import MultiAgentRunner
+#from app.engine.agents.multi_agent_runner import MultiAgentRunner
 
 logger = logging.getLogger(__name__)
 

@@ -87,11 +87,13 @@ async def start_development_servers():
         SystemError: If either server fails to start
     """
     rich.print("\n[bold]Starting development servers[/bold]")
+    backend_process = None # Initialize backend_process
+    frontend_process = None # Initialize frontend_process
 
     try:
         processes = []
         if _is_frontend_included():
-            frontend_process, frontend_port = await _run_frontend()
+            frontend_process, frontend_port = await _run_frontend(timeout=90) # Increased timeout to 90 seconds
             processes.append(frontend_process)
             backend_process = await _run_backend(
                 envs={
@@ -113,20 +115,43 @@ async def start_development_servers():
             rich.print("\n[bold yellow]Shutting down...[/bold yellow]")
         finally:
             # Terminate both processes
-            for process in processes:
-                process.terminate()
-                try:
-                    await asyncio.wait_for(process.wait(), timeout=5)
-                except asyncio.TimeoutError:
-                    process.kill()
+            if frontend_process:
+                frontend_process.terminate()
+            if backend_process:
+                backend_process.terminate()
+
+            # Wait for termination with timeout
+            tasks = []
+            if frontend_process:
+                tasks.append(asyncio.wait_for(frontend_process.wait(), timeout=5))
+            if backend_process:
+                tasks.append(asyncio.wait_for(backend_process.wait(), timeout=5))
+
+            if tasks:
+                results = await asyncio.gather(*tasks, return_exceptions=True)
+                for i, result in enumerate(results):
+                    if isinstance(result, asyncio.TimeoutError):
+                        process_to_kill = frontend_process if i == 0 and frontend_process else backend_process
+                        if process_to_kill:
+                            rich.print(f"[bold yellow]Process {process_to_kill.pid} did not terminate gracefully, killing.[/bold yellow]")
+                            process_to_kill.kill()
 
     except Exception as e:
+        # Ensure processes are cleaned up even if startup fails
+        if frontend_process and frontend_process.returncode is None:
+            frontend_process.terminate()
+            try: await asyncio.wait_for(frontend_process.wait(), timeout=2)
+            except asyncio.TimeoutError: frontend_process.kill()
+        if backend_process and backend_process.returncode is None:
+            backend_process.terminate()
+            try: await asyncio.wait_for(backend_process.wait(), timeout=2)
+            except asyncio.TimeoutError: backend_process.kill()
         raise SystemError(f"Failed to start development servers: {str(e)}") from e
 
 
 async def _run_frontend(
     port: int = DEFAULT_FRONTEND_PORT,
-    timeout: int = 5,
+    timeout: int = 90, # Default timeout increased here as well
 ) -> tuple[Process, int]:
     """
     Start the frontend development server and return its process and port.
@@ -139,6 +164,8 @@ async def _run_frontend(
 
     port = _find_free_port(start_port=DEFAULT_FRONTEND_PORT)
     package_manager = _get_node_package_manager()
+
+    rich.print(f"\n[bold]Attempting to start frontend on port {port} using {package_manager.name}...[/bold]")
     frontend_process = await asyncio.create_subprocess_exec(
         package_manager,
         "run",
@@ -147,49 +174,106 @@ async def _run_frontend(
         "-p",
         str(port),
         cwd=FRONTEND_DIR,
+        # Capture stderr to help diagnose startup issues
+        stderr=asyncio.subprocess.PIPE,
     )
-    rich.print("\n[bold]Waiting for frontend to start...")
-    # Block until the frontend is accessible
-    for _ in range(timeout):
-        await asyncio.sleep(1)
+    rich.print(f"\n[bold]Waiting up to {timeout} seconds for frontend (PID: {frontend_process.pid}) to start...")
+
+    start_time = asyncio.get_event_loop().time()
+    while (asyncio.get_event_loop().time() - start_time) < timeout:
+        await asyncio.sleep(2) # Check every 2 seconds
         if frontend_process.returncode is not None:
+            # Read stderr if process exited
+            stderr_output = ""
+            if frontend_process.stderr:
+                 stderr_bytes = await frontend_process.stderr.read()
+                 stderr_output = stderr_bytes.decode().strip()
+            rich.print(f"[bold red]Frontend process exited unexpectedly with code: {frontend_process.returncode}[/bold red]")
+            if stderr_output:
+                 rich.print(f"[red]Stderr:\n{stderr_output}[/red]")
             raise RuntimeError("Could not start frontend dev server")
         if _is_server_running(port):
             rich.print(
-                "\n[bold]Frontend dev server is running. Please wait a while for the app to be ready...[/bold]"
+                f"\n[bold green]Frontend dev server detected as running on port {port} after {asyncio.get_event_loop().time() - start_time:.1f} seconds.[/bold green]"
             )
+            # Give it a tiny bit more time just in case
+            await asyncio.sleep(1)
             return frontend_process, port
-    raise TimeoutError(f"Frontend dev server failed to start within {timeout} seconds")
+
+    # If loop finishes, timeout occurred
+    frontend_process.terminate()
+    try:
+        await asyncio.wait_for(frontend_process.wait(), timeout=5)
+    except asyncio.TimeoutError:
+        frontend_process.kill()
+    raise TimeoutError(f"Frontend dev server failed to start on port {port} within {timeout} seconds")
 
 
 async def _run_backend(envs: dict[str, str | None] = {}) -> Process:
     """Start the backend development server."""
     # Merge environment variables
-    envs = {**os.environ, **(envs or {})}
-    
+    envs = {**os.environ, **(envs or {})} # Correctly named 'envs'
+
     if not _is_port_available(APP_PORT):
         raise SystemError(
             f"Port {APP_PORT} is not available! Please change the port in .env file."
         )
-    
+
     rich.print(f"\n[bold]Starting backend on port {APP_PORT}...[/bold]")
-    
-    # Run uvicorn directly instead of using poetry
-    uvicorn.run(app="main:app", host=APP_HOST, port=APP_PORT, reload=True)
-    
+
+    # Run uvicorn as a subprocess instead of blocking
+    backend_process = await asyncio.create_subprocess_exec(
+        "uvicorn",
+        "main:app",
+        "--host",
+        APP_HOST,
+        "--port",
+        str(APP_PORT),
+        "--reload",
+        # --- Start Change 2 ---
+        # Correct variable name used for environment
+        env=envs,
+        # --- End Change 2 ---
+        # Capture stderr to help diagnose startup issues
+        stderr=asyncio.subprocess.PIPE,
+    )
+
     # Wait for port to start
     timeout = 30
-    for _ in range(timeout):
+    start_time = asyncio.get_event_loop().time()
+    while (asyncio.get_event_loop().time() - start_time) < timeout:
         await asyncio.sleep(1)
-        if process.returncode is not None:
+        # Check the subprocess return code
+        if backend_process.returncode is not None:
+            # Read stderr if process exited
+            stderr_output = ""
+            if backend_process.stderr:
+                 stderr_bytes = await backend_process.stderr.read()
+                 stderr_output = stderr_bytes.decode().strip()
+            rich.print(f"[bold red]Backend process exited unexpectedly with code: {backend_process.returncode}[/bold red]")
+            if stderr_output:
+                 rich.print(f"[red]Stderr:\n{stderr_output}[/red]")
             raise RuntimeError("Could not start backend dev server")
         if _is_server_running(APP_PORT):
             rich.print(
                 f"\n[bold green]Backend running at http://{APP_HOST}:{APP_PORT}[/bold green]"
             )
-            return process
-            
-    process.terminate()
+            # Return the process object as intended
+            return backend_process
+
+    # If the loop finishes without the server running, terminate the process
+    backend_process.terminate()
+    stderr_output = ""
+    if backend_process.stderr:
+        stderr_bytes = await backend_process.stderr.read()
+        stderr_output = stderr_bytes.decode().strip()
+    try:
+        await asyncio.wait_for(backend_process.wait(), timeout=5)
+    except asyncio.TimeoutError:
+        backend_process.kill() # Force kill if termination fails
+    rich.print(f"[bold red]Backend failed to start within {timeout} seconds.[/bold red]")
+    if stderr_output:
+        rich.print(f"[red]Stderr:\n{stderr_output}[/red]")
     raise TimeoutError(f"Backend failed to start within {timeout} seconds")
 
 

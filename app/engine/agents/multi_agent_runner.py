@@ -1,9 +1,10 @@
 """
+'''
 Multi-Agent Runner Module
 
 A hybrid implementation that combines AgentRunner's streaming API with 
 AgentWorkflow's ability to hand off between multiple specialized agents.
-"""
+'''
 
 import asyncio
 import logging
@@ -34,12 +35,12 @@ from app.engine.agents.python_exec_agent import create_python_exec_agent, PYTHON
 logger = logging.getLogger(__name__)
 
 class MultiAgentRunner:
-    """
+    '''
     Hybrid agent runner that supports both chat streaming and agent handoffs.
     
     Provides the same interface as AgentRunner (chat, stream_chat, etc.) but 
     with the ability to hand off between specialized agents like AgentWorkflow.
-    """
+    '''
     
     def __init__(
         self,
@@ -48,7 +49,7 @@ class MultiAgentRunner:
         memory: Optional[ChatMemoryBuffer] = None,
         verbose: bool = False
     ):
-        """
+        '''
         Initialize multi-agent runner with a workflow and callbacks.
         
         Args:
@@ -56,7 +57,7 @@ class MultiAgentRunner:
             callback_manager: Optional callback manager for events
             memory: Optional chat memory buffer
             verbose: Whether to print verbose logs
-        """
+        '''
         self.workflow = workflow
         self.callback_manager = callback_manager or CallbackManager()
         self.memory = memory or ChatMemoryBuffer.from_defaults()
@@ -76,7 +77,7 @@ class MultiAgentRunner:
         initial_state: Optional[Dict[str, Any]] = None,
         verbose: bool = False
     ) -> "MultiAgentRunner":
-        """
+        '''
         Create a MultiAgentRunner from a dictionary of agents.
 
         Note: I'm including this as an option because in the future we could initialize the workflow from functions
@@ -91,7 +92,7 @@ class MultiAgentRunner:
             
         Returns:
             Configured MultiAgentRunner instance
-        """
+        '''
         # Create workflow from agents
         workflow = AgentWorkflow(
             agents=list(agents_dict.values()),
@@ -115,7 +116,7 @@ class MultiAgentRunner:
         llm: Optional[LLM] = None,
         verbose: bool = False
     ) -> "MultiAgentRunner":
-        """
+        '''
         Create a default multi-agent workflow with file access and Python execution agents.
         
         Args:
@@ -126,7 +127,7 @@ class MultiAgentRunner:
             
         Returns:
             MultiAgentRunner with default file and Python agents
-        """
+        '''
         file_agent = create_file_access_agent(callback_manager=callback_manager)
         python_agent = create_python_exec_agent(callback_manager=callback_manager)
         
@@ -154,7 +155,7 @@ class MultiAgentRunner:
         message: str,
         chat_history: Optional[List[ChatMessage]] = None
     ) -> Any:
-        """
+        '''
         Run a non-streaming chat conversation.
         
         Args:
@@ -163,7 +164,7 @@ class MultiAgentRunner:
             
         Returns:
             Agent response
-        """
+        '''
         # Use async function with sync wrapper
         return asyncio.run(self.achat(message, chat_history))
     
@@ -172,13 +173,13 @@ class MultiAgentRunner:
         message: str,
         chat_history: Optional[List[ChatMessage]] = None
     ) -> Any:
-        """
+        '''
         Run a non-streaming chat conversation asynchronously.
         
         Args:
             message: User message
             chat_history: Optional conversation history
-        """
+        '''
         pass
 
     def stream_chat(
@@ -186,7 +187,7 @@ class MultiAgentRunner:
         message: str,
         chat_history: Optional[List[ChatMessage]] = None
     ) -> AsyncGenerator[StreamingAgentChatResponse, None]:
-        """
+        '''
         Stream chat responses.
         
         Args:
@@ -195,7 +196,7 @@ class MultiAgentRunner:
             
         Returns:
             Asynchronous generator of streaming responses
-        """
+        '''
         # Use async function with sync wrapper
         return asyncio.run(self.astream_chat(message, chat_history))
     
@@ -204,7 +205,7 @@ class MultiAgentRunner:
         message: str,
         chat_history: Optional[List[ChatMessage]] = None
     ) -> AsyncGenerator[str, None]:
-        """
+        '''
         Stream chat responses asynchronously as plain text.
         
         Args:
@@ -213,7 +214,7 @@ class MultiAgentRunner:
             
         Returns:
             Asynchronous generator of plain text chunks
-        """
+        '''
         # Start the workflow
         handler = self.workflow.run(
             user_msg=message,
@@ -264,3 +265,4 @@ class MultiAgentRunner:
         final_response = await handler
         if final_response and hasattr(final_response, 'content') and final_response.content:
             yield final_response.content
+"""
