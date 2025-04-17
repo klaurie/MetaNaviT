@@ -16,7 +16,7 @@ from llama_index.core.llms.llm import LLM
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.tools import BaseTool
 from llama_index.core.workflow import Context
-from llama_index.core.agent.workflow import AgentWorkflow
+from app.engine.agents.multi_agent_workflow import AgentWorkflow
 from llama_index.core.agent.workflow import (
     AgentInput,
     AgentOutput,

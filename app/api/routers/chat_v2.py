@@ -9,6 +9,7 @@ Features:
 - Event handling
 - Error tracking
 """
+"""
 import os
 import logging
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, status
@@ -24,14 +25,12 @@ from app.api.routers.models import (
 from app.api.routers.vercel_response import VercelStreamResponse
 from app.engine.engine import get_chat_engine
 from app.engine.query_filter import generate_filters
-from fastapi.responses import JSONResponse
-from llama_index.core.chat_engine.types import StreamingAgentChatResponse
-
 
 # Initialize router - will be mounted in main app
 chat_router = r = APIRouter()
 
 logger = logging.getLogger("uvicorn")
+
 
 @r.post("")
 async def chat(
@@ -84,13 +83,12 @@ async def chat(
             
         # Stream response using Vercel's streaming response
         # (Returns response chunks incrementally)
-        response = await chat_engine.achat(last_message_content, messages)
+        response = chat_engine.achat(last_message_content, messages)
 
-        logger.info(f"Streaming response: {response.response} and {response.sources}\nType: {type(response)}")
-        return JSONResponse({
-            "0": response.response,
-            "8": response.sources  # Include empty sources or omit if not needed
-        })
+        logger.info(f"Streaming response: {response}\nType: {type(response)}")
+        return VercelStreamResponse(
+            request, event_handler, response, data, background_tasks
+        )
         
     except Exception as e:
         logger.exception("Error in chat engine", exc_info=True)
@@ -122,3 +120,4 @@ async def chat_request(
         result=Message(role=MessageRole.ASSISTANT, content=response.response),
         nodes=SourceNodes.from_source_nodes(response.source_nodes),
     )
+"""
