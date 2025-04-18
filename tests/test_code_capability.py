@@ -10,7 +10,8 @@ from deepeval import assert_test
 from deepeval.metrics import AnswerRelevancyMetric
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import FaithfulnessMetric
-
+from langdetect import detect
+from collections import defaultdict
 
 @pytest.fixture(scope="module")
 def dataset():
@@ -156,5 +157,30 @@ def test_code_contains_comments(dataset):
     assert has_comments, "No code files contain comments, which is unrealistic"
     
     
+def test_summary_language_is_english(dataset):
+    """Ensure all summaries are written in English."""
+    for entry in dataset:
+        if entry["summary"].strip():
+            lang = detect(entry["summary"])
+            assert lang == "en", f"Non-English summary detected in file: {entry['filename']}"
+
+def test_summary_is_not_too_short_or_too_long(dataset, min_words=3, max_words=100):
+    """Ensure summaries are within a reasonable word range."""
+    for entry in dataset:
+        summary = entry["summary"].strip()
+        if summary:
+            word_count = len(summary.split())
+            assert min_words <= word_count <= max_words, f"Summary word count out of bounds in {entry['filename']}"
+
+
+def test_code_uniqueness(dataset):
+    """Ensure all code samples are unique."""
+    seen = set()
+    for entry in dataset:
+        code = entry["code"].strip()
+        assert code not in seen, f"Duplicate code detected in: {entry['filename']}"
+        seen.add(code)
+
+
 if __name__ == "__main__":
     pytest.main()
