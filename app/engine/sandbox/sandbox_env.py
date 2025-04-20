@@ -7,8 +7,11 @@ Supports initialization, cleanup, and toggling between dry-run and active modes.
 
 import os
 import subprocess
+import logging
 from app.engine.sandbox.overlayfs_utils import mount_overlay, unmount_overlay
 from app.engine.sandbox.dry_run_manager import DryRunManager
+
+logger = logging.getLogger(__name__)
 
 SANDBOX_ROOT = "/tmp/code_sandbox"
 MERGED_DIR = os.path.join(SANDBOX_ROOT, "merged")
@@ -17,19 +20,49 @@ WORK_DIR = os.path.join(SANDBOX_ROOT, "work")
 LOWER_DIR = "/"  # Root FS as lowerdir in dry-run
 
 def setup_sandbox(dry_run: bool = True):
+    """
+    Set up the sandbox environment using OverlayFS.
+
+    Args:
+        dry_run (bool): If True, activates dry-run mode; otherwise, sets up a writable sandbox.
+    """
     os.makedirs(MERGED_DIR, exist_ok=True)
     os.makedirs(UPPER_DIR, exist_ok=True)
     os.makedirs(WORK_DIR, exist_ok=True)
 
-    if dry_run:
-        mount_overlay(lower=LOWER_DIR, upper=UPPER_DIR, work=WORK_DIR, merged=MERGED_DIR)
-        DryRunManager.activate()
-    else:
-        DryRunManager.deactivate()
+    try:
+        if dry_run:
+            logger.info("Setting up sandbox in dry-run mode.")
+            mount_overlay(lower=LOWER_DIR, upper=UPPER_DIR, work=WORK_DIR, merged=MERGED_DIR)
+            DryRunManager.activate()
+        else:
+            logger.info("Setting up sandbox in writable mode.")
+            DryRunManager.deactivate()
+    except Exception as e:
+        logger.error(f"Failed to set up sandbox: {e}")
+        raise
 
 def teardown_sandbox():
-    if os.path.ismount(MERGED_DIR):
-        unmount_overlay(MERGED_DIR)
+    """
+    Tear down the sandbox environment by unmounting OverlayFS and cleaning up directories.
+    """
+    try:
+        if os.path.ismount(MERGED_DIR):
+            logger.info("Unmounting sandbox OverlayFS.")
+            unmount_overlay(MERGED_DIR)
 
-    for path in [MERGED_DIR, UPPER_DIR, WORK_DIR]:
-        subprocess.run(["rm", "-rf", path], check=False)
+        for path in [MERGED_DIR, UPPER_DIR, WORK_DIR]:
+            subprocess.run(["rm", "-rf", path], check=False)
+        logger.info("Sandbox environment cleaned up successfully.")
+    except Exception as e:
+        logger.error(f"Failed to tear down sandbox: {e}")
+        raise
+
+def get_sandbox_merged_dir() -> str:
+    """
+    Get the path to the merged directory of the sandbox.
+
+    Returns:
+        str: Path to the merged directory.
+    """
+    return MERGED_DIR

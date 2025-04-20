@@ -16,8 +16,8 @@ from typing import Dict, Any, List, Optional
 from llama_index.core.tools import FunctionTool
 from app.engine.tools import create_tool_callback
 
-# Import OverlayManager for sandboxed execution
-from app.sandbox.overlay_manager import OverlayManager
+# Import sandbox environment functions for sandboxed execution
+from app.engine.sandbox.sandbox_env import setup_sandbox, teardown_sandbox, get_sandbox_merged_dir
 
 # Initialize logger to record errors and information
 logger = logging.getLogger(__name__)
@@ -74,13 +74,10 @@ class PythonExecTool:
             - figure_path: Path to saved matplotlib figure if created
         """
         logger.info('Executing Python code')
-        # If sandboxing is enabled, mount an overlay
-        overlay = None
+        # If sandboxing is enabled, set up the sandbox environment
         if use_sandbox:
-            logger.info("Running in sandbox mode using OverlayFS")
-            overlay = OverlayManager()
-            overlay.mount()
-            workspace_dir_path = Path(overlay.get_merged_dir())
+            setup_sandbox(dry_run=False)
+            workspace_dir_path = Path(get_sandbox_merged_dir())
         else:
             # Set up workspace directory to store files
             workspace_dir_path = cls.setup_workspace(workspace_dir)
@@ -137,8 +134,8 @@ class PythonExecTool:
         
         finally:
             # Clean up sandboxed environment if one was created
-            if overlay:
-                overlay.cleanup()
+            if use_sandbox:
+                teardown_sandbox()
 
 
 def get_tools(**kwargs):
