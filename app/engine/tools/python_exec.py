@@ -16,6 +16,9 @@ from typing import Dict, Any, List, Optional
 from llama_index.core.tools import FunctionTool
 from app.engine.tools import create_tool_callback
 
+# Import OverlayManager for sandboxed execution
+from app.sandbox.overlay_manager import OverlayManager
+
 # Initialize logger to record errors and information
 logger = logging.getLogger(__name__)
 
@@ -50,7 +53,8 @@ class PythonExecTool:
     @classmethod
     def execute_code(cls, 
                      code: str,
-                     workspace_dir: Optional[str] = None) -> Dict[str, Any]:
+                     workspace_dir: Optional[str] = None,
+                     use_sandbox: bool = False) -> Dict[str, Any]:
         """
         Execute Python code safely and return results.
         
@@ -60,6 +64,7 @@ class PythonExecTool:
         Args:
             code: Python code to execute
             workspace_dir: Directory for saving execution artifacts
+            use_sandbox: Whether to execute the code in a sandboxed OverlayFS environment
             
         Returns:
             Dictionary containing execution results with these keys:
@@ -69,8 +74,16 @@ class PythonExecTool:
             - figure_path: Path to saved matplotlib figure if created
         """
         logger.info('Executing Python code')
-        # Set up workspace directory to store files
-        workspace_dir_path = cls.setup_workspace(workspace_dir)
+        # If sandboxing is enabled, mount an overlay
+        overlay = None
+        if use_sandbox:
+            logger.info("Running in sandbox mode using OverlayFS")
+            overlay = OverlayManager()
+            overlay.mount()
+            workspace_dir_path = Path(overlay.get_merged_dir())
+        else:
+            # Set up workspace directory to store files
+            workspace_dir_path = cls.setup_workspace(workspace_dir)
         
         # Set up output capturing using StringIO objects
         # These act like files but store text in memory
@@ -121,6 +134,11 @@ class PythonExecTool:
             result["error"] = error_text
             logger.error(f"Python execution error: {error_text}")
             return result
+        
+        finally:
+            # Clean up sandboxed environment if one was created
+            if overlay:
+                overlay.cleanup()
 
 
 def get_tools(**kwargs):
