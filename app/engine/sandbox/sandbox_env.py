@@ -26,6 +26,7 @@ def setup_sandbox(dry_run: bool = True):
     Args:
         dry_run (bool): If True, activates dry-run mode; otherwise, sets up a writable sandbox.
     """
+    print(f"[DEBUG] Creating sandbox directories at {SANDBOX_ROOT}")
     os.makedirs(MERGED_DIR, exist_ok=True)
     os.makedirs(UPPER_DIR, exist_ok=True)
     os.makedirs(WORK_DIR, exist_ok=True)
@@ -33,10 +34,12 @@ def setup_sandbox(dry_run: bool = True):
     try:
         if dry_run:
             logger.info("Setting up sandbox in dry-run mode.")
+            print(f"[DEBUG] Mounting sandbox in dry-run mode:")
             mount_overlay(lower=LOWER_DIR, upper=UPPER_DIR, work=WORK_DIR, merged=MERGED_DIR)
             DryRunManager.activate()
         else:
             logger.info("Setting up sandbox in writable mode.")
+            print(f"[DEBUG] Skipping mount — writable mode not implemented yet.")
             DryRunManager.deactivate()
     except Exception as e:
         logger.error(f"Failed to set up sandbox: {e}")
@@ -49,11 +52,15 @@ def teardown_sandbox():
     try:
         if os.path.ismount(MERGED_DIR):
             logger.info("Unmounting sandbox OverlayFS.")
+            print(f"[DEBUG] Unmounting OverlayFS at {MERGED_DIR}")
             unmount_overlay(MERGED_DIR)
 
         for path in [MERGED_DIR, UPPER_DIR, WORK_DIR]:
+            print(f"[DEBUG] Removing path: {path}")
             subprocess.run(["rm", "-rf", path], check=False)
+
         logger.info("Sandbox environment cleaned up successfully.")
+        print(f"[DEBUG] Sandbox teardown complete.")
     except Exception as e:
         logger.error(f"Failed to tear down sandbox: {e}")
         raise
@@ -65,4 +72,5 @@ def get_sandbox_merged_dir() -> str:
     Returns:
         str: Path to the merged directory.
     """
+    print(f"[DEBUG] Returning sandbox merged dir: {MERGED_DIR}")
     return MERGED_DIR
