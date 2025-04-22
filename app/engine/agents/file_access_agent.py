@@ -1,10 +1,3 @@
-"""
-File Access Agent Module
-
-A specialized agent that provides access to files from the document index
-and can perform all operations except code execution.
-"""
-
 import os  # Add the missing import
 import logging
 from typing import List, Optional, Dict, Any
@@ -36,7 +29,7 @@ Your workflow:
    - Provide the necessary context and data
    - Hand off to the Python Code Agent for code generation and execution
 
-Remember that you CANNOT execute Python code directly - this is reserved for the Python Code Agent.
+Remember that you CANNOT execute Python code directly - hand off to PythonExecAgent if that is needed.
 """
 )
 
@@ -57,6 +50,9 @@ def create_file_access_agent(
     Returns:
         FunctionAgent configured with all tools except Python execution
     """
+    # Get all tools from the tool factory - just once
+    all_tools = ToolFactory.from_env()
+    
     # Configure and add query tool if index exists
     index_config = IndexConfig(
         callback_manager=callback_manager,
@@ -68,6 +64,17 @@ def create_file_access_agent(
             index=index,
             **kwargs
         )
+        all_tools.append(query_engine_tool)
+    
+    # Filter out python_exec tool and handle duplicates
+    combined_tools = []
+    seen_tool_names = set()
+    
+    for tool in all_tools:
+        tool_name = tool.metadata.name
+        if tool_name != "python_exec" and tool_name not in seen_tool_names:
+            combined_tools.append(tool)
+            seen_tool_names.add(tool_name)
     
     # Create file access agent with all non-python-exec tools
     file_agent = FunctionAgent(
@@ -75,9 +82,9 @@ def create_file_access_agent(
         description="Retrieves file contents and uses all tools except code execution",
         system_prompt=FILE_ACCESS_PROMPT,
         llm=Settings.llm,
-        tools=[query_engine_tool],
-        can_handoff_to=["PythonCodeAgent", "ChatAgent"],  # Allow handoff to other agents
+        tools=combined_tools,
+        can_handoff_to=["PythonCodeAgent"],
     )
     
-    logger.info(f"File access agent created")
+    logger.info(f"File access agent created with {len(combined_tools)} tools (excluding python_exec)")
     return file_agent
