@@ -53,15 +53,19 @@ def create_basic_chat_agent(
     Returns:
         FunctionAgent configured for general conversation
     """
-    # Get basic conversational tools
-    tool_factory = ToolFactory.from_env()
+    # Get all tools from the tool factory
+    all_tools = ToolFactory.from_env()
     
-    # Filter for only general conversation tools
-    # You can customize this list based on your needs
-    general_tools = [
-        tool for tool in tool_factory 
-        if tool.metadata.name in ["web_search", "calculator", "current_date"]
-    ]
+    # Filter out python_exec tool and handle duplicates
+    combined_tools = []
+    seen_tool_names = set()
+    
+    for tool in all_tools:
+        tool_name = tool.metadata.name
+        if tool_name != "python_exec" and tool_name not in seen_tool_names:
+            combined_tools.append(tool)
+            seen_tool_names.add(tool_name)
+    
     
     # Create basic chat agent
     chat_agent = FunctionAgent(
@@ -69,9 +73,10 @@ def create_basic_chat_agent(
         description="Handles general conversation and basic information retrieval",
         system_prompt=BASIC_CHAT_PROMPT,
         llm=Settings.llm,
-        tools=general_tools,
+        tools=combined_tools,
         can_handoff_to=["FileAccessAgent", "PythonCodeAgent"],
+        verbose=True
     )
-    
-    logger.info(f"Basic chat agent created with {len(general_tools)} tools")
+        
+    logger.info(f"Basic chat agent created with {len(combined_tools)} tools")
     return chat_agent
