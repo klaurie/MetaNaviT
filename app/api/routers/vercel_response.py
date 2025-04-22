@@ -101,7 +101,7 @@ class VercelStreamResponse(StreamingResponse):
         - Text chunks
         """
         # Wait for the response from the chat engine
-        result = await response
+        result = response
         logger.info(f"Response in VercelStreamResponse: {result}")
         # Yield the source nodes
         yield cls.convert_data(
