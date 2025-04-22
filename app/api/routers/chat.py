@@ -66,31 +66,28 @@ async def chat(
         # - event_handlers: Track operations and stream chunks
         event_handler = EventCallbackHandler()
 
-        # Use the same API for both
-        if os.getenv('USE_MULTI_AGENT', False):
-            chat_engine = get_chat_engine(
-                filters=filters,
-                params=params,
-                event_handlers=[event_handler],
-                use_multi_agent=True
-            )
-            
-        else:
-            chat_engine = get_chat_engine(
-                filters=filters,
-                params=params,
-                event_handlers=[event_handler]
-            )
+        # Chat engine is the agent runner
+        chat_engine = get_chat_engine(
+            filters=filters,
+            params=params,
+            event_handlers=[event_handler],
+        )
+        
+
             
         # Stream response using Vercel's streaming response
         # (Returns response chunks incrementally)
         response = await chat_engine.achat(last_message_content, messages)
 
         logger.info(f"Streaming response: {response.response} and {response.sources}\nType: {type(response)}")
-        return JSONResponse({
-            "0": response.response,
-            "8": response.sources  # Include empty sources or omit if not needed
-        })
+        response.is_dummy_stream = True
+        return VercelStreamResponse(
+            request=request,
+            event_handler=event_handler,
+            response=response,
+            chat_data=data,
+            background_tasks=background_tasks,
+        )
         
     except Exception as e:
         logger.exception("Error in chat engine", exc_info=True)
