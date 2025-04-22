@@ -69,7 +69,7 @@ def create_python_exec_agent(
         system_prompt=PYTHON_CODE_PROMPT,
         llm=Settings.llm,
         tools=python_tools,
-        can_handoff_to=["FileAccessAgent"],  # Optional: allow handoff back to file agent if needed
+        can_handoff_to=["FileAccessAgent", "ChatAgent"],  # Optional: allow handoff back to file agent if needed
     )
     
     logger.info("Python code agent created with code execution tools")

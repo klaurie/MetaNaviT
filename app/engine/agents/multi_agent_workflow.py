@@ -47,7 +47,7 @@ from llama_index.core.workflow import (
     Workflow,
     step,
 )
-from llama_index.core.chat_engine.types import StreamingAgentChatResponse
+from llama_index.core.chat_engine.types import StreamingAgentChatResponse, AgentChatResponse
 
 from llama_index.core.workflow.checkpointer import CheckpointCallback
 from llama_index.core.workflow.handler import WorkflowHandler
@@ -688,7 +688,8 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
                 logger.info(f"🤖 Agent: {current_agent}")
                 logger.info(f"{'='*50}\n")
             # Handle text streaming
-            elif isinstance(event, AgentStream) and event.delta:
+            elif isinstance(event, AgentStream):
+                logger.info(f"💬 {event.delta}")
                 response += event.delta
                 event.delta = ""
             elif isinstance(event, AgentInput):
@@ -706,7 +707,7 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
                 logger.info(f"🔨 Calling Tool: {event.tool_name}")
                 logger.info(f"  With arguments: {event.tool_kwargs}")
 
-        return response
+        return AgentChatResponse(response=response)
 
     @dispatcher.span
     async def astream_chat(
