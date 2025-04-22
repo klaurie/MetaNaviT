@@ -11,14 +11,11 @@ with support for:
 
 import os
 import logging
-from typing import List, Optional, Dict, Any, Union
+from typing import List, Optional, Dict, Any
 
-from llama_index.core.agent import AgentRunner
 from llama_index.core.callbacks import CallbackManager
-from llama_index.core.settings import Settings
 from llama_index.core.tools import BaseTool
 
-from app.engine.agents.chat_agent import create_basic_chat_agent
 from app.engine.agents.file_access_agent import create_file_access_agent
 from app.engine.agents.python_exec_agent import create_python_exec_agent
 from app.engine.agents.multi_agent_workflow import AgentWorkflow
@@ -53,11 +50,7 @@ def get_chat_engine(
     callback_manager = CallbackManager(handlers=event_handlers or [])
     
     agents = []
-    agents.append(
-        create_basic_chat_agent(
-            callback_manager=callback_manager
-        )
-    )
+
     agents.append(
         create_file_access_agent(
             callback_manager=callback_manager

@@ -381,7 +381,7 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
 
         # send to the current agent
         current_agent_name: str = await ctx.get("current_agent_name")
-        logger.info(f"Agent Input: {input_messages}")
+        #logger.info(f"Agent Input: {input_messages}")
         return AgentInput(input=input_messages, current_agent_name=current_agent_name)
 
     @step
@@ -421,14 +421,14 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
         agent = self.agents[ev.current_agent_name]
         user_msg_str = await ctx.get("user_msg_str")
         tools = await self.get_tools(ev.current_agent_name, user_msg_str or "")
-
+        #logger.info(f"in run_agent_step: {ev.input}")
         agent_output = await agent.take_step(
             ctx,
             ev.input,
             tools,
             memory,
         )
-
+        #logger.info(f"Agent Output: {agent_output}")
         ctx.write_event_to_stream(agent_output)
         return agent_output
 
@@ -562,7 +562,7 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
                 current_agent_name=agent.name,
             )
             result = await agent.finalize(ctx, result, memory)
-
+            #logger.info(f"Finalized agent: {result}")
             # we don't want to stop the system if we're just handing off
             if return_direct_tool.tool_name != "handoff":
                 await ctx.set("current_tool_calls", [])
@@ -676,6 +676,7 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
             chat_history=chat_history,
         )
         response = ""
+        final_result_obj = None
         # Process each event from the workflow event stream
         async for event in handler.stream_events():
             # Handle agent transitions
@@ -689,9 +690,9 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
                 logger.info(f"{'='*50}\n")
             # Handle text streaming
             elif isinstance(event, AgentStream):
-                logger.info(f"💬 {event.delta}")
+                #logger.info(f"💬 {event.delta}")
                 response += event.delta
-                event.delta = ""
+
             elif isinstance(event, AgentInput):
                 logger.info(f"💬 User Input: {event}")
             # Handle agent output events
@@ -706,8 +707,68 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
             elif isinstance(event, ToolCall):
                 logger.info(f"🔨 Calling Tool: {event.tool_name}")
                 logger.info(f"  With arguments: {event.tool_kwargs}")
+            elif isinstance(event, AgentOutput):
+                logger.info(f"💬 Agent Output: {event.response}")
+                logger.info(f"  Tool Calls: {event.tool_calls}")
+                logger.info(f"  Raw: {event.raw}")
+            # Capture the final result when the workflow stops
+            elif isinstance(event, StopEvent):
+                 final_result_obj = event.result
+                 logger.info(f"🏁 Workflow Stopped. Final Result: {final_result_obj}")
+        # --- Determine the final response string AFTER the loop ---
+        final_response_str = response # Start with any streamed content
 
-        return AgentChatResponse(response=response)
+        # If no content was streamed, inspect the final_result_obj from StopEvent
+        if not final_response_str and final_result_obj:
+            logger.info("Streamed response empty, checking final_result_obj...")
+            if isinstance(final_result_obj, AgentOutput):
+                # Check the AgentOutput's response message content
+                if final_result_obj.response and hasattr(final_result_obj.response, 'content'):
+                    final_response_str = final_result_obj.response.content or ""
+                    logger.info(f"Using AgentOutput content: '{final_response_str}'")
+            elif isinstance(final_result_obj, ToolCallResult):
+                 # Check if it was a direct return from a tool
+                 if final_result_obj.return_direct and final_result_obj.tool_output:
+                     final_response_str = str(final_result_obj.tool_output.content)
+                     logger.info(f"Using direct ToolCallResult content: '{final_response_str}'")
+            elif isinstance(final_result_obj, str):
+                # Handle cases where the result is just a string (e.g., direct handoff message)
+                final_response_str = final_result_obj
+                logger.info(f"Using direct string result: '{final_response_str}'")
+            else:
+                # Fallback: try converting the result object to string if unknown type
+                try:
+                    final_response_str = str(final_result_obj)
+                    logger.warning(f"StopEvent result has unexpected type {type(final_result_obj)}, using str(): '{final_response_str}'")
+                except Exception:
+                     logger.error(f"Could not convert StopEvent result of type {type(final_result_obj)} to string.")
+                     final_response_str = "" # Ensure it's a string
+
+        # Ensure final_response_str is not None and trim whitespace
+        final_response_str = (final_response_str or "").strip()
+        #logger.info(f"Final determined response string: '{final_response_str}'")
+
+        # Extract other details (sources, metadata) primarily from AgentOutput if available
+        final_sources = []
+        final_source_nodes = []
+        final_metadata = None
+        if isinstance(final_result_obj, AgentOutput):
+            final_sources = getattr(final_result_obj, 'sources', []) # Assuming AgentOutput might have sources
+            final_source_nodes = getattr(final_result_obj, 'source_nodes', []) # Assuming AgentOutput might have source_nodes
+            final_metadata = getattr(final_result_obj, 'metadata', None)
+        elif isinstance(final_result_obj, ToolCallResult) and final_result_obj.tool_output:
+             # If the final result is a tool output, check if IT contains source nodes
+             raw_output = final_result_obj.tool_output.raw_output
+
+
+
+        # Return the final structured response
+        return AgentChatResponse(
+            response=final_response_str,
+            sources=final_sources, # Use extracted sources
+            source_nodes=final_source_nodes, # Use extracted source_nodes
+            metadata=final_metadata # Use extracted metadata
+        )
 
     @dispatcher.span
     async def astream_chat(
@@ -721,47 +782,3 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
         )
 
         return StreamingAgentChatResponse(response=response)
-
-
-
-if __name__ == "__main__":
-    # Example usage
-    import os
-    import asyncio
-    from app.engine.agents.chat_agent import create_basic_chat_agent
-    try:
-        from llama_index.llms.ollama import Ollama
-        from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-        from llama_index.llms.ollama.base import DEFAULT_REQUEST_TIMEOUT, Ollama
-    except ImportError:
-        raise ImportError(
-            "Ollama support is not installed. Please install it with `poetry add llama-index-llms-ollama` and `poetry add llama-index-embeddings-ollama`"
-        )
-
-    base_url = os.getenv("OLLAMA_BASE_URL") or "http://127.0.0.1:11434"
-    request_timeout = float(
-        os.getenv("OLLAMA_REQUEST_TIMEOUT", DEFAULT_REQUEST_TIMEOUT)
-    )
-    embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-base-en-v1.5")
-    llm = Ollama(
-        model=os.getenv("MODEL", "llama3.2:3b"),
-        base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-        temperature=0.7,
-    )    # Update global settings
-    Settings.llm = llm
-    Settings.embed_model = embed_model
-
-    agent = create_basic_chat_agent()
-
-    from llama_index.utils.workflow import draw_all_possible_flows
-    workflow = AgentWorkflow(
-        agents=[agent],
-        initial_state={},
-        verbose=True,
-    )
-
-    async def run_chat():
-        logger.info(await workflow.achat("Hello, how are you?"))
-
-
-    asyncio.run(run_chat())
