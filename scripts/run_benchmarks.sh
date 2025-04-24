@@ -14,3 +14,5 @@ python -m app.engine.generate
 python -m tests.benchmark_tests.file_system_tests.test_organization
 python -m tests.benchmark_tests.time_tests.test_time_queries
 python -m tests.benchmark_tests.test_code_capability
+python3 -m tests.benchmark_tests.misc_tests.misc_tests
+python3 -m tests.benchmark_tests.search_tests.test_search
