@@ -1,0 +1,77 @@
+{
+    "test_cases": [
+        {
+            "test_case": "Search by Author",
+            "description": "Test the agent's ability to search for documents by author name.",
+            "input": "Find all documents authored by 'John Doe'.",
+            "expected_output": [
+                {
+                    "title": "Performance Review Report",
+                    "author": "John Doe",
+                    "date": "2025-04-23",
+                    "summary": "This performance review highlights strengths in leadership and delivery, with notes on areas for growth in delegation and technical upskilling.",
+                    "file_name": "performance_review_john_doe.docx"
+                },
+                {
+                    "title": "General Research Report",
+                    "author": "John Doe",
+                    "date": "2025-04-23",
+                    "summary": "An overview of developments in data-driven technologies, with a focus on intelligent file organization, semantic search, and hybrid hierarchical trees.",
+                    "file_name": "general_report_john_doe.pdf"
+                }
+            ],
+            "tool_params": [
+                {
+                    "name": "query_index",
+                    "description": "Use this tool to retrieve information about the text corpus from an index.",
+                    "output": "Text chunks or indexed representation of PDF content"
+                }
+            ]
+        },
+        {
+            "test_case": "Semantic Search",
+            "description": "Test the agent's ability to find connections between content",
+            "input": "Retrieve experiment logs related to project RobotNav2023 with failed results.",
+            "expected_output": [
+                {
+                    "title": "Experiment Log – Obstacle Navigation",
+                    "author": null,
+                    "date": "2023-07-14",
+                    "summary": "The robot failed to avoid obstacles in Test Environment B due to a sensor calibration error.",
+                    "file_name": "robotnav2023_log_01.docx"
+                  },
+                  {
+                    "title": "Experiment Log – Power Efficiency Trial",
+                    "author": null,
+                    "date": "2023-08-05",
+                    "summary": "Test aborted after 10 minutes due to battery power depletion.",
+                    "file_name": "robotnav2023_log_02.docx"
+                  },
+                  {
+                    "title": "Experiment Log – Multi-Modal Pathfinding",
+                    "author": null,
+                    "date": "2023-09-02",
+                    "summary": "A segmentation fault occurred during the real-time path planning phase.",
+                    "file_name": "robotnav2023_log_03.docx"
+                  }
+            ],
+            "tool_params": [
+                {
+                    "name": "query_index",
+                    "description": "Use this tool to retrieve information about the text corpus from an index.",
+                    "output": "Text chunks or indexed representation of PDF content"
+                },
+                {
+                    "name": "filter_by_field",
+                    "description": "Filters a list of documents or entries by specified field values, such as project name or result status.",
+                    "output": "Subset of documents matching filter conditions like {project: 'RobotNav2023', result: 'Failed'}"
+                },
+                {
+                    "name": "summarize_document",
+                    "description": "Generates a brief, human-readable summary of the content or findings of a document.",
+                    "output": "String summary (2-5 sentences)"
+                }
+            ]
+        }
+    ]
+}
