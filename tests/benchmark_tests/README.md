@@ -5,19 +5,14 @@ This project includes a suite of benchmark tests designed to evaluate the perfor
 ## Prerequisites
 
 1.  **Install Dependencies:** Ensure all project dependencies, including those specific to testing and `deepeval`, are installed using `conda`.
-    *   **Create/Update Environment:** If you have an `environment.yml` file defining the conda environment, use it to create or update the environment:
+    *   **Create/Update Environment:** Use setup script to download from environment.yml as well as some additional dependencies that don't get included in the environment.yml for unknown reasons:
         ```bash
-        # Create the environment if it doesn't exist
-        conda env create -f environment.yml
-
-        # Or update an existing environment
-        conda env update --file environment.yml --prune
+        ./scripts/setup.sh
         ```
     *   **Activate Environment:** Make sure to activate the correct conda environment before running tests:
         ```bash
-        conda activate <your-environment-name>
+        conda activate metanavit
         ```
-        *(Replace `<your-environment-name>` with the actual name of your conda environment)*
 
 2.  **Configure Environment:**
     *   Copy the `.env.example` file to `.env` if you haven't already.
@@ -36,7 +31,6 @@ This project includes a suite of benchmark tests designed to evaluate the perfor
     ```bash
     ./scripts/run.sh dev
     ```
-    *(Adjust the command based on your setup if needed)*
 
 ## Running Tests
 
