@@ -13,19 +13,18 @@ import asyncio
 from pathlib import Path
 from dataclasses import dataclass
 from typing import List, Dict, Any
+import csv
+from datetime import datetime
 
 from pydantic import BaseModel
 
-from deepeval import evaluate
+
 from deepeval.metrics import SummarizationMetric
 from deepeval.test_case import LLMTestCase
 
-from deepeval.integrations import trace_llama_index
-from deepeval.auto_evaluate import auto_evaluate
-
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
 from tests.benchmark_tests.run_eval import get_chat_response
-
+from tests.benchmark_tests.common.utils import write_results_to_csv
 
 @dataclass
 class TestContext:
@@ -43,7 +42,7 @@ class SummarizationTestRunner:
     def __init__(self, test_cases_path: Path):
         self.test_cases_path = test_cases_path
         self.eval_llm = EvalLLM_4Bit()
-        trace_llama_index(auto_eval=True)
+
     
     def load_test_cases(self) -> List[Dict[str, Any]]:
         """Load test cases from a JSON file and return raw data."""
@@ -68,7 +67,7 @@ class SummarizationTestRunner:
         """Evaluate test cases for summarization."""
         test_cases = self.load_test_cases()
         metrics = self.init_metrics()
-        
+    
         for test_case in test_cases:
             print(f"Test Case: {test_case['input']}")
             input_text = test_case["input"]
@@ -95,6 +94,17 @@ class SummarizationTestRunner:
                 metric.measure(llm_test_case)
                 print(f"{metric.__class__.__name__} Score: {metric.score}")
                 print(f"Reason: {metric.reason}")
+
+                # Write row to CSV
+                write_results_to_csv({
+                    'test_case_input': input_text,
+                    'metric_name': metric.__class__.__name__,
+                    'score': metric.score,
+                    'reason': metric.reason,
+                    'app_response': generated_summary,
+                    'tools_called': "N/A",
+                    'expected_tools': "N/A",
+                })
 
 async def main():
     """Main entry point for test execution."""

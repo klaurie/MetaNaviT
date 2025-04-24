@@ -13,15 +13,15 @@ import asyncio
 from pathlib import Path
 from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
+import csv 
+from datetime import datetime
 
-from deepeval import evaluate
 from deepeval.metrics import AnswerRelevancyMetric, GEval, TaskCompletionMetric
 from deepeval.test_case import LLMTestCase, ToolCall, LLMTestCaseParams
-from deepeval.integrations import trace_llama_index
-from deepeval.auto_evaluate import auto_evaluate
 
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
 from tests.benchmark_tests.run_eval import get_chat_response
+from tests.benchmark_tests.common.utils import write_results_to_csv, convert_registry_to_tool_call
 
 @dataclass
 class TestContext:
@@ -34,8 +34,7 @@ class TimeQueryTestRunner:
     def __init__(self, test_cases_path: Path):
         self.test_cases_path = test_cases_path
         self.eval_llm = EvalLLM_4Bit()
-        trace_llama_index(auto_eval=True)
-        
+
     def load_test_cases(self) -> List[LLMTestCase]:
         """Load test cases from JSON file and return raw data"""
         with open(self.test_cases_path, 'r') as f:
@@ -93,7 +92,8 @@ class TimeQueryTestRunner:
             name="Time Understanding",
             criteria="The response correctly interprets file timestamps and temporal relationships",
             evaluation_params={
-                "criteria_description": "Measures accuracy in understanding file creation/modification times"
+                LLMTestCaseParams.INPUT,
+                LLMTestCaseParams.ACTUAL_OUTPUT
             },
             model=self.eval_llm
         )
@@ -113,13 +113,14 @@ class TimeQueryTestRunner:
             
             # Get response from the chat API
             response = await get_chat_response(input_query)
-            
+            tools_called = convert_registry_to_tool_call()
+
             # Create test case for evaluation
             llm_test_case = LLMTestCase(
                 input=input_query,
                 actual_output=response,
                 expected_output=expected_output,
-                tools_called=self.get_tool_calls(tool_params)
+                tools_called=tools_called
             )
             
             # TODO: John let me know if these changes are ok, it had an error at runtime
@@ -128,6 +129,17 @@ class TimeQueryTestRunner:
                 metric.measure(llm_test_case)
                 print(f"{metric.__class__.__name__} Score: {metric.score}")
                 print(f"Reason: {metric.reason}")
+
+                # Write row to CSV
+                write_results_to_csv({
+                    'test_case_input': test_case["input"],
+                    'metric_name': metric.__class__.__name__,
+                    'score': metric.score,
+                    'reason': metric.reason,
+                    'app_response': response,
+                    'tools_called': tools_called,
+                    'expected_tools': self.get_tool_calls(tool_params),
+                })
 
 
 async def main():

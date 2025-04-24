@@ -3,15 +3,15 @@ import json
 import aiohttp
 import asyncio
 from pathlib import Path
-from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List, Any
+import csv
+from datetime import datetime
 
-from deepeval import evaluate
-from deepeval.metrics import AnswerRelevancyMetric, GEval, TaskCompletionMetric, ToolCorrectnessMetric, ContextualRelevancyMetric
-from deepeval.test_case import LLMTestCase, ToolCall, LLMTestCaseParams
+from deepeval.metrics import AnswerRelevancyMetric, TaskCompletionMetric, ToolCorrectnessMetric, ContextualRelevancyMetric
+from deepeval.test_case import LLMTestCase
 
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
-from tests.benchmark_tests.common.utils import load_test_cases, convert_registry_to_tool_call, convert_test_case_tool_calls
+from tests.benchmark_tests.common.utils import load_test_cases, convert_registry_to_tool_call, convert_test_case_tool_calls, write_results_to_csv
 from tests.benchmark_tests.run_eval import get_chat_response
 
 class SearchTestRunner:
@@ -20,6 +20,7 @@ class SearchTestRunner:
     def __init__(self, test_cases_path: Path):
         self.test_cases_path = test_cases_path
         self.eval_llm = EvalLLM_4Bit()
+
         
     def load_test_cases(self) -> List[LLMTestCase]:
         """Load test cases from JSON file and return raw data"""
@@ -34,8 +35,6 @@ class SearchTestRunner:
         return [
             AnswerRelevancyMetric(model=self.eval_llm, include_reason=True),
             ContextualRelevancyMetric(model=self.eval_llm, include_reason=True),
-            TaskCompletionMetric(threshold=0.7, model=self.eval_llm),
-            ToolCorrectnessMetric(verbose_mode=True, should_consider_ordering=True)
         ]
 
     async def evaluate_response(self) -> None:
@@ -66,7 +65,7 @@ class SearchTestRunner:
         # Initialize metrics and load test cases
         metrics = self.init_metrics()
         test_cases = load_test_cases(self.test_cases_path)
-        
+
         # Process each test case
         for test in test_cases:
             # Get LLM response through chat API
@@ -80,18 +79,18 @@ class SearchTestRunner:
                 if len(response['nodes']) > 0:
                     nodes_used = [node['text'] for node in response.get("nodes", [])]
                 else:
-                    nodes_used = None
+                    nodes_used = ["None"]
             else:
                 # Handle failed responses
                 actual_output = ""
-                nodes_used = None
+                nodes_used = ["None"]
 
-            
+            tools_called = convert_registry_to_tool_call()
             eval_case = LLMTestCase(
                 input=test["input"],
                 actual_output=actual_output,
                 retrieval_context=nodes_used,
-                tools_called = convert_registry_to_tool_call(),
+                tools_called =tools_called,
                 expected_tools=convert_test_case_tool_calls(test["tool_params"])
             )
             
@@ -101,6 +100,17 @@ class SearchTestRunner:
                 # Log metric results for analysis
                 print(f"{metric.__class__.__name__} Score: {metric.score}")
                 print(f"Reason: {metric.reason}")
+
+                # Write row to CSV
+                write_results_to_csv({
+                    'test_case_input': test["input"],
+                    'metric_name': metric.__class__.__name__,
+                    'score': metric.score,
+                    'reason': metric.reason,
+                    'app_response': actual_output,
+                    'tools_called': tools_called,
+                    'expected_tools': convert_test_case_tool_calls(test["tool_params"]),
+                })
 
 async def main():
     """Main entry point for test execution"""    

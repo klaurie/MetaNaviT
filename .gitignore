@@ -20,3 +20,4 @@ config/loaders.yaml
 .pytest_cache/
 idea/
 .env
+tests/benchmark_tests/results/

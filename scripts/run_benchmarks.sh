@@ -11,8 +11,8 @@ python -m scripts.generate_code_data
 python -m app.engine.generate
 
 # Run benchmarks
+python3 -m tests.benchmark_tests.misc_tests.misc_tests
+python3 -m tests.benchmark_tests.search_tests.test_search
 python -m tests.benchmark_tests.file_system_tests.test_organization
 python -m tests.benchmark_tests.time_tests.test_time_queries
 python -m tests.benchmark_tests.test_code_capability
-python3 -m tests.benchmark_tests.misc_tests.misc_tests
-python3 -m tests.benchmark_tests.search_tests.test_search

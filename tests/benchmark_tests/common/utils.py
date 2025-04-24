@@ -86,3 +86,28 @@ def load_test_cases(test_cases_path: str) -> List[Dict]:
     with open(test_cases_path, 'r') as f:
         data = json.load(f)
         return data["test_cases"]
+    
+def write_results_to_csv(results: Dict, filename: str="benchmark_results.csv"):
+    """Write results to a CSV file"""
+    import csv
+    import os
+    from pathlib import Path
+    # Define a directory for results
+    results_dir = Path(__file__).parent.parent / "results"
+    results_dir.mkdir(exist_ok=True) # Ensure the directory exists
+
+    full_path = results_dir / filename
+    with open(full_path, 'a', newline='', encoding='utf-8') as csvfile:
+        fieldnames = ['test_case_input', 'metric_name', 'score', 'reason', 'app_response', 'tools_called', 'expected_tools']
+
+        # Check if the file is empty to write the header
+        if os.stat(full_path).st_size == 0:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writerow(results)
+        logger.info(f"Results written to {full_path}")
+
+        
