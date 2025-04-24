@@ -1,10 +1,3 @@
-"""
-File Access Agent Module
-
-A specialized agent that provides access to files from the document index
-and can perform all operations except code execution.
-"""
-
 import os  # Add the missing import
 import logging
 from typing import List, Optional, Dict, Any
@@ -36,7 +29,7 @@ Your workflow:
    - Provide the necessary context and data
    - Hand off to the Python Code Agent for code generation and execution
 
-Remember that you CANNOT execute Python code directly - this is reserved for the Python Code Agent.
+Remember that you CANNOT execute Python code directly - hand off to PythonExecAgent if that is needed.
 """
 )
 

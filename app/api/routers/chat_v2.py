@@ -9,6 +9,7 @@ Features:
 - Event handling
 - Error tracking
 """
+"""
 import os
 import logging
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, status
@@ -24,14 +25,12 @@ from app.api.routers.models import (
 from app.api.routers.vercel_response import VercelStreamResponse
 from app.engine.engine import get_chat_engine
 from app.engine.query_filter import generate_filters
-from fastapi.responses import JSONResponse
-from llama_index.core.chat_engine.types import StreamingAgentChatResponse
-
 
 # Initialize router - will be mounted in main app
 chat_router = r = APIRouter()
 
 logger = logging.getLogger("uvicorn")
+
 
 @r.post("")
 async def chat(
@@ -66,27 +65,29 @@ async def chat(
         # - event_handlers: Track operations and stream chunks
         event_handler = EventCallbackHandler()
 
-        # Chat engine is the agent runner
-        chat_engine = get_chat_engine(
-            filters=filters,
-            params=params,
-            event_handlers=[event_handler],
-        )
-        
-
+        # Use the same API for both
+        if os.getenv('USE_MULTI_AGENT', False):
+            chat_engine = get_chat_engine(
+                filters=filters,
+                params=params,
+                event_handlers=[event_handler],
+                use_multi_agent=True
+            )
+            
+        else:
+            chat_engine = get_chat_engine(
+                filters=filters,
+                params=params,
+                event_handlers=[event_handler]
+            )
             
         # Stream response using Vercel's streaming response
         # (Returns response chunks incrementally)
-        response = await chat_engine.achat(last_message_content, messages)
+        response = chat_engine.achat(last_message_content, messages)
 
-        logger.info(f"Streaming response: {response.response} and {response.sources}\nType: {type(response)}")
-        response.is_dummy_stream = True
+        logger.info(f"Streaming response: {response}\nType: {type(response)}")
         return VercelStreamResponse(
-            request=request,
-            event_handler=event_handler,
-            response=response,
-            chat_data=data,
-            background_tasks=background_tasks,
+            request, event_handler, response, data, background_tasks
         )
         
     except Exception as e:
@@ -119,3 +120,4 @@ async def chat_request(
         result=Message(role=MessageRole.ASSISTANT, content=response.response),
         nodes=SourceNodes.from_source_nodes(response.source_nodes),
     )
+"""
