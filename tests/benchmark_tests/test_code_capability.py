@@ -10,6 +10,7 @@ from deepeval import assert_test
 from deepeval.metrics import AnswerRelevancyMetric
 from deepeval.test_case import LLMTestCase
 
+from tests.benchmark_tests.common.utils import write_results_to_csv
 
 @pytest.fixture(scope="module")
 def dataset():
@@ -84,10 +85,12 @@ def test_code_summary_relevance(dataset):
         query = f"Summarize the following code:\n{entry['code']}"
         expected_response = entry["summary"]
         
-        metric = AnswerRelevancyMetric()
+        metric = AnswerRelevancyMetric(include_reason=True)
         test_case = LLMTestCase(query=query, expected_response=expected_response)
 
+
         assert_test(expected_response, test_case, metric=metric)
+
 
 
 if __name__ == "__main__":

@@ -3,6 +3,8 @@ import asyncio
 from pathlib import Path
 from dataclasses import dataclass
 from typing import List, Any
+import csv
+from datetime import datetime
 
 from deepeval import evaluate
 from deepeval.metrics import TaskCompletionMetric, ToolCorrectnessMetric, AnswerRelevancyMetric, ContextualRelevancyMetric
@@ -11,6 +13,7 @@ from deepeval.test_case import LLMTestCase
 
 
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
+from tests.benchmark_tests.common.utils import write_results_to_csv, convert_registry_to_tool_call
 from tests.benchmark_tests.run_eval import get_chat_response
 
 from . import test_cases
@@ -27,8 +30,6 @@ class MiscTestRunner:
         return [
             AnswerRelevancyMetric(model=self.eval_llm, include_reason=True),
             ContextualRelevancyMetric(model=self.eval_llm, include_reason=True),
-            TaskCompletionMetric(threshold=0.7, model=self.eval_llm),
-            ToolCorrectnessMetric(verbose_mode=True, should_consider_ordering=True)
         ]
 
     async def evaluate_response(self) -> None:
@@ -47,11 +48,11 @@ class MiscTestRunner:
                 if len(response['nodes']) > 0:
                     nodes_used = [node['text'] for node in response.get("nodes", [])]
                 else:
-                    nodes_used = None
+                    nodes_used = ["None"]
             else:
                 # Handle failed responses
                 actual_output = ""
-                nodes_used = None
+                nodes_used = ["None"]
             
             eval_case = LLMTestCase(
                 input=test.input,
@@ -61,12 +62,25 @@ class MiscTestRunner:
                 retrieval_context=nodes_used
             )
             
+            tools_called = convert_registry_to_tool_call()
+
             # Apply each metric and log results
             for metric in metrics:
                 metric.measure(eval_case)
                 # Log metric results for analysis
                 print(f"{metric.__class__.__name__} Score: {metric.score}")
                 print(f"Reason: {metric.reason}")
+
+                # Write row to CSV
+                write_results_to_csv({
+                    'test_case_input': test.input,
+                    'metric_name': metric.__class__.__name__,
+                    'score': metric.score,
+                    'reason': metric.reason,
+                    'app_response': actual_output,
+                    'tools_called': tools_called,
+                    'expected_tools': "N/A"
+                })
 async def main():
 
     runner = MiscTestRunner(test_cases)

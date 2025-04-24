@@ -7,21 +7,19 @@ Evaluates LLM's ability to extract and transform unstructured data by:
 3. Evaluating responses using metrics
 4. Tracking tool usage and data quality
 """
-
-import json
 import asyncio
 from pathlib import Path
 from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
+from typing import List,  Dict, Any
+import csv
+from datetime import datetime
 
-from deepeval import evaluate
-from deepeval.metrics import AnswerRelevancyMetric, GEval, TaskCompletionMetric, ToolCorrectnessMetric
-from deepeval.test_case import LLMTestCase, ToolCall, LLMTestCaseParams
-from deepeval.integrations import trace_llama_index
-from deepeval.auto_evaluate import auto_evaluate
+from deepeval.metrics import GEval, TaskCompletionMetric, ToolCorrectnessMetric
+from deepeval.test_case import LLMTestCase, LLMTestCaseParams
+
 
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
-from tests.benchmark_tests.common.utils import load_test_cases, convert_registry_to_tool_call, convert_test_case_tool_calls
+from tests.benchmark_tests.common.utils import load_test_cases, convert_registry_to_tool_call, convert_test_case_tool_calls, write_results_to_csv
 from tests.benchmark_tests.run_eval import get_chat_response
 
 
@@ -39,9 +37,7 @@ class DataTransformationTestRunner:
     def __init__(self, test_cases_path: Path):
         self.test_cases_path = test_cases_path
         self.eval_llm = EvalLLM_4Bit()
-        trace_llama_index(auto_eval=True)
-        
-    
+         
     def init_metrics(self) -> List[Any]:
         """Initialize evaluation metrics"""
         
@@ -99,8 +95,7 @@ class DataTransformationTestRunner:
         # Initialize metrics and load test cases
         metrics = self.init_metrics()
         test_case_data = load_test_cases(self.test_cases_path)
-        
-        # Process the test case
+
         # Get LLM response through chat API
         for test_case in test_case_data:
             response = await get_chat_response(test_case["input"])
@@ -128,7 +123,17 @@ class DataTransformationTestRunner:
                 # Log metric results for analysis
                 print(f"{metric.__class__.__name__} Score: {metric.score}")
                 print(f"Reason: {metric.reason}")
-            
+
+                # Write row to CSV
+                write_results_to_csv({
+                    'test_case_input': test_case["input"],
+                    'metric_name': metric.__class__.__name__,
+                    'score': metric.score,
+                    'reason': metric.reason,
+                    'app_response': actual_output,
+                    'tools_called': tools_called,
+                    'expected_tools': convert_test_case_tool_calls(test_case["tool_params"]),
+                })
 
 
 async def main():
