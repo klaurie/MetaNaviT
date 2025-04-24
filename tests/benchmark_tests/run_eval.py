@@ -1,10 +1,8 @@
 import os
 import aiohttp
 import asyncio
-from deepeval.metrics import AnswerRelevancyMetric, FaithfulnessMetric
+from deepeval.metrics import AnswerRelevancyMetric
 from deepeval.test_case import LLMTestCase
-from deepeval.integrations import trace_llama_index
-from deepeval.auto_evaluate import auto_evaluate
 
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
 
@@ -18,9 +16,6 @@ Evaluates LLM responses against test cases and saves metrics to CSV.
 Uses deepeval for metrics calculation and aiohttp for async API calls.
 Results are stored in timestamped CSV files under /results directory.
 """
-
-# Initialize tracing
-trace_llama_index(auto_eval=True)
 
 # Test cases define expected inputs/outputs for evaluation
 TEST_CASES = [
