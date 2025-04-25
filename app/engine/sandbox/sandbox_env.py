@@ -13,7 +13,8 @@ from app.engine.sandbox.dry_run_manager import DryRunManager
 
 logger = logging.getLogger(__name__)
 
-SANDBOX_ROOT = "/tmp/code_sandbox"
+# Dynamically set SANDBOX_ROOT to the same directory as this file
+SANDBOX_ROOT = os.path.join(os.path.dirname(__file__), "sandbox")
 MERGED_DIR = os.path.join(SANDBOX_ROOT, "merged")
 UPPER_DIR = os.path.join(SANDBOX_ROOT, "upper")
 WORK_DIR = os.path.join(SANDBOX_ROOT, "work")
