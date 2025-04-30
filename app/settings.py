@@ -230,7 +230,7 @@ def init_gemini():
         from llama_index.llms.gemini import Gemini
     except ImportError:
         raise ImportError(
-            "Gemini support is not installed. Please install it with `poetry add llama-index-llms-gemini` and `poetry add llama-index-embeddings-gemini`"
+            "Gemini support is not installed. Please install it with `pip install llama-index-llms-gemini` and `pip install llama-index-embeddings-gemini`"
         )
 
     model_name = f"models/{os.getenv('MODEL')}"
