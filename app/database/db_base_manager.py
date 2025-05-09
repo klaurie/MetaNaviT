@@ -173,3 +173,47 @@ class DatabaseManager:
                 except psycopg2.Error as e:
                     logger.error(f"Query execution failed: {e}")
                     raise
+
+
+    def create_bm25_index(self, table: str = "documents", fields: str = "title, content", key_field: str = "id") -> None:
+        """Create a BM25 index on the given table and fields."""
+        index_sql = f"""
+        CREATE INDEX IF NOT EXISTS {table}_bm25_idx
+        ON {table}
+        USING bm25 (id, {fields})
+        WITH (key_field = '{key_field}');
+        """
+        self.execute_query(index_sql, fetch=False)
+        logger.info(f"BM25 index created on {table}({fields})")
+
+    def run_bm25_search(self, table: str, search_column: str, query_text: str, limit: int = 10) -> list:
+        """Perform a BM25-ranked search on the given table."""
+        search_sql = f"""
+        SELECT *, paradedb.score(id) AS score
+        FROM {table}
+        WHERE id @@@ paradedb.match('{search_column}', %s)
+        ORDER BY score DESC
+        LIMIT {limit};
+        """
+        return self.execute_query(search_sql, params=(query_text,), fetch=True)
+
+    def create_documents_table(self):
+        """Create a basic documents table for BM25 search."""
+        create_table_sql = """
+        CREATE TABLE IF NOT EXISTS documents (
+            id SERIAL PRIMARY KEY,
+            title TEXT,
+            content TEXT
+        );
+        """
+        self.execute_query(create_table_sql, fetch=False)
+        logger.info("Table 'documents' created or already exists")
+
+    def insert_document(self, title: str, content: str):
+        """Insert a document into the documents table."""
+        insert_sql = """
+        INSERT INTO documents (title, content)
+        VALUES (%s, %s);
+        """
+        self.execute_query(insert_sql, params=(title, content), fetch=False)
+        logger.info("Document inserted")g
