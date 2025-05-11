@@ -4,11 +4,11 @@
 conda activate metanavit
 
 # Run synthetic data generation for datasets that need it
-python -m scripts.generate_time_data
-python -m scripts.generate_code_data
+#python -m scripts.generate_time_data
+#python -m scripts.generate_code_data
 
 # Generate index 
-python -m app.engine.generate
+
 
 # Run benchmarks
 python3 -m tests.benchmark_tests.misc_tests.misc_tests

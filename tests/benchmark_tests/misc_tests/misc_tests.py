@@ -13,7 +13,7 @@ from deepeval.test_case import LLMTestCase
 
 
 from tests.benchmark_tests.common.eval_llm import EvalLLM_4Bit
-from tests.benchmark_tests.common.utils import write_results_to_csv, convert_registry_to_tool_call
+from tests.benchmark_tests.common.utils import write_results_to_csv, convert_registry_to_tool_call, get_tool_call_registry
 from tests.benchmark_tests.run_eval import get_chat_response
 
 from . import test_cases
@@ -24,7 +24,7 @@ class MiscTestRunner:
     def __init__(self, test_cases: List[Golden]):
         self.test_cases = test_cases
         self.eval_llm = EvalLLM_4Bit()
-
+    
     def init_metrics(self) -> List[Any]:
         """Initialize evaluation metrics"""
         return [
@@ -37,13 +37,13 @@ class MiscTestRunner:
         metrics = self.init_metrics()
 
         for test in self.test_cases:
+
             # Get LLM response through chat API
             response = await get_chat_response(test.input)
             
             # Extract response content and relevant nodes
             if response is not None:
                 actual_output = response['result']['content']
-
                 # Get source nodes if available
                 if len(response['nodes']) > 0:
                     nodes_used = [node['text'] for node in response.get("nodes", [])]
@@ -62,7 +62,10 @@ class MiscTestRunner:
                 retrieval_context=nodes_used
             )
             
-            tools_called = convert_registry_to_tool_call()
+            tool_registry = response['tools']
+
+            # Convert tool call registry to a list of tool calls
+            tool_calls = convert_registry_to_tool_call(tool_registry)
 
             # Apply each metric and log results
             for metric in metrics:
@@ -78,9 +81,10 @@ class MiscTestRunner:
                     'score': metric.score,
                     'reason': metric.reason,
                     'app_response': actual_output,
-                    'tools_called': tools_called,
+                    'tools_called': tool_calls,
                     'expected_tools': "N/A"
                 })
+                print(f"Wrote results to CSV for test case: {test.input}")
 async def main():
 
     runner = MiscTestRunner(test_cases)

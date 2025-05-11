@@ -54,6 +54,8 @@ from llama_index.core.workflow.handler import WorkflowHandler
 from llama_index.core.workflow.workflow import WorkflowMeta
 from llama_index.core.settings import Settings
 
+from app.engine.tools import add_tool_call, get_tool_call_registry
+
 import llama_index.core.instrumentation as instrument
 
 dispatcher = instrument.get_dispatcher(__name__)
@@ -79,6 +81,13 @@ Current message:
 """
 
 DEFAULT_HANDOFF_OUTPUT_PROMPT = "Agent {to_agent} is now handling the request due to the following reason: {reason}.\nPlease continue with the current request."
+# TODO: integrate workflow with actual retrieval nodes
+class Node:
+    """Node class for representing source context for llama_index."""
+    def __init__(self, node: str):
+        self.node = node
+        self.metadata = None
+
 
 
 async def handoff(ctx: Context, to_agent: str, reason: str) -> str:
@@ -331,6 +340,7 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
                 is_error=True,
             )
 
+        ctx.write_event_to_stream(tool_output)
         return tool_output
 
     @step
@@ -444,6 +454,7 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
             cur_tool_calls: List[ToolCallResult] = await ctx.get(
                 "current_tool_calls", default=[]
             )
+            logger.info(f"Finalized agent: {output}")
             output.tool_calls.extend(cur_tool_calls)  # type: ignore
             await ctx.set("current_tool_calls", [])
 
@@ -642,132 +653,116 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
             verbose=verbose,
         )
     
+    async def _handle_agent_transition_event(self, event, current_agent_name: Optional[str]) -> Optional[str]:
+        """Handles agent transition logging and updates current agent name."""
+        new_agent_name = getattr(event, "current_agent_name", None)
+        if new_agent_name and new_agent_name != current_agent_name:
+            logger.info(f"\n{'='*50}")
+            logger.info(f"🤖 Agent: {new_agent_name}")
+            logger.info(f"{'='*50}\n")
+            return new_agent_name
+        return current_agent_name
+
+    async def _handle_agent_stream_event(self, event: AgentStream, response_str_parts: list):
+        # logger.info(f"💬 {event.delta}") # Original was commented out
+        response_str_parts.append(event.delta)
+
+    async def _handle_agent_output_event(self, event: AgentOutput):
+        logger.info(event) # Logs the entire AgentOutput event
+
+    async def _handle_tool_call_result_event(self, event: ToolCallResult, context_nodes: list):
+        logger.info(f"🔧 Tool Result ({event.tool_name}):")
+        if event.tool_name == "query_index":
+            context_nodes.append(Node(event.tool_output.content)) 
+
+    async def _handle_tool_call_event(self, event: ToolCall):
+        logger.info(f"🔨 Calling Tool: {event.tool_name}")
+
+    async def _handle_tool_output_event(self, event: ToolOutput, tool_call_outputs: list):
+        logger.info(f"🔧 Tool Output: {event.tool_name}")
+        tool_call_outputs.append(event)
+
+    async def _handle_stop_event_event(self, event: StopEvent, final_result_holder: list):
+        final_result_holder.clear() 
+        final_result_holder.append(event.result)
+        logger.info(f"🏁 Workflow Stopped. Final Result: {event.result}")
+
+    def _extract_response_from_final_result(self, final_result_obj: Any) -> str:
+        """Extracts a string response from the final result object of a StopEvent."""
+        response_str = ""
+        if not final_result_obj:
+            return response_str
+
+        logger.info("Streamed response empty, checking final_result_obj...")
+        if isinstance(final_result_obj, AgentOutput):
+            if final_result_obj.response and hasattr(final_result_obj.response, 'content'):
+                response_str = final_result_obj.response.content or ""
+                logger.info(f"Using AgentOutput content: '{response_str}'")
+        elif isinstance(final_result_obj, ToolCallResult):
+             if final_result_obj.return_direct and final_result_obj.tool_output:
+                 response_str = str(final_result_obj.tool_output.content)
+                 logger.info(f"Using direct ToolCallResult content: '{response_str}'")
+        elif isinstance(final_result_obj, str):
+            response_str = final_result_obj
+            logger.info(f"Using direct string result: '{response_str}'")
+        else:
+            try:
+                response_str = str(final_result_obj)
+                logger.warning(f"StopEvent result has unexpected type {type(final_result_obj)}, using str(): '{response_str}'")
+            except Exception:
+                 logger.error(f"Could not convert StopEvent result of type {type(final_result_obj)} to string.")
+                 response_str = ""
+        return response_str
+
     @dispatcher.span
     async def achat(
         self,
         message: str,
         chat_history: Optional[List[ChatMessage]] = None,
     ) -> Any:
-        """Run a non-streaming chat conversation with the agent workflow.
-        
-        This method processes a user message through the multi-agent workflow and
-        yields response content. It handles different types of workflow events,
-        including agent transitions, agent outputs, tool calls, and tool results,
-        providing appropriate logging for each event type.
-        
-        Args:
-            message: The user input message string to process
-            chat_history: Optional list of previous chat messages for context
-            
-        Yields:
-            Content strings from the agent's responses
-            
-        Note:
-            While this method streams content through yields, it's described as
-            "non-streaming" in contrast to other interfaces that might provide
-            token-by-token streaming.
-        """
-        # Initialize current_agent to prevent reference-before-assignment errors
         current_agent = None
         
-        # Start the workflow handler with the user message and chat history
         handler = self.run(
             user_msg=message,
             chat_history=chat_history,
         )
-        response = ""
-        final_result_obj = None
-        # Process each event from the workflow event stream
+        
+        streamed_response_parts = []
+        final_result_holder = [None] 
+        collected_context_nodes = []
+        collected_tool_outputs = []
+
+        event_handlers = {
+            AgentStream: lambda ev: self._handle_agent_stream_event(ev, streamed_response_parts),
+            AgentOutput: self._handle_agent_output_event,
+            ToolCallResult: lambda ev: self._handle_tool_call_result_event(ev, collected_context_nodes),
+            ToolCall: self._handle_tool_call_event,
+            ToolOutput: lambda ev: self._handle_tool_output_event(ev, collected_tool_outputs),
+            StopEvent: lambda ev: self._handle_stop_event_event(ev, final_result_holder),
+        }
+
         async for event in handler.stream_events():
-            # Handle agent transitions
-            if (
-                hasattr(event, "current_agent_name")
-                and event.current_agent_name != current_agent
-            ):
-                current_agent = event.current_agent_name
-                logger.info(f"\n{'='*50}")
-                logger.info(f"🤖 Agent: {current_agent}")
-                logger.info(f"{'='*50}\n")
-            # Handle text streaming
-            elif isinstance(event, AgentStream):
-                #logger.info(f"💬 {event.delta}")
-                response += event.delta
+            if hasattr(event, "current_agent_name"):
+                 current_agent = await self._handle_agent_transition_event(event, current_agent)
+            
+            handler_func = event_handlers.get(type(event))
+            if handler_func:
+                await handler_func(event)
+        
+        response = "".join(streamed_response_parts)
+        final_result_obj = final_result_holder[0] if final_result_holder else None
 
-            elif isinstance(event, AgentInput):
-                logger.info(f"💬 User Input: {event}")
-            # Handle agent output events
-            elif isinstance(event, AgentOutput):
-                logger.info(event)
-            # Handle tool result events
-            elif isinstance(event, ToolCallResult):
-                logger.info(f"🔧 Tool Result ({event.tool_name}):")
-                logger.info(f"  Arguments: {event.tool_kwargs}")
-                logger.info(f"  Output: {event.tool_output}")
-            # Handle tool call events
-            elif isinstance(event, ToolCall):
-                logger.info(f"🔨 Calling Tool: {event.tool_name}")
-                logger.info(f"  With arguments: {event.tool_kwargs}")
-            elif isinstance(event, AgentOutput):
-                logger.info(f"💬 Agent Output: {event.response}")
-                logger.info(f"  Tool Calls: {event.tool_calls}")
-                logger.info(f"  Raw: {event.raw}")
-            # Capture the final result when the workflow stops
-            elif isinstance(event, StopEvent):
-                 final_result_obj = event.result
-                 logger.info(f"🏁 Workflow Stopped. Final Result: {final_result_obj}")
-        # --- Determine the final response string AFTER the loop ---
-        final_response_str = response # Start with any streamed content
+        final_response_str = response 
 
-        # If no content was streamed, inspect the final_result_obj from StopEvent
         if not final_response_str and final_result_obj:
-            logger.info("Streamed response empty, checking final_result_obj...")
-            if isinstance(final_result_obj, AgentOutput):
-                # Check the AgentOutput's response message content
-                if final_result_obj.response and hasattr(final_result_obj.response, 'content'):
-                    final_response_str = final_result_obj.response.content or ""
-                    logger.info(f"Using AgentOutput content: '{final_response_str}'")
-            elif isinstance(final_result_obj, ToolCallResult):
-                 # Check if it was a direct return from a tool
-                 if final_result_obj.return_direct and final_result_obj.tool_output:
-                     final_response_str = str(final_result_obj.tool_output.content)
-                     logger.info(f"Using direct ToolCallResult content: '{final_response_str}'")
-            elif isinstance(final_result_obj, str):
-                # Handle cases where the result is just a string (e.g., direct handoff message)
-                final_response_str = final_result_obj
-                logger.info(f"Using direct string result: '{final_response_str}'")
-            else:
-                # Fallback: try converting the result object to string if unknown type
-                try:
-                    final_response_str = str(final_result_obj)
-                    logger.warning(f"StopEvent result has unexpected type {type(final_result_obj)}, using str(): '{final_response_str}'")
-                except Exception:
-                     logger.error(f"Could not convert StopEvent result of type {type(final_result_obj)} to string.")
-                     final_response_str = "" # Ensure it's a string
+            final_response_str = self._extract_response_from_final_result(final_result_obj)
 
-        # Ensure final_response_str is not None and trim whitespace
         final_response_str = (final_response_str or "").strip()
-        #logger.info(f"Final determined response string: '{final_response_str}'")
-
-        # Extract other details (sources, metadata) primarily from AgentOutput if available
-        final_sources = []
-        final_source_nodes = []
-        final_metadata = None
-        if isinstance(final_result_obj, AgentOutput):
-            final_sources = getattr(final_result_obj, 'sources', []) # Assuming AgentOutput might have sources
-            final_source_nodes = getattr(final_result_obj, 'source_nodes', []) # Assuming AgentOutput might have source_nodes
-            final_metadata = getattr(final_result_obj, 'metadata', None)
-        elif isinstance(final_result_obj, ToolCallResult) and final_result_obj.tool_output:
-             # If the final result is a tool output, check if IT contains source nodes
-             raw_output = final_result_obj.tool_output.raw_output
-
-
-
-        # Return the final structured response
+        
         return AgentChatResponse(
             response=final_response_str,
-            sources=final_sources, # Use extracted sources
-            source_nodes=final_source_nodes, # Use extracted source_nodes
-            metadata=final_metadata # Use extracted metadata
+            sources=collected_tool_outputs, 
+            source_nodes=collected_context_nodes 
         )
 
     @dispatcher.span
@@ -782,3 +777,46 @@ class AgentWorkflow(Workflow, PromptMixin, metaclass=AgentWorkflowMeta):
         )
 
         return StreamingAgentChatResponse(response=response)
+    
+
+if __name__ == "__main__":
+    import os
+    from llama_index.utils.workflow import draw_all_possible_flows
+    import asyncio
+    from app.engine.agents.file_access_agent import create_file_access_agent
+    from app.engine.agents.python_exec_agent import create_python_exec_agent
+    try:
+        from llama_index.llms.ollama import Ollama
+        from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+        from llama_index.llms.ollama.base import DEFAULT_REQUEST_TIMEOUT, Ollama
+    except ImportError:
+        raise ImportError(
+            "Ollama support is not installed. Please install it with `poetry add llama-index-llms-ollama` and `poetry add llama-index-embeddings-ollama`"
+        )
+
+    base_url = os.getenv("OLLAMA_BASE_URL") or "http://127.0.0.1:11434"
+    request_timeout = float(
+        os.getenv("OLLAMA_REQUEST_TIMEOUT", DEFAULT_REQUEST_TIMEOUT)
+    )
+    embed_model = HuggingFaceEmbedding(model_name=os.getenv("EMBEDDING_MODEL"))
+    llm = Ollama(
+        model=os.getenv("MODEL", "llama3.2:1b"),
+        base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+        temperature=0.7,
+    )    # Update global settings
+    Settings.llm = llm
+    Settings.embed_model = embed_model
+
+    # Create agent instances
+    file_agent = create_file_access_agent()
+    python_agent = create_python_exec_agent()
+
+    # Create the AgentWorkflow instance
+    workflow = AgentWorkflow(
+        agents=[file_agent, python_agent],
+        root_agent=file_agent.name, # Assuming FileAccessAgent is the entry point
+        verbose=True # Optional: for detailed logging
+    )
+
+    draw_all_possible_flows(workflow, filename="basic_workflow.html")
+

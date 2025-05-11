@@ -79,7 +79,7 @@ async def chat(
         # (Returns response chunks incrementally)
         response = await chat_engine.achat(last_message_content, messages)
 
-        logger.info(f"Streaming response: {response.response} and {response.sources}\nType: {type(response)}")
+        #logger.info(f"Streaming response: {response.response} and {response.source_nodes}\nType: {type(response)}")
         response.is_dummy_stream = True
         return VercelStreamResponse(
             request=request,
@@ -118,4 +118,5 @@ async def chat_request(
     return Result(
         result=Message(role=MessageRole.ASSISTANT, content=response.response),
         nodes=SourceNodes.from_source_nodes(response.source_nodes),
+        tools=response.sources
     )

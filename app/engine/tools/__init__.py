@@ -33,6 +33,18 @@ def clear_tool_calls():
     global tool_call_registry
     tool_call_registry = []
 
+def add_tool_call(
+    name: str,
+    description: str,
+    output: Any):
+    call_info = {
+        "name": name,
+        "description": description,
+        "output": output,
+    }
+
+    tool_call_registry.append(call_info)
+
 
 def create_tool_callback(tool_name: str, tool_description: str):
     """
@@ -56,7 +68,7 @@ def create_tool_callback(tool_name: str, tool_description: str):
             "output": result,
         }
         tool_call_registry.append(call_info)
-        
+        logger.info(f"Tool call recorded: {call_info}")
         # Return the original result (required by FunctionTool)
         return result
     

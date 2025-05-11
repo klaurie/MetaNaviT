@@ -1,4 +1,3 @@
-    
 """
 Benchmark Test Utilities Module
 
@@ -20,7 +19,7 @@ from app.engine.tools import get_tool_call_registry, clear_tool_calls
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-def convert_registry_to_tool_call():
+def convert_registry_to_tool_call(registry):
     """
     Convert a tool call dictionary from the registry into a DeepEval ToolCall object.
     
@@ -32,27 +31,55 @@ def convert_registry_to_tool_call():
         ToolCall object formatted for DeepEval testing
     """
 
-    tool_registry = get_tool_call_registry()
     tool_calls = []
+    
+    for tool_data in registry:
+        print(f"Processing tool_data: {tool_data}") # For debugging
 
-    for tool_data in tool_registry:
+        # Initialize with default values
+        name = "unknown_tool"
+        description = ""
+        output = ""
+
+        # Check if tool_data is a dictionary before accessing keys
+        if isinstance(tool_data, dict):
+            # Safely get 'tool_name'
+            name_val = tool_data.get("tool_name")
+            if name_val is not None:
+                name = name_val
+            else:
+                print(f"Warning: 'tool_name' missing or None in tool_data: {tool_data}")
+
+            # Safely get nested 'description'
+            raw_input_val = tool_data.get("raw_input")
+            if isinstance(raw_input_val, dict):
+                description_val = raw_input_val.get("input")
+                if description_val is not None:
+                    description = description_val
+                else:
+                    print(f"Warning: 'input' key missing or None in 'raw_input' dict: {raw_input_val}")
+            else:
+                print(f"Warning: 'raw_input' is not a dictionary or missing in tool_data: {tool_data}")
+
+            # Safely get 'output'
+            output_val = tool_data.get("content")
+            if output_val is not None:
+                output = output_val
+            else:
+                print(f"Warning: 'content' missing or None in tool_data: {tool_data}")
+        else:
+            print(f"Warning: Expected a dictionary for tool_data, but got {type(tool_data)}: {tool_data}")
+
+        # Append ToolCall with safely retrieved (or default) values, ensuring they are strings
         tool_calls.append(ToolCall(
-        name=tool_data.get("name", "unknown_tool"),
-        description=tool_data.get("description"),
-        output=tool_data.get("output"),
+            name=str(name),
+            description=str(description),
+            output=str(output),
         ))
     
-    logger.info(f"called: {tool_calls}")
+
     # clear registry for future queries
     clear_tool_calls()
-
-    # If there were no tool calls, append an empty one, so we can still run the test
-    if len(tool_calls) < 1:
-        tool_calls.append(ToolCall(
-            name="none",
-            description="no tool was used",
-            output="",
-            ))
 
     return tool_calls 
     
@@ -110,4 +137,3 @@ def write_results_to_csv(results: Dict, filename: str="benchmark_results.csv"):
         writer.writerow(results)
         logger.info(f"Results written to {full_path}")
 
-        

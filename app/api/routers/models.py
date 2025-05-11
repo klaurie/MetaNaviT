@@ -370,6 +370,17 @@ class SourceNodes(BaseModel):
             text=source_node.node.text,  # type: ignore
             url=url,
         )
+    
+    @classmethod
+    def temp_from_source_node(cls, source_node):
+
+        return cls(
+            id="",
+            metadata={},
+            score=0.0,
+            url=None,
+            text=source_node.node,  # type: ignore
+        )
 
     @classmethod
     def get_url_from_metadata(cls, metadata: Dict[str, Any]) -> Optional[str]:
@@ -403,13 +414,14 @@ class SourceNodes(BaseModel):
 
     @classmethod
     def from_source_nodes(cls, source_nodes: List[NodeWithScore]):
-        return [cls.from_source_node(node) for node in source_nodes]
+        return [cls.temp_from_source_node(node) for node in source_nodes]
 
 
 class Result(BaseModel):
     """Container for chat responses with sources"""
     result: Message
     nodes: List[SourceNodes]
+    tools: List[Any]
 
 
 class ChatConfig(BaseModel):

@@ -113,7 +113,8 @@ class TimeQueryTestRunner:
             
             # Get response from the chat API
             response = await get_chat_response(input_query)
-            tools_called = convert_registry_to_tool_call()
+            tool_registry = response.get('tools', [])
+            tools_called = convert_registry_to_tool_call(tool_registry)
 
             # Create test case for evaluation
             llm_test_case = LLMTestCase(

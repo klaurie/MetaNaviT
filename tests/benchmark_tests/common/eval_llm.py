@@ -61,6 +61,7 @@ class EvalLLM_4Bit(DeepEvalBaseLLM):
         # Output and load valid JSON
         output_dict = text_gen_pipeline(prompt, prefix_allowed_tokens_fn=prefix_function)
         output = output_dict[0]["generated_text"][len(prompt) :]
+        print(f"Eval Output: {output}")
         json_result = json.loads(output)
 
         # Return valid JSON object according to the schema DeepEval supplied

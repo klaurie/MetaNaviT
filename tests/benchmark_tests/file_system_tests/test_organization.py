@@ -124,8 +124,8 @@ class FileSystemTestRunner:
             else:
                 # Handle failed responses
                 actual_output = ""
-
-            tools_called = convert_registry_to_tool_call()
+            tool_registry = response['tools']
+            tools_called = convert_registry_to_tool_call(tool_registry)
 
             eval_case = LLMTestCase(
                 input=test["input"],

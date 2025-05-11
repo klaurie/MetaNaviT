@@ -84,8 +84,8 @@ class SearchTestRunner:
                 # Handle failed responses
                 actual_output = ""
                 nodes_used = ["None"]
-
-            tools_called = convert_registry_to_tool_call()
+            tool_registry = response['tools']
+            tools_called = convert_registry_to_tool_call(tool_registry)
             eval_case = LLMTestCase(
                 input=test["input"],
                 actual_output=actual_output,
