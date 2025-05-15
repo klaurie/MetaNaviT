@@ -12,6 +12,11 @@ import time
 import logging
 import os
 from typing import List, Dict, Any
+import uuid
+from llama_index.core.schema import TextNode
+
+# Add this import for get_vector_store_manager
+from app.database.vector_store_manager import get_vector_store_manager
 
 # Set up logging
 logging.basicConfig(
@@ -306,9 +311,156 @@ def main():
         # Print summary
         test_suite.print_summary(search_results, chat_results)
         
+        # Run the direct comparison test between BM25 and vector search
+        logger.info("\n" + "="*80)
+        logger.info("RUNNING BM25 VS VECTOR COMPARISON TEST")
+        logger.info("="*80)
+        test_bm25_vs_vector()
+        
         logger.info("Test suite completed successfully")
     except Exception as e:
         logger.error(f"Test suite failed: {e}", exc_info=True)
+
+
+def insert_test_documents():
+    """Insert test documents to demonstrate BM25 vs Vector search."""
+    import json, uuid
+    from app.engine.llm import get_embedding_model
+    from app.database.vector_store_manager import get_vector_store_manager
+
+    vsm = get_vector_store_manager()
+
+    # 1) Figure out the true dimension of the 'embedding' column
+    with vsm.get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT a.atttypmod 
+                  FROM pg_attribute a
+                  JOIN pg_class c ON a.attrelid = c.oid
+                  JOIN pg_namespace n ON c.relnamespace = n.oid
+                 WHERE n.nspname = %s
+                   AND c.relname = %s
+                   AND a.attname  = 'embedding'
+                   AND a.atttypid = (SELECT oid FROM pg_type WHERE typname = 'vector');
+            """, (vsm.schema_name, vsm.table_name))
+            db_dim = cur.fetchone()[0]
+    logger.info(f"Detected embedding column dimension: {db_dim}")
+
+    # 2) Prepare our sample texts
+    smartphone_texts = [
+        "This smartphone, the iPhone 13 Pro, features an exceptional camera system with Night mode, Deep Fusion, and ProRAW capabilities.",
+        "Samsung Galaxy S21 Ultra offers a 108MP camera with excellent low-light performance and 100x Space Zoom.",
+        "Google Pixel 6 Pro has computational photography features that enhance image quality even in challenging conditions.",
+        "OnePlus 9 Pro includes Hasselblad camera technology for accurate colors and excellent dynamic range."
+    ]
+
+    # 3) Generate embeddings and pad/truncate to db_dim
+    embed_model = get_embedding_model()
+    nodes = []
+    for i, text in enumerate(smartphone_texts):
+        raw_emb = embed_model.get_text_embedding(text)
+        # pad or truncate
+        if len(raw_emb) < db_dim:
+            padded = raw_emb + [0.0] * (db_dim - len(raw_emb))
+        else:
+            padded = raw_emb[:db_dim]
+
+        nodes.append({
+            "node_id":  str(uuid.uuid4()),
+            "text":     text,
+            "metadata": {"source": f"test_document_{i}", "topic": "smartphone"},
+            "embedding": padded
+        })
+
+    # 4) Insert & commit via psycopg2 so BM25 sees it
+    with vsm.get_connection() as conn:
+        with conn.cursor() as cur:
+            for n in nodes:
+                cur.execute(
+                    """
+                    INSERT INTO public.llamaindex_embedding
+                      (node_id, text, metadata_, embedding)
+                    VALUES (%s, %s, %s, %s)
+                    """,
+                    (n["node_id"], n["text"], json.dumps(n["metadata"]), n["embedding"])
+                )
+        conn.commit()
+
+        # sanity check
+        with conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*) FROM public.llamaindex_embedding;")
+            count = cur.fetchone()[0]
+            logger.info(f"Rows after manual insert: {count}")
+
+    # 5) Return the query that will match (“camera” is in all texts)
+    return "camera", nodes
+
+
+def test_bm25_vs_vector():
+    """Compare BM25 and vector search results side by side."""
+    vector_store_manager = get_vector_store_manager()
+    
+    # Force recreate BM25 index to ensure it's fresh - properly using with statement
+    with vector_store_manager.get_connection() as conn:
+        vector_store_manager._create_bm25_index(conn)
+    
+    # Add test documents first
+    test_query, added_nodes = insert_test_documents()
+    logger.info(f"Added {len(added_nodes)} test documents about smartphones and cameras")
+    
+    # Wait for index to update
+    time.sleep(2)
+    
+    # Execute BM25 search
+    start_time = time.time()
+    bm25_results = vector_store_manager.search_bm25(query=test_query, limit=5)
+    bm25_time = time.time() - start_time
+    
+    # Get the embedding dimension from the manager
+    embed_dim = vector_store_manager.embed_dim
+    logger.info(f"Using embedding dimension from database: {embed_dim}")
+    
+    # Configure embedding model with correct dimensions
+    from app.engine.llm import get_embedding_model
+    from llama_index.core.settings import Settings
+    
+    embed_model = get_embedding_model()
+    Settings.embed_model = embed_model
+    logger.info(f"Configured embedding model: {embed_model.__class__.__name__}")
+    
+    # Execute vector search
+    vector_store = vector_store_manager.get_vector_store()
+    from llama_index.core.indices.vector_store import VectorStoreIndex
+    index = VectorStoreIndex.from_vector_store(vector_store)
+    retriever = index.as_retriever(similarity_top_k=5)
+    
+    try:
+        start_time = time.time()
+        vector_results = retriever.retrieve(test_query)
+        vector_time = time.time() - start_time
+        
+        logger.info(f"BM25 search returned {len(bm25_results)} results in {bm25_time:.2f}s")
+        logger.info(f"Vector search returned {len(vector_results)} results in {vector_time:.2f}s")
+        
+        # Compare top results
+        logger.info("\nTop BM25 Result:")
+        if bm25_results:
+            logger.info(f"Score: {bm25_results[0]['score']}")
+            logger.info(f"Text: {bm25_results[0]['text'][:100]}...")
+        
+        logger.info("\nTop Vector Result:")
+        if vector_results:
+            logger.info(f"Score: {vector_results[0].score}")
+            logger.info(f"Text: {vector_results[0].node.text[:100]}...")
+    except Exception as e:
+        logger.error(f"Vector search failed: {e}")
+        logger.info("BM25 search still successful with {len(bm25_results)} results in {bm25_time:.2f}s")
+        
+        # Show BM25 results even if vector search fails
+        logger.info("\nTop BM25 Results:")
+        for i, result in enumerate(bm25_results[:3]):
+            logger.info(f"{i+1}. Score: {result['score']}")
+            logger.info(f"   Text: {result['text'][:100]}...")
 
 
 if __name__ == "__main__":

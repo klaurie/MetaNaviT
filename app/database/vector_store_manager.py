@@ -84,78 +84,65 @@ class VectorStoreManager(DatabaseManager):
                     conn.rollback()
                     raise
 
-    def _ensure_pg_search_extension(self) -> None:
-        """Create pg_search extension if it doesn't exist."""
-        with self.get_connection() as conn:
-            with conn.cursor() as cur:
-                try:
-                    logger.info("Ensuring 'pg_search' extension (in 'paradedb' schema) exists...")
-                    # pg_search is expected to be in the 'paradedb' schema as per ParadeDB's setup
-                    # and confirmed by your \dx output.
-                    cur.execute("CREATE EXTENSION IF NOT EXISTS pg_search SCHEMA paradedb;")
-                    logger.info("'pg_search' extension check complete (expected in 'paradedb' schema).")
-                except Exception as e:
-                    # Catch specific error if extension is not installed vs. other errors
-                    if "extension \"pg_search\" does not exist" in str(e) or \
-                       "could not open extension control file" in str(e): # More general check
-                         logger.error("pg_search extension is not installed in PostgreSQL or control file is missing.")
-                         logger.error("Please ensure it is correctly installed (e.g., via .deb package) and PostgreSQL is restarted.")
-                    else:
-                        logger.error(f"Error creating/ensuring pg_search extension: {e}")
-                    conn.rollback()
-                    raise
-
-    def _create_bm25_index(self) -> None:
-        """Create BM25 index on the 'text' column if it doesn't exist."""
-        # Name for the BM25 index
-        index_name = f"{self.table_name}_bm25_idx_on_text"
-        table_name = f"{self.schema_name}.{self.table_name}"
-        
-        # Use the exact syntax from ParadeDB documentation:
-        # CREATE INDEX ON table USING bm25 (id, data) WITH (key_field = 'id');
-        create_index_sql = f"""
-            CREATE INDEX IF NOT EXISTS {index_name} ON {table_name}
-            USING bm25 (node_id, text)
-            WITH (key_field = 'node_id');
-        """
-        
+    def _ensure_pg_search_extension(self):
+        """Ensure the pg_search extension exists."""
+        logger.info("Ensuring 'pg_search' extension (in 'paradedb' schema) exists...")
         try:
             with self.get_connection() as conn:
                 with conn.cursor() as cur:
-                    logger.info(f"Creating BM25 index '{index_name}' using ParadeDB official syntax")
+                    # Check for and create schema if it doesn't exist
+                    cur.execute("CREATE SCHEMA IF NOT EXISTS paradedb;")
                     
-                    # Set the search path to include paradedb schema first, then public
-                    cur.execute("SET search_path TO paradedb, public;")
+                    # Check if pg_search is already installed
+                    cur.execute("""
+                        SELECT 1 FROM pg_extension WHERE extname = 'pg_search';
+                    """)
+                    if cur.fetchone() is None:
+                        # Try to create it
+                        try:
+                            cur.execute("CREATE EXTENSION IF NOT EXISTS pg_search;")
+                        except Exception as e:
+                            logger.warning(f"Could not create pg_search extension: {e}")
                     
-                    # Now execute the CREATE INDEX with the exact ParadeDB syntax
-                    logger.info(f"Executing SQL: {create_index_sql}")
-                    cur.execute(create_index_sql)
-                    
-            logger.info(f"BM25 index created successfully")
+                    # Create BM25 index if it doesn't exist
+                    self._create_bm25_index(conn)
+            logger.info("'pg_search' extension check complete (expected in 'paradedb' schema).")
+        except Exception as e:
+            logger.warning(f"Unable to verify pg_search extension: {e}")
+        
+    def _create_bm25_index(self, conn):
+        """Create or recreate BM25 index for text column."""
+        logger.info(f"Proceeding to ensure BM25 index exists for {self.schema_name}.{self.table_name}...")
+        try:
+            with conn.cursor() as cur:
+                # Drop existing index if it exists to force refresh
+                index_name = f"{self.table_name}_bm25_idx_on_text"
+                cur.execute(f"DROP INDEX IF EXISTS {index_name};")
+                
+                # Create BM25 index with proper ParadeDB syntax based on docs
+                sql_stmt = f"""
+                CREATE INDEX IF NOT EXISTS {index_name} ON {self.schema_name}.{self.table_name}
+                USING bm25 (node_id, text)
+                WITH (
+                    key_field='node_id',
+                    text_fields='{{
+                        "text": {{"tokenizer": {{"type": "default", "stemmer": "English"}}}}
+                    }}'
+                );
+                """
+                logger.info(f"Creating BM25 index '{index_name}' using ParadeDB documentation syntax")
+                logger.info(f"Executing SQL:\n{sql_stmt}\n")
+                cur.execute(sql_stmt)
+                
+                # Analyze the table to refresh statistics
+                cur.execute(f"ANALYZE {self.schema_name}.{self.table_name};")
+                
+                logger.info("BM25 index created successfully")
+            logger.info("BM25 index creation/verification successful")
             return True
         except Exception as e:
-            logger.error(f"Error creating BM25 index: {e}")
-            
-            # For troubleshooting, try another variant without quotes around node_id
-            try:
-                with self.get_connection() as conn:
-                    with conn.cursor() as cur:
-                        cur.execute("SET search_path TO paradedb, public;")
-                        
-                        alt_sql = f"""
-                            CREATE INDEX IF NOT EXISTS {index_name}_alt ON {table_name}
-                            USING bm25 (node_id, text)
-                            WITH (key_field = node_id);
-                        """
-                        logger.info(f"Trying alternative syntax: {alt_sql}")
-                        cur.execute(alt_sql)
-                        logger.info("Alternative syntax worked!")
-                        return True
-            except Exception as alt_e:
-                logger.error(f"Alternative syntax also failed: {alt_e}")
-        
-        logger.warning("BM25 index creation failed. The application will continue without BM25 search capability.")
-        return False
+            logger.warning(f"Error creating BM25 index: {e}")
+            return False
 
     def _create_llamaindex_table_if_not_exists(self) -> None:
         """
@@ -281,11 +268,12 @@ class VectorStoreManager(DatabaseManager):
             # BM25 Index Creation - attempt it but don't fail if it doesn't work
             logger.info(f"Proceeding to ensure BM25 index exists for {self.schema_name}.{self.table_name}...")
             try:
-                bm25_created = self._create_bm25_index()
+                with self.get_connection() as conn:
+                    bm25_created = self._create_bm25_index(conn)
                 if bm25_created:
                     logger.info("BM25 index creation/verification successful")
                 else:
-                    logger.warning("BM25 index creation failed, but continuing anyway")
+                     logger.warning("BM25 index creation failed, but continuing anyway")  
             except Exception as e:
                 logger.warning(f"BM25 index creation failed: {e}", exc_info=True)
                 logger.warning("Continuing without BM25 search capability")
@@ -304,13 +292,11 @@ class VectorStoreManager(DatabaseManager):
 
         results = []
         
-        # Try BM25 search with correct ParadeDB syntax
+        # Try multiple BM25 query formats
         try:
             table_identifier = sql.Identifier(self.schema_name, self.table_name)
             
-            # BM25 search SQL using the ParadeDB syntax
-            # The @@@ operator checks if text matches the query
-            # The paradedb.score() function returns the relevance score
+            # Format 1: Standard BM25 search with @@@ operator
             search_sql = sql.SQL("""
                 SELECT node_id, text, paradedb.score(node_id) AS score
                 FROM {table}
@@ -319,27 +305,76 @@ class VectorStoreManager(DatabaseManager):
                 LIMIT %s;
             """).format(
                 table=table_identifier,
-                query=sql.Literal(query)  # ParadeDB docs show using a literal not parameter binding
+                query=sql.Literal(query)
             )
             
             with self.get_connection() as conn:
                 with conn.cursor() as cur:
                     # Set search_path
                     cur.execute("SET search_path TO paradedb, public;")
-                    # Execute search
-                    cur.execute(search_sql, (limit,))  # Only limit is a parameter
+                    
+                    # Execute search and log the actual SQL
+                    logger.info(f"BM25 search query: {search_sql.as_string(conn)}")
+                    cur.execute(search_sql, (limit,))
                     results = cur.fetchall()
             
             if results:
                 logger.info(f"BM25 search successful, found {len(results)} results")
                 return [{"node_id": row[0], "text": row[1], "score": row[2]} for row in results]
+            
+            # Format 2: Try more flexible tokenized search
+            tokenized_query = " OR ".join(query.split())
+            search_sql2 = sql.SQL("""
+                SELECT node_id, text, paradedb.score(node_id) AS score
+                FROM {table}
+                WHERE text @@@ {query}
+                ORDER BY score DESC
+                LIMIT %s;
+            """).format(
+                table=table_identifier,
+                query=sql.Literal(tokenized_query)
+            )
+            
+            with self.get_connection() as conn:
+                with conn.cursor() as cur:
+                    # Set search_path
+                    cur.execute("SET search_path TO paradedb, public;")
+                    
+                    # Execute tokenized search
+                    logger.info(f"BM25 tokenized search query: {search_sql2.as_string(conn)}")
+                    cur.execute(search_sql2, (limit,))
+                    results = cur.fetchall()
+            
+            if results:
+                logger.info(f"BM25 tokenized search successful, found {len(results)} results")
+                return [{"node_id": row[0], "text": row[1], "score": row[2]} for row in results]
+            
         except Exception as e:
             logger.warning(f"BM25 search failed: {e}")
             # Fall back to basic search
         
-        # If BM25 search failed or returned no results, try basic text search fallback
+        # If BM25 search failed or returned no results, try full-text search fallback
         try:
+            # More powerful full-text search as fallback
             fallback_sql = sql.SQL("""
+                SELECT node_id, text, ts_rank(to_tsvector('english', text), plainto_tsquery('english', %s)) AS score
+                FROM {table}
+                WHERE to_tsvector('english', text) @@ plainto_tsquery('english', %s)
+                ORDER BY score DESC
+                LIMIT %s;
+            """).format(table=sql.Identifier(self.schema_name, self.table_name))
+            
+            with self.get_connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(fallback_sql, (query, query, limit))
+                    results = cur.fetchall()
+            
+            if results:
+                logger.info(f"Fallback full-text search successful, found {len(results)} results")
+                return [{"node_id": row[0], "text": row[1], "score": row[2]} for row in results]
+            
+            # Last resort: ILIKE search
+            basic_sql = sql.SQL("""
                 SELECT node_id, text, 1.0 AS score
                 FROM {table}
                 WHERE text ILIKE %s
@@ -348,17 +383,17 @@ class VectorStoreManager(DatabaseManager):
             
             with self.get_connection() as conn:
                 with conn.cursor() as cur:
-                    cur.execute(fallback_sql, (f'%{query}%', limit))
+                    cur.execute(basic_sql, (f'%{query}%', limit))
                     results = cur.fetchall()
             
             if results:
-                logger.info(f"Fallback text search successful, found {len(results)} results")
+                logger.info(f"Basic ILIKE search successful, found {len(results)} results")
                 return [{"node_id": row[0], "text": row[1], "score": row[2]} for row in results]
             else:
-                logger.info("No results found in fallback search")
+                logger.info("No results found in any search")
                 return []
         except Exception as e:
-            logger.error(f"Fallback search failed: {e}")
+            logger.error(f"All search methods failed: {e}")
             return []
 
     def close(self) -> None:
