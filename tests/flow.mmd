@@ -1,0 +1,80 @@
+flowchart LR
+  %% Initialization Phase
+  subgraph Initialization
+    style Initialization fill:#f0f8ff,stroke:#333,stroke-width:1px
+    SE[StartEvent] -->|“init_run”| IR[init_run]
+    IR --> AI[AgentInput]
+  end
+
+  %% Agent Setup & Execution
+  subgraph Agent
+    style Agent fill:#fafad2,stroke:#333,stroke-width:1px
+    AI -->|“setup_agent”| SA[setup_agent]
+    SA --> AS[AgentSetup]
+    AS --> RAS[run_agent_step]
+    RAS --> AO[AgentOutput]
+    AO --> PAO[parse_agent_output]
+  end
+
+  %% Tool Invocation Loop
+  subgraph Tools
+    style Tools fill:#e6ffe6,stroke:#333,stroke-width:1px
+    PAO --> TC[ToolCall]
+    TC --> CT[call_tool]flowchart LR
+  %% Initialization Phase
+  subgraph Initialization
+    style Initialization fill:#f0f8ff,stroke:#333,stroke-width:1px
+    SE[StartEvent] -->|“init_run”| IR[init_run]
+    IR --> AI[AgentInput]
+  end
+
+  %% Agent Setup & Execution
+  subgraph Agent
+    style Agent fill:#fafad2,stroke:#333,stroke-width:1px
+    AI -->|“setup_agent”| SA[setup_agent]
+    SA --> AS[AgentSetup]
+    AS --> RAS[run_agent_step]
+    RAS --> AO[AgentOutput]
+    AO --> PAO[parse_agent_output]
+  end
+
+  %% Tool Invocation Loop
+  subgraph Tools
+    style Tools fill:#e6ffe6,stroke:#333,stroke-width:1px
+    PAO --> TC[ToolCall]
+    TC --> CT[call_tool]
+    CT --> TCR[ToolCallResult]
+    TCR --> ATR[aggregate_tool_results]
+    ATR --> AI
+  end
+
+  %% Termination
+  subgraph Termination
+    style Termination fill:#ffe6e6,stroke:#333,stroke-width:1px
+    PAO --> SE2[StopEvent]
+    SE2 --> Done[done]
+  end
+
+  %% Styling nodes
+  classDef event fill:#8FAADC,stroke:#333,stroke-width:1px;
+  classDef process fill:#CCCCCC,stroke:#333,stroke-width:1px,font-size:12px;
+  class SE,SE2,Done event;
+  class IR,AI,SA,AS,RAS,AO,PAO,TC,CT,TCR,ATR process;
+
+    CT --> TCR[ToolCallResult]
+    TCR --> ATR[aggregate_tool_results]
+    ATR --> AI
+  end
+
+  %% Termination
+  subgraph Termination
+    style Termination fill:#ffe6e6,stroke:#333,stroke-width:1px
+    PAO --> SE2[StopEvent]
+    SE2 --> Done[done]
+  end
+
+  %% Styling nodes
+  classDef event fill:#8FAADC,stroke:#333,stroke-width:1px;
+  classDef process fill:#CCCCCC,stroke:#333,stroke-width:1px,font-size:12px;
+  class SE,SE2,Done event;
+  class IR,AI,SA,AS,RAS,AO,PAO,TC,CT,TCR,ATR process;
