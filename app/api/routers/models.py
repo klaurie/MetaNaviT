@@ -344,77 +344,42 @@ class ChatData(BaseModel):
         return uploaded_files
 
 
-class SourceNodes(BaseModel):
-    """
-    Manages document source references:
-    - Node identification
-    - Metadata tracking
-    - URL construction
-    - Relevance scoring
-    """
-    id: str
-    metadata: Dict[str, Any]
-    score: Optional[float]
+class SourceNode(BaseModel):
     text: str
-    url: Optional[str]
-
-    @classmethod
-    def from_source_node(cls, source_node: NodeWithScore):
-        metadata = source_node.node.metadata
-        url = cls.get_url_from_metadata(metadata)
-
-        return cls(
-            id=source_node.node.node_id,
-            metadata=metadata,
-            score=source_node.score,
-            text=source_node.node.text,  # type: ignore
-            url=url,
-        )
+    metadata: Optional[Dict[str, Any]] = None
+    score: Optional[float] = None
     
     @classmethod
-    def temp_from_source_node(cls, source_node):
-
+    def from_node_with_score(cls, node_with_score: NodeWithScore):
+        """Convert a NodeWithScore to a SourceNode."""
+        # Fix non-JSON-compliant float values
+        score = node_with_score.score
+        # Replace inf, -inf, and nan with null in JSON
+        if score is not None:
+            if not isinstance(score, (int, float)) or score in [float('inf'), float('-inf')] or score != score:  # Last check is for NaN
+                score = None
+                
         return cls(
-            id="",
-            metadata={},
-            score=0.0,
-            url=None,
-            text=source_node.node,  # type: ignore
+            text=node_with_score.node.text,
+            metadata=node_with_score.node.metadata,
+            score=score,
         )
 
-    @classmethod
-    def get_url_from_metadata(cls, metadata: Dict[str, Any]) -> Optional[str]:
-        """
-        Builds source URLs based on:
-        - File location (local/cloud)
-        - Privacy settings
-        - Pipeline origin
-        """
-        url_prefix = os.getenv("FILESERVER_URL_PREFIX")
-        if not url_prefix:
-            logger.warning(
-                "Warning: FILESERVER_URL_PREFIX not set in environment variables. Can't use file server"
-            )
-        file_name = metadata.get("file_name")
 
-        if file_name and url_prefix:
-            is_private = metadata.get("private", "false") == "true"
-            if is_private:
-                # file is a private upload
-                return f"{url_prefix}/output/uploaded/{file_name}"
-            # file is from calling the 'generate' script
-            # Get the relative path of file_path to data_dir
-            file_path = metadata.get("file_path")
-            data_dir = os.path.abspath(DATA_DIR)
-            if file_path and data_dir:
-                relative_path = os.path.relpath(file_path, data_dir)
-                return f"{url_prefix}/data/{relative_path}"
-        # fallback to URL in metadata (e.g. for websites)
-        return metadata.get("URL")
-
+class SourceNodes(BaseModel):
+    nodes: List[SourceNode] = Field(default_factory=list)
+    
     @classmethod
     def from_source_nodes(cls, source_nodes: List[NodeWithScore]):
-        return [cls.temp_from_source_node(node) for node in source_nodes]
+        """Create a SourceNodes object from a list of source nodes."""
+        nodes = []
+        for node in source_nodes:
+            try:
+                nodes.append(SourceNode.from_node_with_score(node))
+            except Exception as e:
+                # Skip invalid nodes
+                continue
+        return cls(nodes=nodes)
 
 
 class Result(BaseModel):

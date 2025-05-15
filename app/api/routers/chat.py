@@ -22,10 +22,12 @@ from app.api.routers.models import (
     SourceNodes,
 )
 from app.api.routers.vercel_response import VercelStreamResponse
-from app.engine.engine import get_chat_engine
+from app.engine.engine import get_chat_engine, get_engine_factory
 from app.engine.query_filter import generate_filters
 from fastapi.responses import JSONResponse
 from llama_index.core.chat_engine.types import StreamingAgentChatResponse
+from app.database.vector_store import get_vector_store_manager
+from app.engine.llm import get_llm, get_embedding_model
 
 
 # Initialize router - will be mounted in main app
@@ -102,21 +104,99 @@ async def chat(
 async def chat_request(
     data: ChatData,
 ) -> Result:
-    last_message_content = data.get_last_message_content()
-    messages = data.get_history_messages()
+    try:
+        logger.info("Starting chat request processing")
+        last_message_content = data.get_last_message_content()
+        messages = data.get_history_messages()
+        logger.info(f"Processing chat message: '{last_message_content[:100]}...'")
 
-    doc_ids = data.get_chat_document_ids()
-    filters = generate_filters(doc_ids)
-    params = data.data or {}
-    logger.info(
-        f"Creating chat engine with filters: {str(filters)}",
+        doc_ids = data.get_chat_document_ids()
+        filters = generate_filters(doc_ids)
+        params = data.data or {}
+        logger.info(f"Creating chat engine with filters: {str(filters)}")
+
+        # Add step-by-step debug logs
+        try:
+            logger.info("Step 1: Getting vector store manager")
+            vector_store_manager = get_vector_store_manager()
+            
+            logger.info("Step 2: Getting vector store")
+            vector_store = vector_store_manager.get_vector_store()
+            
+            logger.info("Step 3: Creating VectorStoreIndex")
+            from llama_index.core.indices.vector_store import VectorStoreIndex
+            index = VectorStoreIndex.from_vector_store(vector_store)
+            
+            logger.info("Step 4: Creating retriever")
+            retriever = index.as_retriever(similarity_top_k=5)
+            
+            logger.info("Step 5: Getting engine factory")
+            factory = get_engine_factory()
+            
+            logger.info("Step 6: Creating chat engine")
+            chat_engine = factory.create_chat_engine(
+                retriever=retriever,
+                filters=filters,
+                params=params,
+            )
+            
+            logger.info("Step 7: Processing chat request")
+            response = await chat_engine.achat(last_message_content, messages)
+            
+            logger.info(f"Chat response generated: {len(response.response)} chars")
+            return Result(
+                result=Message(role=MessageRole.ASSISTANT, content=response.response),
+                nodes=[SourceNodes.from_source_nodes(response.source_nodes)],
+            )
+            
+        except Exception as e:
+            # Log detailed exception info including traceback
+            logger.exception(f"Error in chat processing: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Chat processing error: {str(e)}"
+            )
+            
+    except Exception as outer_e:
+        logger.exception(f"Outer exception in chat_request: {outer_e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Chat request error: {str(outer_e)}"
+        )
+
+def get_vector_store_chat_engine(filters=None, params=None):
+    """Create and return a chat engine instance with vector store retrieval."""
+    # Add debugging
+    logger.info("Creating chat engine with retriever enabled")
+    
+    if not filters:
+        logger.info("No filters provided, using all documents")
+    
+    # Ensure vector store is properly connected
+    vector_store_manager = get_vector_store_manager()
+    vector_store = vector_store_manager.get_vector_store()
+    
+    # Enable verbose logging for retrieval
+    from llama_index.core.settings import Settings
+    Settings.llm = get_llm()
+    Settings.embed_model = get_embedding_model()
+    Settings.debug = True  # Enable debug mode
+    
+    # Create a VectorStoreIndex around the PostgreSQL vector store
+    from llama_index.core.indices.vector_store import VectorStoreIndex
+    
+    # Create the index with the vector store
+    index = VectorStoreIndex.from_vector_store(vector_store)
+    
+    # Now we can create a retriever from the index
+    retriever = index.as_retriever(similarity_top_k=5)
+    logger.info(f"Created retriever with top_k=5")
+    
+    # Create chat engine with retriever
+    chat_engine = get_engine_factory().create_chat_engine(
+        retriever=retriever,
+        filters=filters,
+        params=params,
     )
-
-    chat_engine = get_chat_engine(filters=filters, params=params)
-
-    response = await chat_engine.achat(last_message_content, messages)
-    return Result(
-        result=Message(role=MessageRole.ASSISTANT, content=response.response),
-        nodes=SourceNodes.from_source_nodes(response.source_nodes),
-        tools=response.sources
-    )
+    
+    return chat_engine
