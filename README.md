@@ -151,7 +151,3 @@ curl --location 'localhost:8000/api/chat/request' \
 ```
 
 You can start editing the API endpoints by modifying `app/api/routers/chat.py`. The endpoints auto-update as you save the file. You can delete the endpoint you're not using.
-
-### Deployments
-
-For production deployments, check the [DEPLOY.md](DEPLOY.md) file.
