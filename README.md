@@ -117,8 +117,28 @@ If you are using any tools or data sources, you can update their config files in
 ./scripts/run.sh dev
 ```
 
-Open [http://localhost:8000](http://localhost:8000) with your browser to start the app.
+## 🔧 Automated Setup Script (WIP)
 
+> _Coming soon:_ a single command that asks for your model name and API key, writes `~/.metanavit/config.toml`, and then starts the app.
+
+
+
+Open [http://localhost:8000](http://localhost:8000) with your browser to start the app.
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{} l l l @{}}
+\toprule
+\textbf{Milestone} & \textbf{Date} & \textbf{Status} \\
+\midrule
+Setup Script                        & May 18, 2025 & 🚧 Prototype (WIP) \\
+Usability Tests                     & May 25, 2025 & 🗓️ Planned         \\
+Multimodal Integration              & May 28, 2025 & 🗓️ Planned         \\
+Production Deploy                   & Jun 1, 2025  & 🗓️ Planned         \\
+First User Experience Update (Batch)& TBD          & 🗓️ Planned         \\
+\bottomrule
+\end{tabular}
+\caption{MetaNaviT Roadmap}
+\end{table}
 The example provides two different API endpoints:
 
 1. `/api/chat` - a streaming chat endpoint
