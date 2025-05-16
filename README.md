@@ -27,7 +27,7 @@ An AI-powered resource management tool designed to help users organize, extract,
 - **May 2025:** Benchmark harness + docs in progress ✅ *(current)*  
 - **Jun 2025:** Usability tests → production deploy 🗓️  
 
-## Value Proposition
+## 🌟 Value Proposition
 
 
 ### Problem Statement:
