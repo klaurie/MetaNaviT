@@ -80,36 +80,9 @@ ollama serve
 ollama pull llama3.2:1b
 ```
 
-4. &nbsp;<img src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="PostgreSQL Logo" width="20" style="vertical-align: middle;" />&nbsp; Install PostgreSQL https://www.postgresql.org/download/
+4. &nbsp;<img src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="PostgreSQL Logo" width="20" style="vertical-align: middle;" />&nbsp; Install PostgreSQL https://www.postgresql.org/download/ & pgvector https://github.com/pgvector/pgvector 
 
-5. Install pgvector https://github.com/pgvector/pgvector 
-
-6. MacOS user might want to check NVM installed version. An installed version can be old.
-```bash
-node -v
-# If your version is not 20, follow this:
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-
-nvm install 20
-
-nvm use 20
-
-nvm alias default 20
-# Check the version again.
-node -v
-```
-
-### Quick Start with Dev Container (Recommended)
-
-The easiest way to get started is using the dev container, which handles all dependencies except Ollama and Database dependencies:
-
-1. Install [Docker](https://www.docker.com/products/docker-desktop/) and [VS Code](https://code.visualstudio.com/)
-2. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) in VS Code
-3. Open this project in VS Code
-4. Click the green button in the bottom-left corner (or press `F1` and select "Dev Containers: Reopen in Container")
-5. Wait for the container to build - all dependencies will be automatically installed!
-
-### Manual Setup (Alternative)
+### Environment Setup
 
 If you prefer not to use the dev container, you'll need to additionally:
 
