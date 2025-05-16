@@ -17,10 +17,15 @@ Traditional code retrieval and assistance tools often overlook contextual metada
 
 ### Target Audience
 Our primary audience include researchers, content managers, data analysts, software engineers, and students, each with distinct needs:
+
 Researcher: Search through academic papers and retrieve documents related to specific topics or keywords, even when file names do not contain those terms, using semantic search capabilities.
+
 Content Managers: Manage large collections of media files, where images, videos, and documents are automatically categorized based on metadata such as tags, dates, and formats, improving organization.
+
 Data Analyst: Automate the compilation of multiple CSV files from different sources into a single, cohesive dataset, applying transformations such as column standardization and data merging.
+
 Software Engineer: Utilize advanced indexing, retrieval, and code generation capabilities to efficiently manage project files. MetaNaviT scans and indexes code files, documentation, and related resources, allowing for quick searches without manually navigating directories. Additionally, the tool can generate code based on retrieved context, assisting with automation, debugging, and project development.
+
 Student: Organize and retrieve academic resources, including lecture notes, research papers, and textbooks, using metadata-based and contextual queries for faster access.
 
 
