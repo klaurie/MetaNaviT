@@ -39,8 +39,8 @@ Our primary audience include researchers, content managers, data analysts, softw
 
 | Audience Type  |  Needs   |
 | --- | --- |
-| Researcher     |   semantic search of academic paper by topic or keywords  |
-| Content Manager | auto-categorize media files using metadata(tag, data, formats) |
+| Researcher     |  Semantic search of academic paper by topic or keywords  |
+| Content Manager | Auto-categorize media files using metadata(tag, data, formats) |
 | Data Analyst    |  Merge and standardize CSVs from multiple sources    |
 | Software Engineer  | Auto-index code/doc for fast, context search and snippet generation|
 |   Student       | Organize and retrieve academic materials using metadata and contextual queries|
