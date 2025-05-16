@@ -94,6 +94,24 @@ conda activate metanavit #use env
 pip install -r requirements.txt #install dependencies
 ```
 
+### Development Challenges and Solutions
+MetaNaviT’s development posed several technical challenges tied to its ambitious goals of cross-resource metadata extraction, intelligent resource mapping, and integration of large language models (LLMs). Key challenges included:
+
+File Search Complexity: Designing an efficient file search algorithm based on metadata and semantic content proved more difficult than anticipated. This component was initially prioritized but had to be deprioritized due to implementation hurdles.
+Solution: The team redirected focus toward components with clearer development paths—such as file processing, embedding generation, and RAG pipeline setup—to maintain project momentum.
+
+Integration Overhead: Combining tools like Tree-sitter, Ollama, pgvector, PostgreSQL, and LlamaIndex introduced compatibility and orchestration challenges.
+Solution: Responsibilities were modularized among team members (e.g., embedding with pgvector, file processing, and image metadata extraction), reducing coupling and easing integration.
+
+Resource Mapping & Metadata Standardization: Creating coherent, adaptable resource maps across varied data types (text, code, images) required resolving discrepancies in metadata structures and formats.
+Solution: The use of structured metadata, predefined parsing strategies, and vector-based indexing helped normalize diverse resource inputs into a unified representation.
+
+Performance Under Scale: Ensuring the system could handle large directories and data volumes without lag required optimizations in both frontend rendering and backend indexing.
+Solution: Lazy loading, caching, and parallel indexing techniques were applied to improve system responsiveness.
+
+Testing with Uncertain LLM Outputs: Evaluating LLM-driven features like summarization and transformation required new testing strategies due to the non-deterministic nature of generative models.
+Solution: The team used pytest for core components and the DeepEval library to benchmark LLM outputs on metrics like answer relevancy and task completion.
+
 ### Configuration
 
 Check the parameters that have been pre-configured in the `.env` file in this directory:
