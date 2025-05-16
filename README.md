@@ -10,7 +10,7 @@ This is a [LlamaIndex](https://www.llamaindex.ai/) project using [FastAPI](https
 
 ### Problem Statement
 
-### Core Feature
+### Core Feature and Benefits
 
 ## Prerequisites
 
