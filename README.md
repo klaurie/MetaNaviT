@@ -11,6 +11,34 @@ An AI-powered resource management tool designed to help users organize, extract,
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge)](https://fastapi.tiangolo.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge)](https://www.postgresql.org/)
 
+## 📑 Table of Contents
+
+- [Project Identity](#project-identity)  
+  - [Active Team & Roles](#active-team--roles)  
+  - [Timeline / Status](#timeline--status)  
+- [Value Proposition](#value-proposition)  
+  - [Problem Statement](#problem-statement)  
+  - [Target Audience](#target-audience)  
+- [Core Feature and Benefits](#core-feature-and-benefits)  
+- [Access and Usage](#access-and-usage)  
+  - [Prerequisites](#prerequisites)  
+  - [Environment Setup](#environment-setup)  
+  - [Configuration](#configuration)  
+- [Running the Application](#running-the-application)  
+- [Automated Setup Script (WIP)](#automated-setup-script-wip)  
+- [Technical Roadmap](#technical-roadmap)  
+- [Architecture](#architecture)  
+  - [Frontend](#frontend)  
+  - [Backend](#backend)  
+  - [Index Manager](#index-manager)  
+- [Scripts](#scripts)  
+- [Development Challenges and Solutions](#development-challenges-and-solutions)  
+- [Patch Notes & Upcoming Fixes](#patch-notes--upcoming-fixes)  
+- [Contact Information](#contact-information)  
+
+---
+
+
 
 ## 📌 Project Identity
 
