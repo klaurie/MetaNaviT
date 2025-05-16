@@ -43,7 +43,7 @@ Content Managers: Manage large collections of media files, where images, videos,
 
 Data Analyst: Automate the compilation of multiple CSV files from different sources into a single, cohesive dataset, applying transformations such as column standardization and data merging.
 
-Software Engineer: Utilize advanced indexing, retrieval, and code generation capabilities to efficiently manage project files. MetaNaviT scans and indexes code files, documentation, and related resources, allowing for quick searches without manually navigating directories. Additionally, the tool can generate code based on retrieved context, assisting with automation, debugging, and project development.
+Software Engineer: MetaNaviT auto-indexes your code, docs, and assets so you can instantly search a project and generate context-aware snippets for automation, debugging, or new development.
 
 Student: Organize and retrieve academic resources, including lecture notes, research papers, and textbooks, using metadata-based and contextual queries for faster access.
 
