@@ -1,6 +1,6 @@
 # MetaNaviT
 <p align="center">
-  <img src="https://github.com/klaurie/MetaNaviT/blob/main/.frontend/public/metanavit.jpeg?raw=true" alt="MetaNaviT UI Preview" width="600"/>
+  <img src="https://github.com/klaurie/MetaNaviT/blob/main/.frontend/public/metanavit.jpeg?raw=true" alt="MetaNaviT UI Preview" width="400"/>
 </p>
 
 An AI-powered resource management tool designed to help users organize, extract, and interact with digital content across local directories, cloud platforms, and web sources. It enhances search and transformation workflows using Large Language Models (LLMs) and metadata-aware retrieval strategies.
