@@ -9,12 +9,21 @@ An AI-powered resource management tool designed to help users organize, extract,
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge)](https://fastapi.tiangolo.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge)](https://www.postgresql.org/)
 
-## Project Identity:
 
-| **Active Team & Roles** |
-**Deepti R.** — Benchmark Testing & Documentation<br>**Carlana S.** — Benchmark Testing & Backend<br>**Kaitlyn L.** — DevOps / CI & Benchmark Infrastructure<br>**John T.** — Front-end / UX & Execution Sandbox<br>**Kantaro N.** — Retrieval & Indexing<br>**Jose S.** — Retrieval & Data APIs |
-| **Timeline / Status** |
-**Feb – Apr 2025:** Core FastAPI + LlamaIndex pipeline<br>**May 2025:** Benchmark harness + docs in progress ✅ (current)<br>**Jun 2025:** Usability tests → production deploy 🗓️ |
+## 📌 Project Identity
+
+### Active Team & Roles
+- **Deepti R.** — Benchmark Testing & Documentation  
+- **Carlana S.** — Benchmark Testing & Backend  
+- **Kaitlyn L.** — DevOps / CI & Benchmark Infrastructure  
+- **John T.** — Front-end / UX & Execution Sandbox  
+- **Kantaro N.** — Retrieval & Indexing  
+- **Jose S.** — Retrieval & Data APIs  
+
+### Timeline / Status
+- **Feb – Apr 2025:** Core FastAPI + LlamaIndex pipeline  
+- **May 2025:** Benchmark harness + docs in progress ✅ *(current)*  
+- **Jun 2025:** Usability tests → production deploy 🗓️  
 
 ## Value Proposition
 
