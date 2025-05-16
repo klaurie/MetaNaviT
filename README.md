@@ -166,6 +166,19 @@ A [Python](https://www.python.org/) [FastAPI](https://fastapi.tiangolo.com/) app
     *   Specialized tools like the [`CodeGeneratorTool`](app/engine/tools/artifact.py) for functionalities such as code artifact generation (defined in [`app/engine/tools/artifact.py`](app/engine/tools/artifact.py)).
     *   Mechanisms for data indexing ([`app/engine/index.py`](app/engine/index.py)) and querying.
 *   **Database**: [PostgreSQL](https://www.postgresql.org/) with the [pgvector](https://github.com/pgvector/pgvector) extension is used for storing data and vector embeddings. Database interactions are managed by modules in [`app/database/`](app/database/).
+### Index Manager
+
+The Index Manager, defined in [`app/database/index_manager.py`](app/database/index_manager.py), plays a crucial role in optimizing the data ingestion and indexing process.
+
+**Purpose:**
+Its primary purpose is to efficiently manage the state of files and directories that have been processed or indexed. This prevents redundant re-indexing of unmodified files, saving significant processing time and resources, especially when dealing with large datasets or frequent updates.
+
+**How it Works:**
+1.  **Tracking File Metadata:** The Index Manager maintains database tables (e.g., `indexed_files` and `directory_processing_results` as seen in its `_create_tables` method) to store metadata about files and directories. This metadata includes file paths, modification times (`mtime`), and details about the indexing process (e.g., `process_name`, `process_version`).
+2.  **Efficient Updates:** When new data is processed (e.g., via `crawl_file_system` in [`app/engine/loaders/file_system.py`](app/engine/loaders/file_system.py)), the Index Manager checks against the stored metadata. For instance, the `batch_insert_indexed_files` method uses an `ON CONFLICT` SQL clause to update existing records if a file is reprocessed, ensuring that only changed or new files trigger full re-indexing.
+3.  **Path Filtering:** It includes logic like `is_path_blocked` to exclude specified system directories or hidden files from the indexing process, further refining efficiency.
+4.  **Integration with Loaders:** Data loaders, such as the file system crawler, utilize the Index Manager to determine which files need to be read and processed, ensuring that only new or modified content is passed on for embedding and storage in the vector database.
+
 
 ### Scripts
 Utility scripts in the [`scripts/`](scripts/) directory, such as [`run.sh`](scripts/run.sh), facilitate tasks like generating embeddings and running the application.
