@@ -164,7 +164,9 @@ Open http://localhost:8000 with your browser to start the app.
 | First User Experience Update (Batch)      | Jun 7, 2025   | 🗓️ Planned            |
 
 ## Architecture
-
+<p align="center">
+  <img src="https://github.com/klaurie/MetaNaviT/blob/main/doc/workflow.png?raw=true" alt="MetaNaviT Workflow" width="600"/>
+</p>
 MetaNaviT employs a client-server architecture.
 
 ### Frontend
