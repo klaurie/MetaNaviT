@@ -121,6 +121,9 @@ If you are using any tools or data sources, you can update their config files in
 
 > _Coming soon:_ a single command that asks for your model name and API key, writes `~/.metanavit/config.toml`, and then starts the app.
 
+\## 🗺️ Roadmap
+
+```latex
 \begin{table}[ht]
 \centering
 \begin{tabular}{@{} l l l @{}}
@@ -136,6 +139,7 @@ First User Experience Update (Batch)& TBD          & 🗓️ Planned         \\
 \end{tabular}
 \caption{MetaNaviT Roadmap}
 \end{table}
+
 The example provides two different API endpoints:
 
 1. `/api/chat` - a streaming chat endpoint
