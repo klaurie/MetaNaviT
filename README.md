@@ -52,16 +52,16 @@ Our primary audience include researchers, content managers, data analysts, softw
 
 
 
-1. Intelligent File Indexing & Retrieval
+#### 1. Intelligent File Indexing & Retrieval
 The system automatically scans and indexes files using advanced techniques like BM25 and semantic embeddings. This enables fast, context-aware searching even when queries don’t match exact keywords, improving access to relevant information.
 
-2. Specialized Agents
+#### 2. Specialized Agents
 Multiple dedicated agents—including File Reader, Dependency Identifier, Python Code Executor, and Task Router—work together to handle specific subtasks such as metadata extraction, context clustering, and execution of system commands. 
 
-3. Efficient Index Management
+#### 3. Efficient Index Management
 By tracking file modification times, the system avoids unnecessary reindexing. This optimization preserves accuracy while significantly reducing processing time, especially helpful in dynamic environments with frequent updates.
 
-4. Safe File Change Simulation
+#### 4. Safe File Change Simulation
 File modifications are safely tested in a sandboxed environment before being applied. This allows users to preview and approve or reject changes, providing a layer of human oversight for automated workflows and ensuring system safety.
 
 ## 📘 Access and Usage
