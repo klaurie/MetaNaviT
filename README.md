@@ -164,10 +164,13 @@ Open http://localhost:8000 with your browser to start the app.
 | First User Experience Update (Batch)      | Jun 7, 2025   | 🗓️ Planned            |
 
 ## Architecture
+
+MetaNaviT employs a client-server architecture.
+
 <p align="center">
   <img src="https://github.com/klaurie/MetaNaviT/blob/main/doc/workflow.png?raw=true" alt="MetaNaviT Workflow" width="600"/>
 </p>
-MetaNaviT employs a client-server architecture.
+<p align="center"><em>Workflow</em></p>
 
 ### Frontend
 A [Next.js](https://nextjs.org/) application located in the [`.frontend/`](.frontend/) directory. It provides the user interface and interacts with the backend API.
