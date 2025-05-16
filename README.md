@@ -142,6 +142,43 @@ curl --location 'localhost:8000/api/chat/request' \
 
 You can start editing the API endpoints by modifying `app/api/routers/chat.py`. The endpoints auto-update as you save the file. You can delete the endpoint you're not using.
 
+## Architecture
+
+MetaNaviT employs a client-server architecture.
+
+### Frontend
+A [Next.js](https://nextjs.org/) application located in the [`.frontend/`](.frontend/) directory. It provides the user interface and interacts with the backend API.
+
+### Backend
+A [Python](https://www.python.org/) [FastAPI](https://fastapi.tiangolo.com/) application located in the [`app/`](app/) directory. It exposes API endpoints for the frontend and handles the core logic.
+*   **API Layer**: Defined in [`app/api/routers/`](app/api/routers/), with specific endpoints like chat functionalities in [`app/api/routers/chat.py`](app/api/routers/chat.py).
+*   **Engine**: The core processing unit resides in [`app/engine/`](app/engine/). It leverages [LlamaIndex](https://www.llamaindex.ai/) for AI-powered indexing, retrieval, and agentic workflows (see [`app/engine/agents/ReadME.md`](app/engine/agents/ReadME.md)). This includes:
+    *   Specialized tools like the [`CodeGeneratorTool`](app/engine/tools/artifact.py) for functionalities such as code artifact generation (defined in [`app/engine/tools/artifact.py`](app/engine/tools/artifact.py)).
+    *   Mechanisms for data indexing ([`app/engine/index.py`](app/engine/index.py)) and querying.
+*   **Database**: [PostgreSQL](https://www.postgresql.org/) with the [pgvector](https://github.com/pgvector/pgvector) extension is used for storing data and vector embeddings. Database interactions are managed by modules in [`app/database/`](app/database/).
+### Index Manager
+
+The Index Manager, defined in [`app/database/index_manager.py`](app/database/index_manager.py), plays a crucial role in optimizing the data ingestion and indexing process.
+
+**Purpose:**
+Its primary purpose is to efficiently manage the state of files and directories that have been processed or indexed. This prevents redundant re-indexing of unmodified files, saving significant processing time and resources, especially when dealing with large datasets or frequent updates.
+
+**How it Works:**
+1.  **Tracking File Metadata:** The Index Manager maintains database tables (e.g., `indexed_files` and `directory_processing_results` as seen in its `_create_tables` method) to store metadata about files and directories. This metadata includes file paths, modification times (`mtime`), and details about the indexing process (e.g., `process_name`, `process_version`).
+2.  **Efficient Updates:** When new data is processed (e.g., via `crawl_file_system` in [`app/engine/loaders/file_system.py`](app/engine/loaders/file_system.py)), the Index Manager checks against the stored metadata. For instance, the `batch_insert_indexed_files` method uses an `ON CONFLICT` SQL clause to update existing records if a file is reprocessed, ensuring that only changed or new files trigger full re-indexing.
+3.  **Path Filtering:** It includes logic like `is_path_blocked` to exclude specified system directories or hidden files from the indexing process, further refining efficiency.
+4.  **Integration with Loaders:** Data loaders, such as the file system crawler, utilize the Index Manager to determine which files need to be read and processed, ensuring that only new or modified content is passed on for embedding and storage in the vector database.
+
+
+### Scripts
+Utility scripts in the [`scripts/`](scripts/) directory, such as [`run.sh`](scripts/run.sh), facilitate tasks like generating embeddings and running the application.
+
+### Configuration
+Application settings are managed through an [`.env`](.env) file
+
+Configuration files are located in [`config/`](config/) folder.  [`loaders.yaml`](config/loaders.yaml) is used to modify parameters for generating metanavit's index. 
+
+[`tools.yaml`](config/tools.yaml) manage which tools the app should use and how they should be configured. Allows for certain tools to be ignored, if they are not desired.
 
 ## Contact Information
 Our Email Addresses:
