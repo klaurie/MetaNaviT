@@ -24,7 +24,7 @@ An AI-powered resource management tool designed to help users organize, extract,
   - [Prerequisites](#prerequisites)  
   - [Environment Setup](#environment-setup)  
   - [Configuration](#configuration)  
-- [Running the Application](#running-the-application)  
+  - [Running the Application](#running-the-application)  
 - [Automated Setup Script (WIP)](#-automated-setup-script-wip)  
 - [Technical Roadmap](#%EF%B8%8F-technical-roadmap)
 - [Architecture](#architecture)  
