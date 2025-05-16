@@ -135,7 +135,7 @@ OLLAMA_BASE_URL=http://localhost:11434
 
 If you are using any tools or data sources, you can update their config files in the `config` folder.
 
-## Running the Application
+### Running the Application
 
 1. Generate the embeddings of the documents in the `./data` directory:
 ```bash
