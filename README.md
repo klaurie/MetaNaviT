@@ -84,8 +84,6 @@ ollama pull llama3.2:1b
 
 ### Environment Setup
 
-If you prefer not to use the dev container, you'll need to additionally:
-
 1. Install [Miniconda] (https://www.anaconda.com/docs/getting-started/miniconda/install) 
 
 2. Setup the environment with Miniconda:
