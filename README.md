@@ -123,6 +123,8 @@ If you are using any tools or data sources, you can update their config files in
 
 \## 🗺️ Roadmap
 
+<details> <summary>Click to expand</summary>
+
 ```latex
 \begin{table}[ht]
 \centering
@@ -139,6 +141,9 @@ First User Experience Update (Batch)& TBD          & 🗓️ Planned         \\
 \end{tabular}
 \caption{MetaNaviT Roadmap}
 \end{table}
+</details>
+
+```
 
 The example provides two different API endpoints:
 
