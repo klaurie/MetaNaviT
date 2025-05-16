@@ -121,30 +121,15 @@ If you are using any tools or data sources, you can update their config files in
 
 > _Coming soon:_ a single command that asks for your model name and API key, writes `~/.metanavit/config.toml`, and then starts the app.
 
-\## 🗺️ Roadmap
+### 🗺️ Technical Roadmap
 
-<details> <summary>Click to expand</summary>
-
-```latex
-\begin{table}[ht]
-\centering
-\begin{tabular}{@{} l l l @{}}
-\toprule
-\textbf{Milestone} & \textbf{Date} & \textbf{Status} \\
-\midrule
-Setup Script                        & May 18, 2025 & 🚧 Prototype (WIP) \\
-Usability Tests                     & May 25, 2025 & 🗓️ Planned         \\
-Multimodal Integration              & May 28, 2025 & 🗓️ Planned         \\
-Production Deploy                   & Jun 1, 2025  & 🗓️ Planned         \\
-First User Experience Update (Batch)& TBD          & 🗓️ Planned         \\
-\bottomrule
-\end{tabular}
-\caption{MetaNaviT Roadmap}
-\end{table}
-</details>
-
-```
-<\details>
+| Milestone                                 | Date          | Status                |
+|-------------------------------------------|---------------|-----------------------|
+| Setup Script                              | May 18, 2025  | 🚧 Prototype (WIP)    |
+| Public Beta Release                       | May 25, 2025  | 🚀 Planned            |
+| Multimodal Integration                    | May 28, 2025  | 🗓️ Planned            |
+| Production Deployment for OSU students    | Jun 1, 2025   | 🗓️ Planned            |
+| First User Experience Update (Batch)      | Jun 7, 2025   | 🗓️ Planned            |
 
 The example provides two different API endpoints:
 
