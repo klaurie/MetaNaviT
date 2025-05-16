@@ -65,8 +65,8 @@ ollama serve
 ollama pull llama3.2:1b
 ```
 
-4. Download PostgreSQL 
-    https://www.postgresql.org/download/
+4. &nbsp;<img src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="PostgreSQL Logo" width="20" style="vertical-align: middle;" />&nbsp; Download PostgreSQL
+
 
 ```bash
 #If you are using MacOS, you might want to try this:
