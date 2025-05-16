@@ -149,29 +149,6 @@ If you are using any tools or data sources, you can update their config files in
 
 Open http://localhost:8000 with your browser to start the app.
 
-The example provides two different API endpoints:
-
-1. `/api/chat` - a streaming chat endpoint
-2. `/api/chat/request` - a non-streaming chat endpoint
-
-You can test the streaming endpoint with the following curl request:
-
-```bash
-curl --location 'localhost:8000/api/chat' \
---header 'Content-Type: application/json' \
---data '{ "messages": [{ "role": "user", "content": "Hello" }] }'
-```
-
-And for the non-streaming endpoint run:
-
-```bash
-curl --location 'localhost:8000/api/chat/request' \
---header 'Content-Type: application/json' \
---data '{ "messages": [{ "role": "user", "content": "Hello" }] }'
-```
-
-You can start editing the API endpoints by modifying `app/api/routers/chat.py`. The endpoints auto-update as you save the file. You can delete the endpoint you're not using.
-
 ## 🔧 Automated Setup Script (WIP)
 
 > _Coming soon:_ a single command that asks for your model name and API key, writes `~/.metanavit/config.toml`, and then starts the app.
