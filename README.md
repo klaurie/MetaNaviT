@@ -167,17 +167,15 @@ A [Python](https://www.python.org/) [FastAPI](https://fastapi.tiangolo.com/) app
     *   Mechanisms for data indexing ([`app/engine/index.py`](app/engine/index.py)) and querying.
 *   **Database**: [PostgreSQL](https://www.postgresql.org/) with the [pgvector](https://github.com/pgvector/pgvector) extension is used for storing data and vector embeddings. Database interactions are managed by modules in [`app/database/`](app/database/).
 
-### Data
-Raw data for processing and embedding generation is typically located in the [`data/`](data/) directory.
-
 ### Scripts
 Utility scripts in the [`scripts/`](scripts/) directory, such as [`run.sh`](scripts/run.sh), facilitate tasks like generating embeddings and running the application.
 
-### Containerization
-The [Dockerfile](Dockerfile) defines a multi-stage build process to containerize both the frontend and backend applications, ensuring a consistent deployment environment.
-
 ### Configuration
-Application settings are managed through an [`.env`](.env) file and potentially configuration files within the [`config/`](config/) directory.
+Application settings are managed through an [`.env`](.env) file
+
+Configuration files are located in [`config/`](config/) folder.  [`loaders.yaml`](config/loaders.yaml) is used to modify parameters for generating metanavit's index. 
+
+[`tools.yaml`](config/tools.yaml) manage which tools the app should use and how they should be configured. Allows for certain tools to be ignored, if they are not desired.
 
 
 ## Learn More
