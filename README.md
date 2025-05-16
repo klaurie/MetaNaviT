@@ -64,7 +64,7 @@ By tracking file modification times, the system avoids unnecessary reindexing. T
 4. Safe File Change Simulation
 File modifications are safely tested in a sandboxed environment before being applied. This allows users to preview and approve or reject changes, providing a layer of human oversight for automated workflows and ensuring system safety.
 
-## Access and Usage 📘
+## 📘 Access and Usage
 
 ### Prerequisites
 
