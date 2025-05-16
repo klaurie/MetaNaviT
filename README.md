@@ -23,7 +23,7 @@ An AI-powered resource management tool designed to help users organize, extract,
 - **Jose S.** — Retrieval & Data APIs  
 
 ### Timeline / Status
-- **Feb – Apr 2025:** Core FastAPI + LlamaIndex pipeline  
+- **Jan – Apr 2025:** Core FastAPI + LlamaIndex pipeline  
 - **May 2025:** Benchmark harness + docs in progress ✅ *(current)*  
 - **Jun 2025:** Usability tests → production deploy 🗓️  
 
