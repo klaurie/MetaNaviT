@@ -152,9 +152,22 @@ curl --location 'localhost:8000/api/chat/request' \
 
 You can start editing the API endpoints by modifying `app/api/routers/chat.py`. The endpoints auto-update as you save the file. You can delete the endpoint you're not using.
 
-## Deployments
+## Architecture
 
-For production deployments, check the [DEPLOY.md](DEPLOY.md) file.
+MetaNaviT employs a client-server architecture:
+
+*   **Frontend**: A [Next.js](https://nextjs.org/) application located in the [`.frontend/`](.frontend/) directory. It provides the user interface and interacts with the backend API.
+*   **Backend**: A [Python](https://www.python.org/) [FastAPI](https://fastapi.tiangolo.com/) application located in the [`app/`](app/) directory. It exposes API endpoints for the frontend and handles the core logic.
+    *   **API Layer**: Defined in [`app/api/routers/`](app/api/routers/), with specific endpoints like chat functionalities in [`app/api/routers/chat.py`](app/api/routers/chat.py).
+    *   **Engine**: The core processing unit resides in [`app/engine/`](app/engine/). It leverages [LlamaIndex](https://www.llamaindex.ai/) for AI-powered indexing, retrieval, and agentic workflows (see [`app/engine/agents/ReadME.md`](app/engine/agents/ReadME.md)). This includes:
+        *   Specialized tools like the [`CodeGeneratorTool`](app/engine/tools/artifact.py) for functionalities such as code artifact generation (defined in [`app/engine/tools/artifact.py`](app/engine/tools/artifact.py)).
+        *   Mechanisms for data indexing ([`app/engine/index.py`](app/engine/index.py)) and querying.
+    *   **Database**: [PostgreSQL](https://www.postgresql.org/) with the [pgvector](https://github.com/pgvector/pgvector) extension is used for storing data and vector embeddings. Database interactions are managed by modules in [`app/database/`](app/database/).
+*   **Data**: Raw data for processing and embedding generation is typically located in the [`data/`](data/) directory.
+*   **Scripts**: Utility scripts in the [`scripts/`](scripts/) directory, such as [`run.sh`](scripts/run.sh), facilitate tasks like generating embeddings and running the application.
+*   **Containerization**: The [Dockerfile](Dockerfile) defines a multi-stage build process to containerize both the frontend and backend applications, ensuring a consistent deployment environment.
+*   **Configuration**: Application settings are managed through an [`.env`](.env) file and potentially configuration files within the [`config/`](config/) directory.
+
 
 ## Learn More
 
