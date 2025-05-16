@@ -210,6 +210,21 @@ Configuration files are located in [`config/`](config/) folder.  [`loaders.yaml`
 
 [`tools.yaml`](config/tools.yaml) manage which tools the app should use and how they should be configured. Allows for certain tools to be ignored, if they are not desired.
 
+## 📝 Patch Notes & Upcoming Fixes
+
+Below is our current backlog of improvements, tied to GitHub issues and rollout status:
+
+| Feature / Fix                         | GitHub Issue                                   | Status         | Details                                                                                  |
+|---------------------------------------|------------------------------------------------|----------------|------------------------------------------------------------------------------------------|
+| **Human-in-the-Loop Approval**        | [#74](https://github.com/klaurie/MetaNaviT/issues/74) | 🚧 In Progress | - Preview diffs before applying changes<br>- Approve/reject in the UI<br>- Audit log of all actions |
+| **Expanded Coding Benchmarks**        | [#60](https://github.com/klaurie/MetaNaviT/issues/60) | 🚧 In Progress | - New CPU/GPU/memory throughput tests<br>- Language-specific reports (Python, JS, Go)<br>- Integrated test harness |
+| **Enhanced Ranking Capabilities**     | [#58](https://github.com/klaurie/MetaNaviT/issues/58) | 🗓️ Planned     | - Hybrid BM25 + embeddings<br>- Dynamic weight tuning via query params<br>- “Boost by recency” toggle |
+| **Real-Time File Change Detection**   | [#54](https://github.com/klaurie/MetaNaviT/issues/54) | 🗓️ Planned     | - File-watcher (watchdog/inotify)<br>- WebSocket update notifications<br>- Batching to prevent thrashing |
+| **Index Manager Integration**         | [#53](https://github.com/klaurie/MetaNaviT/issues/53) | 🗓️ Planned     | - Incremental upserts with `ON CONFLICT`<br>- Schema migrations for metadata<br>- Retry logic on failures |
+| **Audio I/O Functionality**           | [#23](https://github.com/klaurie/MetaNaviT/issues/23) | 🗓️ Planned     | - Mic recording & upload endpoint<br>- Server-side transcription (e.g. Whisper)<br>- TTS playback UI |
+| **Better Document Chunking**          | [#22](https://github.com/klaurie/MetaNaviT/issues/22) | 🗓️ Planned     | - Semantic boundary detection<br>- Configurable chunk size/overlap<br>- Heuristics to avoid splitting code |
+
+> _We’ll update this list as each milestone is completed. Stay tuned!_
 
 ## Contact Information
 Our Email Addresses:
