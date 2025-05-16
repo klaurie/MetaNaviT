@@ -145,19 +145,7 @@ If you are using any tools or data sources, you can update their config files in
 ./scripts/run.sh dev
 ```
 
-## 🔧 Automated Setup Script (WIP)
-
-> _Coming soon:_ a single command that asks for your model name and API key, writes `~/.metanavit/config.toml`, and then starts the app.
-
-### 🗺️ Technical Roadmap
-
-| Milestone                                 | Date          | Status                |
-|-------------------------------------------|---------------|-----------------------|
-| Setup Script                              | May 18, 2025  | 🚧 Prototype (WIP)    |
-| Public Beta Release                       | May 25, 2025  | 🚀 Planned            |
-| Multimodal Integration                    | May 28, 2025  | 🗓️ Planned            |
-| Production Deployment for OSU students    | Jun 1, 2025   | 🗓️ Planned            |
-| First User Experience Update (Batch)      | Jun 7, 2025   | 🗓️ Planned            |
+Open http://localhost:8000 with your browser to start the app.
 
 The example provides two different API endpoints:
 
@@ -181,6 +169,20 @@ curl --location 'localhost:8000/api/chat/request' \
 ```
 
 You can start editing the API endpoints by modifying `app/api/routers/chat.py`. The endpoints auto-update as you save the file. You can delete the endpoint you're not using.
+
+## 🔧 Automated Setup Script (WIP)
+
+> _Coming soon:_ a single command that asks for your model name and API key, writes `~/.metanavit/config.toml`, and then starts the app.
+
+### 🗺️ Technical Roadmap
+
+| Milestone                                 | Date          | Status                |
+|-------------------------------------------|---------------|-----------------------|
+| Setup Script                              | May 18, 2025  | 🚧 Prototype (WIP)    |
+| Public Beta Release                       | May 25, 2025  | 🚀 Planned            |
+| Multimodal Integration                    | May 28, 2025  | 🗓️ Planned            |
+| Production Deployment for OSU students    | Jun 1, 2025   | 🗓️ Planned            |
+| First User Experience Update (Batch)      | Jun 7, 2025   | 🗓️ Planned            |
 
 ## Architecture
 
