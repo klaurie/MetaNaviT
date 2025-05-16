@@ -25,15 +25,15 @@ An AI-powered resource management tool designed to help users organize, extract,
   - [Environment Setup](#environment-setup)  
   - [Configuration](#configuration)  
 - [Running the Application](#running-the-application)  
-- [Automated Setup Script (WIP)](#automated-setup-script-wip)  
-- [Technical Roadmap](#technical-roadmap)  
+- [Automated Setup Script (WIP)](#🔧-automated-setup-script-wip)  
+- [Technical Roadmap](#-🗺️-Technical-Roadmap)  
 - [Architecture](#architecture)  
   - [Frontend](#frontend)  
   - [Backend](#backend)  
   - [Index Manager](#index-manager)  
 - [Scripts](#scripts)  
 - [Development Challenges and Solutions](#development-challenges-and-solutions)  
-- [Patch Notes & Upcoming Fixes](#patch-notes--upcoming-fixes)  
+- [Patch Notes & Upcoming Fixes](#-📝-Patch-Notes-&-Upcoming-Fixes)  
 - [Contact Information](#contact-information)  
 
 ---
