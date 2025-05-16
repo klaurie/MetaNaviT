@@ -33,7 +33,7 @@ An AI-powered resource management tool designed to help users organize, extract,
   - [Index Manager](#index-manager)  
 - [Scripts](#scripts)  
 - [Development Challenges and Solutions](#development-challenges-and-solutions)  
-- [Patch Notes & Upcoming Fixes](#-📝-Patch-Notes-&-Upcoming-fixes)  
+- [Patch Notes & Upcoming Fixes](#-📝-patch-notes--upcoming-fixes)  
 - [Contact Information](#contact-information)  
 
 ---
