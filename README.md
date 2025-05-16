@@ -112,7 +112,7 @@ ollama pull llama3.2:1b
 
 ### Environment Setup
 
-1. &nbsp;<img src="https://www.anaconda.com/wp-content/uploads/2022/12/anaconda_secondary_logo.svg" alt="Anaconda Logo" width="20" style="vertical-align: middle;" />&nbsp; Install Miniconda https://www.anaconda.com/download/success
+1. &nbsp;<img src="https://img.icons8.com/fluent/512/anaconda--v2.png" alt="Anaconda Logo" width="20" style="vertical-align: middle;" />&nbsp; Install Miniconda https://www.anaconda.com/download/success
 
 2. Setup the environment with Miniconda:
 
