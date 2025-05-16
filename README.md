@@ -37,6 +37,13 @@ Traditional code retrieval and assistance tools often overlook contextual metada
 
 Our primary audience include researchers, content managers, data analysts, software engineers, and students, each with distinct needs:
 
+| Audience Type  |  Needs   |
+| Researcher     |   semantic search of academic paper by topic or keywords  |
+| Content Manager | auto-categorize media files using metadata(tag, data, formats) |
+| Data Analyst    |  Merge and standardize CSVs from multiple sources    |
+| Software Engineer  | Auto-index code/doc for fast, context search and snippet generation|
+|   Student       | Organize and retrieve academic materials using metadata and contextual queries|
+
 Researcher: Search through academic papers and retrieve documents related to specific topics or keywords, even when file names do not contain those terms, using semantic search capabilities.
 
 Content Managers: Manage large collections of media files, where images, videos, and documents are automatically categorized based on metadata such as tags, dates, and formats, improving organization.
