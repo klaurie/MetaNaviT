@@ -19,7 +19,7 @@ Traditional code retrieval and assistance tools often overlook contextual metada
 
 ### Core Feature and Benefits
 
-## Access and Usage
+## Access and Usage 📘
 
 ### Prerequisites
 
