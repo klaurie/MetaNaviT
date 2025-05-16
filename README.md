@@ -5,6 +5,13 @@ An AI-powered resource management tool designed to help users organize, extract,
 
 This is a [LlamaIndex](https://www.llamaindex.ai/) project using [FastAPI](https://fastapi.tiangolo.com/) bootstrapped with [`create-llama`](https://github.com/run-llama/LlamaIndexTS/tree/main/packages/create-llama).
 
+## Value Proposition
+
+
+### Problem Statement
+
+### Core Feature
+
 ## Prerequisites
 
 1. Install Ollama (required for both dev container and manual setup):
