@@ -33,7 +33,8 @@ An AI-powered resource management tool designed to help users organize, extract,
 ### Problem Statement:
 Traditional code retrieval and assistance tools often overlook contextual metadata, focusing solely on source code without accounting for surrounding documentation, comments, or user-specific context. This lack of context-aware processing limits the accuracy and depth of the insights these tools can provide, reducing their usefulness in complex development workflows. While current alternatives such as Aider, GitHub Copilot, and Cursor offer intelligent code suggestions and rely on tools like Tree-sitter for syntax parsing, they remain code-centric and do not effectively integrate broader contextual information. This gap highlights the need for more holistic, context-aware solutions in code understanding and retrieval.
 
-### Target Audience
+### Target Audience:
+
 Our primary audience include researchers, content managers, data analysts, software engineers, and students, each with distinct needs:
 
 Researcher: Search through academic papers and retrieve documents related to specific topics or keywords, even when file names do not contain those terms, using semantic search capabilities.
@@ -47,7 +48,20 @@ Software Engineer: Utilize advanced indexing, retrieval, and code generation cap
 Student: Organize and retrieve academic resources, including lecture notes, research papers, and textbooks, using metadata-based and contextual queries for faster access.
 
 
-### Core Feature and Benefits
+### Core Feature and Benefits:
+
+
+1. Intelligent File Indexing & Retrieval
+The system automatically scans and indexes files using advanced techniques like BM25 and semantic embeddings. This enables fast, context-aware searching even when queries don’t match exact keywords, improving access to relevant information.
+
+2. Specialized Agents
+Multiple dedicated agents—including File Reader, Dependency Identifier, Python Code Executor, and Task Router—work together to handle specific subtasks such as metadata extraction, context clustering, and execution of system commands. 
+
+3. Efficient Index Management
+By tracking file modification times, the system avoids unnecessary reindexing. This optimization preserves accuracy while significantly reducing processing time, especially helpful in dynamic environments with frequent updates.
+
+4. Safe File Change Simulation
+File modifications are safely tested in a sandboxed environment before being applied. This allows users to preview and approve or reject changes, providing a layer of human oversight for automated workflows and ensuring system safety.
 
 ## Access and Usage 📘
 
