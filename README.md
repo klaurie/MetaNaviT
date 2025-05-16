@@ -121,9 +121,6 @@ If you are using any tools or data sources, you can update their config files in
 
 > _Coming soon:_ a single command that asks for your model name and API key, writes `~/.metanavit/config.toml`, and then starts the app.
 
-
-
-Open [http://localhost:8000](http://localhost:8000) with your browser to start the app.
 \begin{table}[ht]
 \centering
 \begin{tabular}{@{} l l l @{}}
