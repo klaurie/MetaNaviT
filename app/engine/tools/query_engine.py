@@ -33,7 +33,9 @@ from llama_index.core.schema import (
     NodeWithScore,
 )
 from llama_index.core.tools.query_engine import QueryEngineTool
+from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.types import RESPONSE_TEXT_TYPE
+from llama_index.core.settings import Settings
 
 from app.settings import get_multi_modal_llm
 
@@ -88,7 +90,13 @@ def get_query_engine_tool(
         description = (
             "Use this tool to retrieve information about the text corpus from an index."
         )
-    query_engine = create_query_engine(index, **kwargs)
+    
+    retriever = index.as_retriever(**kwargs)
+
+    query_engine = RetrieverQueryEngine.from_args(
+        retriever=retriever,
+        llm=Settings.llm
+    )
     query_engine_tool = QueryEngineTool.from_defaults(
         query_engine=query_engine,
         name=name,

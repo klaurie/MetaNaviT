@@ -14,6 +14,7 @@ import os
 from typing import List, Dict, Any
 import uuid
 from llama_index.core.schema import TextNode
+from llama_index.core.settings import Settings
 
 # Add this import for get_vector_store_manager
 from app.database.vector_store_manager import get_vector_store_manager
@@ -325,7 +326,6 @@ def main():
 def insert_test_documents():
     """Insert test documents to demonstrate BM25 vs Vector search."""
     import json, uuid
-    from app.engine.llm import get_embedding_model
     from app.database.vector_store_manager import get_vector_store_manager
 
     vsm = get_vector_store_manager()
@@ -355,7 +355,7 @@ def insert_test_documents():
     ]
 
     # 3) Generate embeddings and pad/truncate to db_dim
-    embed_model = get_embedding_model()
+    embed_model = Settings.embed_model
     nodes = []
     for i, text in enumerate(smartphone_texts):
         raw_emb = embed_model.get_text_embedding(text)
@@ -421,10 +421,9 @@ def test_bm25_vs_vector():
     logger.info(f"Using embedding dimension from database: {embed_dim}")
     
     # Configure embedding model with correct dimensions
-    from app.engine.llm import get_embedding_model
     from llama_index.core.settings import Settings
     
-    embed_model = get_embedding_model()
+    embed_model = Settings.embed_model
     Settings.embed_model = embed_model
     logger.info(f"Configured embedding model: {embed_model.__class__.__name__}")
     

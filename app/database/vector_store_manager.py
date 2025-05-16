@@ -410,7 +410,7 @@ class VectorStoreManager(DatabaseManager):
                 with conn.cursor() as cur:
                     # Try to query the table definition to get vector dimensions
                     cur.execute(f"""
-                        SELECT a.atttypmod - 4  -- Subtracting 4 gets the actual dimensions
+                        SELECT a.atttypmod  -- Subtracting 4 gets the actual dimensions
                         FROM pg_attribute a
                         JOIN pg_class c ON a.attrelid = c.oid
                         JOIN pg_namespace n ON c.relnamespace = n.oid
