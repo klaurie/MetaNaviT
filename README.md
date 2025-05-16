@@ -12,7 +12,10 @@ An AI-powered resource management tool designed to help users organize, extract,
 ## Value Proposition
 
 
-### Problem Statement
+### Problem Statement:
+Traditional code retrieval and assistance tools often overlook contextual metadata, focusing solely on source code without accounting for surrounding documentation, comments, or user-specific context. This lack of context-aware processing limits the accuracy and depth of the insights these tools can provide, reducing their usefulness in complex development workflows. While current alternatives such as Aider, GitHub Copilot, and Cursor offer intelligent code suggestions and rely on tools like Tree-sitter for syntax parsing, they remain code-centric and do not effectively integrate broader contextual information. This gap highlights the need for more holistic, context-aware solutions in code understanding and retrieval.
+
+```
 
 ### Core Feature and Benefits
 
