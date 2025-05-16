@@ -21,7 +21,7 @@ Traditional code retrieval and assistance tools often overlook contextual metada
 
 ## Access and Usage
 
-## Prerequisites
+### Prerequisites
 
 1. Install Ollama (required for both dev container and manual setup):
 ```bash
@@ -80,7 +80,7 @@ nvm alias default 20
 node -v
 ```
 
-## Quick Start with Dev Container (Recommended)
+### Quick Start with Dev Container (Recommended)
 
 The easiest way to get started is using the dev container, which handles all dependencies except Ollama and Database dependencies:
 
@@ -90,7 +90,7 @@ The easiest way to get started is using the dev container, which handles all dep
 4. Click the green button in the bottom-left corner (or press `F1` and select "Dev Containers: Reopen in Container")
 5. Wait for the container to build - all dependencies will be automatically installed!
 
-## Manual Setup (Alternative)
+### Manual Setup (Alternative)
 
 If you prefer not to use the dev container, you'll need to additionally:
 
@@ -104,7 +104,7 @@ conda activate metanavit #use env
 pip install -r requirements.txt #install dependencies
 ```
 
-## Configuration
+### Configuration
 
 Check the parameters that have been pre-configured in the `.env` file in this directory:
 ```env
@@ -152,14 +152,6 @@ curl --location 'localhost:8000/api/chat/request' \
 
 You can start editing the API endpoints by modifying `app/api/routers/chat.py`. The endpoints auto-update as you save the file. You can delete the endpoint you're not using.
 
-## Deployments
+### Deployments
 
 For production deployments, check the [DEPLOY.md](DEPLOY.md) file.
-
-## Learn More
-
-To learn more about LlamaIndex, take a look at the following resources:
-
-- [LlamaIndex Documentation](https://docs.llamaindex.ai) - learn about LlamaIndex.
-
-You can check out [the LlamaIndex GitHub repository](https://github.com/run-llama/llama_index) - your feedback and contributions are welcome!
