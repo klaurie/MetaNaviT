@@ -35,7 +35,7 @@ Student: Organize and retrieve academic resources, including lecture notes, rese
 
 ### Prerequisites
 
-1. **Install Ollama** <img src="https://ollama.com/public/ollama-icon.png" alt="Ollama Logo" width="20" style="vertical-align: middle;" />
+1. **Install Ollama** <img src="[https://ollama.com/public/ollama-icon.png](https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/light/ollama.png)" alt="Ollama Logo" width="20" style="vertical-align: middle;" />
 
 ```bash
 # macOS/Linux
