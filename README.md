@@ -117,10 +117,12 @@ ollama pull llama3.2:1b
 2. Setup the environment with Miniconda:
 
 ```bash
-conda create --name metanavit python=3.11 #create env
-conda activate metanavit #use env
-pip install -r requirements.txt #install dependencies
+conda create --name metanavit python=3.11
+conda activate metanavit
+pip install -r requirements.txt
 ```
+
+3. Start PostgreSQL service (Depends on installation method)
 
 ### Configuration
 
