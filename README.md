@@ -16,6 +16,8 @@ An AI-powered resource management tool designed to help users organize, extract,
 
 ### Core Feature and Benefits
 
+## Access and Usage
+
 ## Prerequisites
 
 1. Install Ollama (required for both dev container and manual setup):
