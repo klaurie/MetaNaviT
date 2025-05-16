@@ -81,8 +81,7 @@ ollama pull llama3.2:1b
 
 4. &nbsp;<img src="https://www.postgresql.org/media/img/about/press/elephant.png" alt="PostgreSQL Logo" width="20" style="vertical-align: middle;" />&nbsp; Install PostgreSQL https://www.postgresql.org/download/
 
-5. Download pgvector
-    https://github.com/pgvector/pgvector 
+5. Install pgvector https://github.com/pgvector/pgvector 
 
 6. MacOS user might want to check NVM installed version. An installed version can be old.
 ```bash
