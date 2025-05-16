@@ -170,3 +170,13 @@ curl --location 'localhost:8000/api/chat/request' \
 ```
 
 You can start editing the API endpoints by modifying `app/api/routers/chat.py`. The endpoints auto-update as you save the file. You can delete the endpoint you're not using.
+
+
+### Contact Information
+Our Email Addresses:
+- Deepti R: ravidatd@oregonstate.edu
+- Kaitlyn L: lauriek@oregonstate.edu
+- Kantaro N: nakanika@oregonstate.edu
+- Carlana S: soma@oregonstate.edu
+- Jose G: sanchej7@oregonstate.edu
+- John T: tranj8@oregonstate.edu
