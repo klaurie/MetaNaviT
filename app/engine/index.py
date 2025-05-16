@@ -5,6 +5,7 @@ from llama_index.core.indices import VectorStoreIndex
 from pydantic import BaseModel
 
 from app.database.vector_store_manager import get_vector_store
+from app.database.vector_store import get_vector_store_manager
 
 
 logger = logging.getLogger("uvicorn")
@@ -46,9 +47,10 @@ def get_index(config: IndexConfig = None):
     """
     if config is None:
         config = IndexConfig()
-    store = get_vector_store()
-    index = VectorStoreIndex.from_vector_store(
-        store, callback_manager=config.callback_manager
-    )
+    vector_store_manager = get_vector_store_manager()
+
+    vector_store = vector_store_manager.get_vector_store()
+
+    index = VectorStoreIndex.from_vector_store(vector_store)
     # logger.info(f"Finished loading index from {store}")
     return index

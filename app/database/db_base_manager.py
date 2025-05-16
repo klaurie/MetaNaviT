@@ -216,4 +216,4 @@ class DatabaseManager:
         VALUES (%s, %s);
         """
         self.execute_query(insert_sql, params=(title, content), fetch=False)
-        logger.info("Document inserted")g
+        logger.info("Document inserted")
