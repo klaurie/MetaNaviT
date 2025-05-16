@@ -144,6 +144,7 @@ First User Experience Update (Batch)& TBD          & 🗓️ Planned         \\
 </details>
 
 ```
+<\details>
 
 The example provides two different API endpoints:
 
