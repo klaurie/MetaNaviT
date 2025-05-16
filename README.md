@@ -51,6 +51,7 @@ Our primary audience include researchers, content managers, data analysts, softw
 ### Core Feature and Benefits:
 
 
+
 1. Intelligent File Indexing & Retrieval
 The system automatically scans and indexes files using advanced techniques like BM25 and semantic embeddings. This enables fast, context-aware searching even when queries don’t match exact keywords, improving access to relevant information.
 
