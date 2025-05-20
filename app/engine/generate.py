@@ -74,7 +74,7 @@ def run_pipeline(docstore, vector_store, documents):
         2. Generate embeddings
         3. Store in vector database
     """
-    logger.info(f"embedding model {Settings.embed_model}\n\n\n")
+    #logger.info(f"embedding model {Settings.embed_model}\n\n\n")
     pipeline = IngestionPipeline(
         transformations=[
             SentenceSplitter(
@@ -107,23 +107,26 @@ def generate_datasource():
     # Get the stores and documents or create new ones
     documents = get_documents()
     
-    # Set private=false to mark the document as public (required for filtering)
-    for doc in documents:
-        doc.metadata["private"] = "false"
+    if len(documents) > 0:
+        # Set private=false to mark the document as public (required for filtering)
+        for doc in documents:
+            doc.metadata["private"] = "false"
 
-    docstore = get_doc_store()
-    vector_store = get_vector_store()
+        docstore = get_doc_store()
+        vector_store = get_vector_store()
 
-    #logger.info(f"Document store: {docstore}")
-    #logger.info(f"Vector store: {vector_store}")
+        #logger.info(f"Document store: {docstore}")
+        #logger.info(f"Vector store: {vector_store}")
 
-    # Run the ingestion pipeline
-    _ = run_pipeline(docstore, vector_store, documents)
+        # Run the ingestion pipeline
+        _ = run_pipeline(docstore, vector_store, documents)
 
-    # Build the index and persist storage
-    persist_storage(docstore, vector_store)
+        # Build the index and persist storage
+        persist_storage(docstore, vector_store)
 
-    logger.info("Finished generating the index")
+        logger.info("Finished generating the index")
+    else:
+        logger.info("No new documents to index")
 
 
 

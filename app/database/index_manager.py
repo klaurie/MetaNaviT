@@ -99,17 +99,6 @@ class IndexManager(DatabaseManager):
                     );
                 """)
                 
-                # Create directory_processing_results table
-                cur.execute("""
-                    CREATE TABLE IF NOT EXISTS directory_processing_results (
-                        dir_path TEXT NOT NULL,
-                        process_name TEXT NOT NULL,
-                        process_version TEXT NOT NULL,
-                        is_applicable BOOLEAN NOT NULL,
-                        mtime BIGINT NOT NULL,
-                        PRIMARY KEY (dir_path, process_name, process_version)
-                    );
-                """)
                 logger.info("Database tables created successfully")
 
     def is_path_blocked(self, path: str) -> bool:
@@ -170,7 +159,7 @@ class IndexManager(DatabaseManager):
             file.get('data', None)
         ) for file in batch]
         
-        self.execute_query(
+        self.execute_many_query(
             """
             INSERT INTO indexed_files
             (file_path, process_name, process_version, mtime, data)
@@ -180,7 +169,7 @@ class IndexManager(DatabaseManager):
                 mtime = EXCLUDED.mtime,
                 data = EXCLUDED.data;
             """,
-            params=values,
+            params_list=values,
             fetch=False
         )
         logger.info(f"Inserted batch of {len(batch)} files")
@@ -188,3 +177,48 @@ class IndexManager(DatabaseManager):
     def check_processing_status(self):
         # TODOL: check and remove any files that we dont have processing capabilities for
         pass
+    
+    def is_file_modified(self, file_path: str) -> bool:
+        """
+        Check if a file has been modified since it was last indexed.
+        
+        Args:
+            file_path: Path to the file to check
+            
+        Returns:
+            bool: True if file has been modified or was never indexed, False otherwise
+            
+        Note:
+            Returns True if file doesn't exist in the database (never indexed)
+            Returns True if file exists on disk but with a newer mtime
+            Returns False if file exists in database with same or newer mtime
+        """
+        # Get current file mtime if file exists
+        path_obj = Path(file_path)
+        if not path_obj.exists() or not path_obj.is_file():
+            logger.debug(f"File does not exist: {file_path}")
+            return False
+            
+        current_mtime = int(path_obj.stat().st_mtime)
+        
+        # Query the database for the stored mtime
+        query = """
+            SELECT mtime 
+            FROM indexed_files 
+            WHERE file_path = %s
+        """
+        results = self.execute_query(query, (file_path,))
+        
+        # If file not in database, consider it modified (needs indexing)
+        if not results:
+            logger.debug(f"File not previously indexed: {file_path}")
+            return True
+            
+        stored_mtime = results[0][0]  # First row, first column contains the mtime
+        
+        # Compare mtimes
+        is_modified = current_mtime != stored_mtime
+        if is_modified:
+            logger.debug(f"File modified since last indexing: {file_path}")
+        
+        return is_modified

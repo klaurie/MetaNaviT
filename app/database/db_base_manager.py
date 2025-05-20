@@ -18,6 +18,7 @@ import os
 from contextlib import contextmanager
 from typing import Optional, Generator
 from urllib.parse import urlparse, urlunparse
+from typing import List
 
 import psycopg2
 from psycopg2 import sql
@@ -174,7 +175,39 @@ class DatabaseManager:
                     logger.error(f"Query execution failed: {e}")
                     raise
 
-
+    def execute_many_query(
+        self,
+        query: str,
+        params_list: List[tuple],
+        fetch: bool = False
+    ) -> Optional[int]:
+        """
+        Execute a SQL query with multiple parameter sets (batch operation).
+        
+        Args:
+            query: SQL query string with parameter placeholders
+            params_list: List of parameter tuples
+            fetch: Whether to return results
+        
+        Returns:
+            Optional[int]: Number of affected rows
+            
+        Raises:
+            psycopg2.Error: Database errors
+        """
+        if not query or not params_list:
+            raise ValueError("Query string and parameters list cannot be empty")
+            
+        with self.get_connection() as conn:
+            with conn.cursor() as cur:
+                try:
+                    cur.executemany(query, params_list)
+                    affected = cur.rowcount
+                    logger.debug(f"Batch query affected {affected} rows")
+                    return affected if not fetch else None
+                except psycopg2.Error as e:
+                    logger.error(f"Batch query execution failed: {e}")
+                    raise
     def create_bm25_index(self, table: str = "documents", fields: str = "title, content", key_field: str = "id") -> None:
         """Create a BM25 index on the given table and fields."""
         index_sql = f"""

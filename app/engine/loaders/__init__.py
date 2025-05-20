@@ -59,7 +59,11 @@ def get_documents() -> List[Document]:
         )
         match loader_type:
             case "file_system":
-                    documents.extend(get_files(loader_config["path"], index_manager))
+                    new_docs = get_files(loader_config["path"], index_manager)
+
+                    # new_docs is None when there are no new documents to be indexed
+                    if new_docs is not None:
+                        documents.extend(new_docs)
 
             case "db":
                 documents.extend(
