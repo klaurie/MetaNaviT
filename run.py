@@ -11,6 +11,8 @@ import uvicorn
 import dotenv
 import rich
 
+from file_watcher import start_file_watcher, stop_file_watcher
+
 dotenv.load_dotenv()
 
 
@@ -89,6 +91,7 @@ async def start_development_servers():
     rich.print("\n[bold]Starting development servers[/bold]")
 
     try:
+        start_file_watcher()
         processes = []
         if _is_frontend_included():
             frontend_process, frontend_port = await _run_frontend()
@@ -113,6 +116,7 @@ async def start_development_servers():
             rich.print("\n[bold yellow]Shutting down...[/bold yellow]")
         finally:
             # Terminate both processes
+            stop_file_watcher()
             for process in processes:
                 process.terminate()
                 try:
