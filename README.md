@@ -272,7 +272,10 @@ Below is a curated list of external guides and documentation that we regularly c
   <https://www.deepeval.com/docs/synthesizer-introduction>  
   *Overview of the SummarizationMetric and how to integrate it into testing pipelines.*  
  
-
+- **LlamaIndex Documentation**  
+  LlamaIndex official docs  
+  <https://docs.llamaindex.ai/en/stable/>  
+  *Comprehensive guide to using LlamaIndex for indexing, retrieval, and building RAG pipelines.*  
 
 ## Contact Information
 Our Email Addresses:
