@@ -50,24 +50,35 @@ def get_chat_engine(
     # Initialize system prompt from environment or default
     system_prompt = os.getenv("SYSTEM_PROMPT", "I am an AI assistant.")
     tools: List[BaseTool] = []
-    
+
+    # Check debug mode for callback behavior
+    debug_mode = (params or {}).get("debug", False) or os.getenv("DEBUG_MODE", "false").lower() == "true"
+    verbose = os.getenv("VERBOSE_AGENT", "false").lower() == "true"
+
     # Initialize callback manager
-    callback_manager = CallbackManager(handlers=event_handlers or [])
+    # callback_manager = CallbackManager(handlers=event_handlers or [])
+    callback_manager = CallbackManager(handlers=event_handlers if debug_mode else [])
     
     agents = []
 
-    agents.append(
-        create_file_access_agent(
-            callback_manager=callback_manager
+    if not params or params.get("use_file_access", True):
+        agents.append(
+            create_file_access_agent(
+                callback_manager=callback_manager
+            )
         )
-    )
-    agents.append(
-        create_python_exec_agent(
-            callback_manager=callback_manager
+    
+    if params and params.get('use_python_exec', False):
+        agents.append(
+            create_python_exec_agent(
+                callback_manager=callback_manager
+            )
         )
-    )
+    
+    if not agents:
+        raise ValueError("No agents created. Ensure at least one agent is configured.")
 
     return AgentWorkflow(
         agents=agents,
         root_agent=agents[0].name,
-        verbose=True)
+        verbose=verbose)
