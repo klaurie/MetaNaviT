@@ -21,9 +21,11 @@ load_dotenv(override=True)
 
 import logging
 import os
+import re
 
 from app.engine.loaders import get_documents
 from app.database.vector_store_manager import get_vector_store
+from llama_index.core.node_parser.interface import TextSplitter
 
 from app.settings import init_settings
 
@@ -32,12 +34,19 @@ from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.settings import Settings
 from llama_index.core.storage import StorageContext
 from llama_index.core.storage.docstore import SimpleDocumentStore
+from llama_index.core.schema import TransformComponent
 
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 STORAGE_DIR = os.getenv("STORAGE_DIR", "storage")
+
+class NullByteRemover(TransformComponent):
+    def __call__(self, nodes, **kwargs):
+        for node in nodes:
+            node.text = re.sub(r"\0", "", node.text)
+        return nodes
 
 def get_doc_store():
     """
@@ -81,6 +90,7 @@ def run_pipeline(docstore, vector_store, documents):
                 chunk_size=Settings.chunk_size,
                 chunk_overlap=Settings.chunk_overlap,
             ),
+            NullByteRemover(),
             Settings.embed_model,
         ],
         vector_store=vector_store,

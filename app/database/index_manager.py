@@ -41,7 +41,7 @@ class IndexManager(DatabaseManager):
         - directory_processing_results: Tracks directory processing state
     """
     
-    def __init__(self, conn_string: Optional[str] = None):
+    def __init__(self, conn_string: Optional[str] = None, exclude_patterns=None):
         """
         Initialize IndexManager with database connection and default settings.
         
@@ -61,6 +61,17 @@ class IndexManager(DatabaseManager):
             '/proc', '/sys', '/run', '/dev', '/tmp',
             '/var/cache', '/var/tmp', '/anaconda3'
         }
+
+        # Store exclusion patterns from loaders.yaml
+        self.exclude_patterns = exclude_patterns or [
+            "**/.git/*", 
+            "**/*.pyc",
+            "**/node_modules/*", 
+            "**/__pycache__/*",
+            "**/.env"
+        ]
+    
+
         self.block_hidden_files = True
         
         # Create required tables
@@ -110,29 +121,32 @@ class IndexManager(DatabaseManager):
             
         Returns:
             bool: True if path should be blocked, False otherwise
-            
-        Rules:
-            1. Hidden files/dirs (starting with '.') if block_hidden_files is True
-            2. System directories listed in self.blocked_dirs
-            3. Paths matching blocked patterns with wildcards
         """
         path_obj = Path(path).resolve()
+        path_str = str(path_obj)
         
         # Check 1: Hidden files/directories
         if self.block_hidden_files and path_obj.name.startswith('.'):
-            logger.debug(f"Blocking hidden path: {path_obj}")
+            logger.debug(f"Blocking hidden path: {path}")
             return True
         
-        # Check 2: Blocked directories and patterns
-        for pattern in self.blocked_dirs:
-            pattern_obj = Path(pattern)
-            if str(pattern_obj).endswith('/*'):   # Wildcard pattern
-                pattern_base = pattern_obj.parent
-                if path_obj == pattern_base or pattern_base in path_obj.parents:
-                    return True
-            elif str(pattern_obj) in str(path_obj):   # Direct match
+        # Check 2: System directories (exact matches or parent directories)
+        for blocked_dir in self.blocked_dirs:
+            blocked_path = Path(blocked_dir).resolve()
+            if path_obj == blocked_path or blocked_path in path_obj.parents:
+                logger.debug(f"Blocking system directory: {path}")
                 return True
         
+        # Check 3: Check glob patterns from loaders.yaml
+        for pattern in self.exclude_patterns:
+            # Handle glob patterns like "**/*.git/*"
+            if '**' in pattern:
+                # Convert glob pattern to a simple check for path components
+                components = pattern.replace('**/', '').replace('*', '')
+                if components in path_str:
+                    logger.debug(f"Blocking path matching pattern {pattern}: {path}")
+                    return True
+    
         return False
 
     def batch_insert_indexed_files(self, batch: List[Dict[str, Any]]) -> None:
