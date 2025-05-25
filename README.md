@@ -277,6 +277,11 @@ Below is a curated list of external guides and documentation that we regularly c
   <https://docs.llamaindex.ai/en/stable/>  
   *Comprehensive guide to using LlamaIndex for indexing, retrieval, and building RAG pipelines.*  
 
+- **API Documentation**  
+  Our API docs  
+  <https://drive.google.com/file/d/1ufud7R-oWXjxW9K_lrzE8aXkUt9yDdvL/view?usp=sharing/>  
+  *A FastAPI-powered REST API detailing endpoints for streaming chat, non-streaming chat, knowledge-base queries, file uploads, workflow management, and our custom streaming protocol.*  
+
 ## Contact Information
 Our Email Addresses:
 - Deepti R: ravidatd@oregonstate.edu
