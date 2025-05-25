@@ -35,9 +35,10 @@ An AI-powered resource management tool designed to help users organize, extract,
   - [Index Manager](#index-manager)  
 - [Scripts](#scripts)  
 - [Development Challenges and Solutions](#development-challenges-and-solutions)  
-- [Patch Notes & Upcoming Fixes](#-patch-notes--upcoming-fixes) 
+- [Patch Notes & Upcoming Fixes](#-patch-notes--upcoming-fixes)
+- [Developer References](#developer-references) 
 - [Contact Information](#contact-information)  
-
+ 
 ---
 
 
@@ -241,6 +242,37 @@ Below is our current backlog of improvements, tied to GitHub issues and rollout 
 | **Better Document Chunking**          | [#22](https://github.com/klaurie/MetaNaviT/issues/22) | 🗓️ Planned     | - Semantic boundary detection<br>- Configurable chunk size/overlap<br>- Heuristics to avoid splitting code |
 
 > _We’ll update this list as each milestone is completed. Stay tuned!_
+
+## Developer References
+
+Below is a curated list of external guides and documentation that we regularly consult when developing and extending MetaNaviT:
+
+- **Hybrid Search with PostgreSQL & pgvector**  
+  Jonathan Katz, “Hybrid search with PostgreSQL and pgvector,” Mar 16, 2025  
+  <https://jkatz05.com/post/postgres/hybrid-search-postgres-pgvector/>  
+  *Walks through combining BM25 keyword search and vector similarity in Postgres.*  
+
+- **OverlayFS (Linux Kernel Docs)**  
+  “OverlayFS,” Linux kernel documentation  
+  <https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html>  
+  *Explains layered filesystem mounts, used for sandboxed file-change simulations.* 
+
+- **BM25 Retriever Example (LlamaIndex)**  
+  LlamaIndex docs: BM25 retriever example  
+  <https://docs.llamaindex.ai/en/stable/examples/retrievers/bm25_retriever/>  
+  *Shows how to integrate BM25 into a RAG pipeline for hybrid ranking.*  
+
+- **MTEB Leaderboard**  
+  Hugging Face Space by mteb  
+  <https://huggingface.co/spaces/mteb/leaderboard>  
+  *Benchmark suite for evaluating embedding quality across diverse tasks.*  
+
+- **DeepEval Synthesizer Introduction**  
+  DeepEval documentation: Synthesizer overview  
+  <https://www.deepeval.com/docs/synthesizer-introduction>  
+  *Overview of the SummarizationMetric and how to integrate it into testing pipelines.*  
+ 
+
 
 ## Contact Information
 Our Email Addresses:
