@@ -130,8 +130,8 @@ class VectorStoreManager(DatabaseManager):
                     }}'
                 );
                 """
-                logger.info(f"Creating BM25 index '{index_name}' using ParadeDB documentation syntax")
-                logger.info(f"Executing SQL:\n{sql_stmt}\n")
+                #logger.info(f"Creating BM25 index '{index_name}' using ParadeDB documentation syntax")
+                #logger.info(f"Executing SQL:\n{sql_stmt}\n")
                 cur.execute(sql_stmt)
                 
                 # Analyze the table to refresh statistics

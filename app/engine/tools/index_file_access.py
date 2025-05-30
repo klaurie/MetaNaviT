@@ -84,7 +84,7 @@ def list_available_files(
     Returns:
         List of available file paths matching the pattern
     """
-    logger.info("Listing available files in the index")
+    logger.info("Listing available files in the index with pattern: %s", pattern)
     # Use IndexManager to query the database for indexed files
     index_manager = IndexManager()
     

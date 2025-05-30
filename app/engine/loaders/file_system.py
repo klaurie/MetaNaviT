@@ -81,6 +81,10 @@ def crawl_file_system(
                 for name in files:
                     file_path = os.path.join(root, name)
                     if index_manager.is_path_blocked(file_path):
+                        # File is path is blocked from being indexed
+                        continue
+                    if not index_manager.is_file_modified(file_path):
+                        # File has not been modified since last indexes
                         continue
                         
                     try:
@@ -134,8 +138,7 @@ def crawl_file_system(
         if current_batch:
             yield current_batch
 
-
-def get_files(path: str, index_manager: IndexManager(), max_workers: int = 4, batch_size: int = 1000) -> List[Document]:
+def get_files(path: str, index_manager: IndexManager(), max_workers: int = 4, batch_size: int = 1000):
     """ This function runs the pipeline to get all files from a directory,
         add them to the database, process if applicable, remove if not applicable,
         and return the list of documents.
@@ -154,12 +157,20 @@ def get_files(path: str, index_manager: IndexManager(), max_workers: int = 4, ba
         max_workers=max_workers,
         batch_size=batch_size
     ):
+        logger.info(f"batch {batch}\n")
+        # add files information to index manager database
+        index_manager.batch_insert_indexed_files(batch)
+
         # Add pathnames to list for loading
         file_paths.extend([item["pathname"] for item in batch])
     
-    # Configure directory reader and load documents
-    reader = SimpleDirectoryReader(
-        input_files=file_paths,
-        )
-    documents = reader.load_data()
+    documents = None
+
+    # len(file_paths) = 0 when there are no new files to be indexed
+    if len(file_paths) > 0:
+        # Configure directory reader and load documents
+        reader = SimpleDirectoryReader(
+            input_files=file_paths,
+            )
+        documents = reader.load_data()
     return documents
